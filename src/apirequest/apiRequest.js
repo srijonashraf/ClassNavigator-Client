@@ -1,8 +1,11 @@
 import axios from "axios";
 import { setToken, getToken, setUserRole } from "../helper/sessionHelper.js";
-const BaseURLAdmin = "http://localhost:4500/api/v1/admin";
-const BaseURLUser = "http://localhost:4500/api/v1/user";
-const BaseURL = "http://localhost:4500/api/v1";
+// const BaseURLAdmin = "http://localhost:4500/api/v1/admin";
+// const BaseURLUser = "http://localhost:4500/api/v1/user";
+// const BaseURL = "http://localhost:4500/api/v1";
+const BaseURLAdmin = "https://class-navigator-server.vercel.app/api/v1/admin";
+const BaseURLUser = "https://class-navigator-server.vercel.app/api/v1/user";
+const BaseURL = "https://class-navigator-server.vercel.app/api/v1";
 const AxiosHeader = getToken();
 export const LoginByAdmin = async (data) => {
   const response = await axios.post(`${BaseURLAdmin}/login`, data);
@@ -73,7 +76,7 @@ export const AddNewClassByAdmin = async (data) => {
   } else {
     return false;
   }
-}
+};
 
 export const EnrollClass = async (classId) => {
   const response = await axios.get(`${BaseURLUser}/enrollClass/${classId}`, {
