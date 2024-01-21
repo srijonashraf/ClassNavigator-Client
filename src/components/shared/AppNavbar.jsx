@@ -58,7 +58,7 @@ const AppNavbar = () => {
               onClick={toggleOffcanvas}
             />
             <NavLink to={"/"} className="navbar-brand">
-              Class Manager
+              Class Navigator
             </NavLink>
           </div>
 
@@ -107,7 +107,7 @@ const AppNavbar = () => {
 
       <Offcanvas show={showOffcanvas} onHide={closeOffcanvas} placement="start">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Work Manager</Offcanvas.Title>
+          <Offcanvas.Title>Class Navigator</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="list-group list-group-flush list-unstyled">
@@ -126,7 +126,7 @@ const AppNavbar = () => {
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >
-                New Task
+                Routine
               </NavLink>
             </li>
             <li>
@@ -135,7 +135,7 @@ const AppNavbar = () => {
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >
-                All Task
+                Assessment
               </NavLink>
             </li>
             <li>
@@ -144,7 +144,7 @@ const AppNavbar = () => {
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >
-                Pending
+                In Course
               </NavLink>
             </li>
             <li>
@@ -153,27 +153,10 @@ const AppNavbar = () => {
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >
-                In Progress
+                Link Library
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/done"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Done
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/cancelled"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Cancelled
-              </NavLink>
-            </li>
+
             <li>
               <NavLink
                 to="/profile"
