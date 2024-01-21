@@ -3,9 +3,9 @@ import { setToken, getToken, setUserRole } from "../helper/sessionHelper.js";
 // const BaseURLAdmin = "http://localhost:4500/api/v1/admin";
 // const BaseURLUser = "http://localhost:4500/api/v1/user";
 // const BaseURL = "http://localhost:4500/api/v1";
-const BaseURLAdmin = "https://class-navigator-server.vercel.app/api/v1/admin";
-const BaseURLUser = "https://class-navigator-server.vercel.app/api/v1/user";
-const BaseURL = "https://class-navigator-server.vercel.app/api/v1";
+const BaseURLAdmin = "https://class-navigator.onrender.com/api/v1/admin";
+const BaseURLUser = "https://class-navigator.onrender.com/api/v1/user";
+const BaseURL = "https://class-navigator.onrender.com/api/v1";
 const AxiosHeader = getToken();
 export const LoginByAdmin = async (data) => {
   const response = await axios.post(`${BaseURLAdmin}/login`, data);
