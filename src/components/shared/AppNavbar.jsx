@@ -64,10 +64,11 @@ const AppNavbar = () => {
 
           <Dropdown className="user-dropdown">
             <Dropdown.Toggle
-              as={BiUserCircle}
+              as={RxAvatar}
               id="dropdown-basic"
               className="navBarUserIcon border-0 fs-2"
-            ></Dropdown.Toggle>
+            >
+            </Dropdown.Toggle>
 
             <Dropdown.Menu className="user-dropdown-content">
               <div className="mt-4 text-center">

@@ -6,7 +6,7 @@ import LoginPage from "./pages/loginPage.jsx";
 import { Toaster } from "react-hot-toast";
 import RegistrationPage from './pages/registrationPage';
 import DashboardPage from './pages/dashboardPage';
-
+import PrivateRoute from './components/shared/PrivateRoute.jsx';
 
 const App = () => {
     return (
@@ -14,11 +14,11 @@ const App = () => {
             <Toaster position="bottom-center" />
             <Router>
                 <Routes>
-                    <Route exact path="/" element={<LandingPage />} />
-                    <Route exact path="/user/login" element={<LoginPage />} />
-                    <Route exact path="/admin/login" element={<LoginPage />} />
-                    <Route exact path="/register" element={<RegistrationPage />} />
-                    <Route exact path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/user/login" element={<LoginPage />} />
+                    <Route path="/admin/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegistrationPage />} />
+                    <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
                 </Routes>
             </Router>
         </Fragment>
