@@ -9,6 +9,7 @@ import DashboardPage from './pages/dashboardPage';
 import PrivateRoute from './components/shared/PrivateRoute.jsx';
 
 const App = () => {
+
     return (
         <Fragment>
             <Toaster position="bottom-center" />

@@ -1,32 +1,40 @@
 class SessionHelper {
-    setToken(token) {
-        localStorage.setItem("token", token);
-    }
+  setToken(token) {
+    localStorage.setItem("token", token);
+  }
 
-    getToken() {
-        return localStorage.getItem("token");
-    }
+  getToken() {
+    return localStorage.getItem("token");
+  }
 
-    setLoggedIn(value) {
-        localStorage.setItem("loggedIn", value);
-    }
+  setLoggedIn(value) {
+    localStorage.setItem("loggedIn", value);
+  }
 
-    getLoggedIn() {
-        return JSON.parse(localStorage.getItem("loggedIn")) || null;
-    }
+  getLoggedIn() {
+    return JSON.parse(localStorage.getItem("loggedIn")) || null;
+  }
 
-    clearSessions() {
-        localStorage.clear();
-        window.location.href = "/";
-    }
+  setUserRole(value) {
+    localStorage.setItem("userRole", value);
+  }
 
+  getUserRole() {
+    return localStorage.getItem("userRole") || null;
+  }
+
+  clearSessions() {
+    localStorage.clear();
+    window.location.href = "/";
+  }
 }
 
 export const {
-    setToken,
-    getToken,
-    setLoggedIn,
-    getLoggedIn,
-    clearSessions,
-
+  setToken,
+  getToken,
+  setLoggedIn,
+  getLoggedIn,
+  setUserRole,
+  getUserRole,
+  clearSessions,
 } = new SessionHelper();

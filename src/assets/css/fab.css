@@ -1,0 +1,55 @@
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .floating-button.active {
+    background-color: #0056b3;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 65px;
+    right: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  
+  .floating-button.active .options {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .option {
+    background-color: #fff;
+    color: #007bff;
+    padding: 8px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .option:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
