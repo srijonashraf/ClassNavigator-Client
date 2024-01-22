@@ -50,7 +50,6 @@ const Classes = ({ useEffectTrigger, classes }) => {
     try {
 
       const response = await UnEnrollClass(classId);
-
       if (response) {
         useEffectTrigger();
         successToast('Class Deleted');

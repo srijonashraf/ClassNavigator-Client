@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AddNewClassByAdmin } from '../../apirequest/apiRequest';
+import { AddNewClass as AddNewClassApi } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
 
 const AddNewClass = ({ useEffectTrigger }) => {
@@ -14,7 +14,7 @@ const AddNewClass = ({ useEffectTrigger }) => {
             if (classData.className.length === 0 || classData.section.length === 0) {
                 errorToast("Please enter all the fields");
             } else {
-                const response = await AddNewClassByAdmin(classData);
+                const response = await AddNewClassApi(classData);
 
                 if (response) {
 

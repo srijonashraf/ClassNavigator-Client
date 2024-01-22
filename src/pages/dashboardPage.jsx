@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Classes from '../components/classes/classes';
-import { FetchClassesById } from '../apirequest/apiRequest';
+import { FetchAllTogether } from '../apirequest/apiRequest';
 import AppNavbar from '../components/shared/AppNavbar';
 import ProfileStore from "../stores/ProfileStore";
 
@@ -15,7 +15,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await FetchClassesById();
+            const response = await FetchAllTogether();
             if (response) {
                 setClassesData(response.data.data);
             }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import { getToken, setUserRole } from "../helper/sessionHelper";
+import { getToken } from "../helper/sessionHelper";
 
 const BASE_URL = "http://localhost:4500/api/v1/";
 const ProfileStore = create((set) => ({
@@ -13,7 +13,6 @@ const ProfileStore = create((set) => ({
       set({
         ProfileDetails: res.data.data,
       });
-      setUserRole(res.data.data.role);
     }
   },
 }));

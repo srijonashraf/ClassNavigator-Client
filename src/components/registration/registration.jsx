@@ -1,5 +1,5 @@
 import React from 'react';
-import { RegisterByAdmin, RegisterByUser } from '../../apirequest/apiRequest';
+import { Register } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { UserIdValidation } from '../../helper/FormHelper.js';
 const Registration = () => {
@@ -7,7 +7,6 @@ const Registration = () => {
     const [formValue, setFormValue] = React.useState({
         userId: "",
         name: "",
-        role: "",  // Updated: Added role field
         email: "",
         password: "",
         section: "",
@@ -25,24 +24,15 @@ const Registration = () => {
             let response;
             try {
 
-                if (formValue.role === "admin") {
-
-                    response = await RegisterByAdmin(formValue);
-                    if (response) {
-                        successToast('Registration Successful');
-                    } else {
-                        errorToast('User Already Exists');
-                    }
+                const response = await Register(formValue);
+                if (response) {
+                    successToast('Registration Successful');
                 } else {
-                    response = await RegisterByUser(formValue);
-                    if (response) {
-                        successToast('Registration Successful');
-                    } else {
-                        errorToast('User Already Exists');
-                    }
+                    errorToast('User Already Exists');
                 }
+            }
 
-            } catch (error) {
+            catch (error) {
                 console.error(error);
                 errorToast('Internal Server Error');
             }
@@ -71,15 +61,6 @@ const Registration = () => {
                             <input type="text" placeholder="Name" value={formValue.name}
                                 onChange={(e) => setFormValue({ ...formValue, name: e.target.value })}
                                 className="form-control" />
-                            <select
-                                value={formValue.role}
-                                onChange={(e) => setFormValue({ ...formValue, role: e.target.value })}
-                                className="form-control"
-                            >
-                                <option value="">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
-                            </select>
                             <input type="email" placeholder="Email" value={formValue.email}
                                 onChange={(e) => setFormValue({ ...formValue, email: e.target.value })}
                                 className="form-control" />

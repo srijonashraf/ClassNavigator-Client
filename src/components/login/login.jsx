@@ -1,7 +1,7 @@
 import React from 'react';
-import { LoginByAdmin, LoginByUser } from "../../apirequest/apiRequest.js";
+import { Login as LoginApi } from "../../apirequest/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import { useParams } from 'react-router-dom';
+
 
 const Login = () => {
 
@@ -17,12 +17,9 @@ const Login = () => {
             errorToast("Please enter all the fields");
         } else {
 
-            let response;
-            if (window.location.pathname === '/admin/login') {
-                response = await LoginByAdmin(formValue);
-            } else if (window.location.pathname === '/user/login') {
-                response = await LoginByUser(formValue);
-            }
+
+            const response = await LoginApi(formValue);
+
             if (response) {
                 successToast('Login Successful');
                 window.location.href = '/dashboard';

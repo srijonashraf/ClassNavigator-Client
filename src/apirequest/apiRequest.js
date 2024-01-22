@@ -1,14 +1,9 @@
 import axios from "axios";
-import { setToken, getToken, setUserRole } from "../helper/sessionHelper.js";
-// const BaseURLAdmin = "http://localhost:4500/api/v1/admin";
-// const BaseURLUser = "http://localhost:4500/api/v1/user";
-// const BaseURL = "http://localhost:4500/api/v1";
-const BaseURLAdmin = "https://class-navigator.onrender.com/api/v1/admin";
-const BaseURLUser = "https://class-navigator.onrender.com/api/v1/user";
-const BaseURL = "https://class-navigator.onrender.com/api/v1";
-const AxiosHeader = getToken();
-export const LoginByAdmin = async (data) => {
-  const response = await axios.post(`${BaseURLAdmin}/login`, data);
+import { setToken, getToken } from "../helper/sessionHelper.js";
+const BaseURL = "http://localhost:4500/api/v1";
+
+export const Login = async (data) => {
+  const response = await axios.post(`${BaseURL}/login`, data);
   if (response.data.status === "success") {
     setToken(response.data.token);
     return response;
@@ -17,27 +12,8 @@ export const LoginByAdmin = async (data) => {
   }
 };
 
-export const LoginByUser = async (data) => {
-  const response = await axios.post(`${BaseURLUser}/login`, data);
-  if (response.data.status === "success") {
-    setToken(response.data.token);
-    return response;
-  } else {
-    return false;
-  }
-};
-
-export const RegisterByAdmin = async (data) => {
-  const response = await axios.post(`${BaseURLAdmin}/registration`, data);
-  if (response.data.status === "success") {
-    return response;
-  } else {
-    return false;
-  }
-};
-
-export const RegisterByUser = async (data) => {
-  const response = await axios.post(`${BaseURLUser}/registration`, data);
+export const Register = async (data) => {
+  const response = await axios.post(`${BaseURL}/registration`, data);
   if (response.data.status === "success") {
     return response;
   } else {
@@ -56,8 +32,8 @@ export const ProfileDetails = async () => {
   }
 };
 
-export const FetchClassesById = async () => {
-  const response = await axios.get(`${BaseURL}/fetchClassByClassId`, {
+export const FetchAllTogether = async () => {
+  const response = await axios.get(`${BaseURL}/fetchAllTogether`, {
     headers: { token: getToken() },
   });
   if (response.data.status === "success") {
@@ -67,8 +43,8 @@ export const FetchClassesById = async () => {
   }
 };
 
-export const AddNewClassByAdmin = async (data) => {
-  const response = await axios.post(`${BaseURLAdmin}/addNewClass`, data, {
+export const AddNewClass = async (data) => {
+  const response = await axios.post(`${BaseURL}/addNewClass`, data, {
     headers: { token: getToken() },
   });
   if (response.data.status === "success") {
@@ -79,7 +55,7 @@ export const AddNewClassByAdmin = async (data) => {
 };
 
 export const EnrollClass = async (classId) => {
-  const response = await axios.get(`${BaseURLUser}/enrollClass/${classId}`, {
+  const response = await axios.get(`${BaseURL}/enrollClass/${classId}`, {
     headers: { token: getToken() },
   });
 
@@ -91,7 +67,7 @@ export const EnrollClass = async (classId) => {
 };
 
 export const UnEnrollClass = async (classId) => {
-  const response = await axios.get(`${BaseURLUser}/unEnrollClass/${classId}`, {
+  const response = await axios.get(`${BaseURL}/unEnrollClass/${classId}`, {
     headers: { token: getToken() },
   });
   if (response.data.status === "success") {
@@ -100,17 +76,3 @@ export const UnEnrollClass = async (classId) => {
     return false;
   }
 };
-
-//If admin then only execute this
-// export const Admin = async (...args) => {
-//   const AddNewClass = async (data) => {
-//     const response = await axios.post(`${BaseURLAdmin}/addNewClass`, data, {
-//       headers: { token: getToken() },
-//     });
-//     if (response.data.status === "success") {
-//       return response;
-//     } else {
-//       return false;
-//     }
-//   };
-// };
