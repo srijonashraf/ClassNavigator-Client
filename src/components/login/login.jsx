@@ -17,7 +17,6 @@ const Login = () => {
             errorToast("Please enter all the fields");
         } else {
 
-
             const response = await LoginApi(formValue);
 
             if (response) {

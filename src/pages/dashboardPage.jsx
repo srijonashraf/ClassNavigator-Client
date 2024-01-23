@@ -3,6 +3,7 @@ import Classes from '../components/classes/classes';
 import { FetchAllTogether } from '../apirequest/apiRequest';
 import AppNavbar from '../components/shared/AppNavbar';
 import ProfileStore from "../stores/ProfileStore";
+import useAuthAdmin from '../components/auth/useAuthAdmin';
 
 
 const DashboardPage = () => {
@@ -21,8 +22,17 @@ const DashboardPage = () => {
             }
             await ProfileDetailsRequest();
             const { ProfileDetails } = ProfileStore.getState();
+
+            if (ProfileDetails) {
+                useAuthAdmin(ProfileDetails);
+            } else {
+                console.error("ProfileDetails is undefined");
+            };
+
         })()
     }, [change]);
+
+    console.log(useAuthAdmin);
     return (
         <div >
             <AppNavbar />
