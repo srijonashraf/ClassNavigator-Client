@@ -1,6 +1,15 @@
 import axios from "axios";
 import { setToken, getToken } from "../helper/sessionHelper.js";
-const BaseURL = "http://localhost:4500/api/v1";
+let BaseURL = "";
+
+if (process.env.NODE_ENV === "production") {
+  BaseURL = "https://class-navigator.onrender.com/api/v1";
+} else {
+  BaseURL = "http://localhost:4500/api/v1";
+}
+
+// Now you can use the BaseURL in your application
+console.log("Base URL:", BaseURL);
 
 export const Login = async (data) => {
   const response = await axios.post(`${BaseURL}/login`, data);
@@ -87,4 +96,4 @@ export const DeleteClass = async (classId) => {
   } else {
     return false;
   }
-}
+};
