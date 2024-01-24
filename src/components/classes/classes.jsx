@@ -20,6 +20,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
   // console.log(typeof adminAccessClasses);
   // console.log(classes.map((classId) => classId.classId));
 
+  //!When adding new class, also add the admin checking useEffect should get triggered and its functionality should be added. Now it is not working.
 
   useEffect(() => {
     const admin = async () => {
@@ -37,6 +38,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
 
     admin();
   }, [classes, adminAccessClasses]);
+
 
 
   const adminAccess = (classId) => {
@@ -140,6 +142,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
                   <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>
                 )}
               </p>
+              {adminAccess(classItem.classId) ? <p className='card-subtitle badge bg-success  mb-2'>Admin</p> : <></>}
               <h5 className="card-title">{classItem.className}</h5>
               <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
               <div className="d-flex align-items-center gap-2">
