@@ -77,3 +77,14 @@ export const UnEnrollClass = async (classId) => {
     return false;
   }
 };
+
+export const DeleteClass = async (classId) => {
+  const response = await axios.get(`${BaseURL}/deleteClass/${classId}`, {
+    headers: { token: getToken() },
+  });
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+}

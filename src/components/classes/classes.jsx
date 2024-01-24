@@ -4,7 +4,7 @@ import FaButton from './../buttons/fab';
 import { MdLibraryAdd } from "react-icons/md";
 import AddNewClass from './addNewClass';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import { EnrollClass, UnEnrollClass } from '../../apirequest/apiRequest';
+import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
 import { MdDeleteOutline } from "react-icons/md";
 import { MdEditCalendar } from "react-icons/md";
 
@@ -84,7 +84,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
   const handleDeleteClass = async (classId) => {
     try {
 
-      const response = await UnEnrollClass(classId);
+      const response = await DeleteClass(classId);
       if (response) {
         useEffectTrigger();
         successToast('Class Deleted');
@@ -94,6 +94,21 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
       }
     } catch (err) {
       errorToast('Error Deleting Class');
+    }
+  }
+
+  const handleUnEnrollClass = async (classId) => {
+    try {
+      const response = await UnEnrollClass(classId);
+      if (response) {
+        useEffectTrigger();
+        successToast('Class UnEnrolled');
+      }
+      else {
+        errorToast('Wrong Class Id');
+      }
+    } catch (err) {
+      errorToast('Error UnEnrolling Class');
     }
   }
 
@@ -145,8 +160,11 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
               {adminAccess(classItem.classId) ? <p className='card-subtitle badge bg-success  mb-2'>Admin</p> : <></>}
               <h5 className="card-title">{classItem.className}</h5>
               <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
+
+              <p className="badge bg-danger float-end cursorPointer" onClick={() => handleUnEnrollClass(classItem.classId)}>Unenroll</p>
               <div className="d-flex align-items-center gap-2">
-                <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' />
+                {adminAccess(classItem.classId) ? <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' /> : <></>}
+                {/* <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' /> */}
                 {adminAccess(classItem.classId) ? <div ><MdEditCalendar className='fs-5 text-primary cursorPointer' /></div> : <></>}
               </div>
             </div>
