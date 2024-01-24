@@ -1,19 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdOutlineContentCopy } from "react-icons/md";
 import FaButton from './../buttons/fab';
 import { MdLibraryAdd } from "react-icons/md";
 import AddNewClass from './addNewClass';
-import useAuthAdmin from './../auth/useAuthAdmin';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { EnrollClass, UnEnrollClass } from '../../apirequest/apiRequest';
 import { MdDeleteOutline } from "react-icons/md";
 import { MdEditCalendar } from "react-icons/md";
 
 
-const Classes = ({ useEffectTrigger, classes }) => {
+const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [showAddNewClass, setShowAddNewClass] = useState(false);
   const [classEnrollmentSearchValue, setClassEnrollmentSearchValue] = useState('');
+  const [adminClasses, setAdminClasses] = useState(false);
+
+  // console.log(`Replying from Classes component ${adminAccessClasses}`);
+  // console.log(`Replying from Classes component ${adminAccessClasses[0]}`);
+  // console.log(typeof adminAccessClasses);
+  // console.log(classes.map((classId) => classId.classId));
+
+
+  useEffect(() => {
+    const admin = async () => {
+      const adminAccessValues = Object.values(adminAccessClasses);
+
+      const classIds = classes.map((classItem) => classItem.classId); //This classIds are props from parent component
+
+      const matchedClassIds = classIds.filter((classId) =>
+        adminAccessValues.includes(classId)
+      );
+
+      setAdminClasses(matchedClassIds); // Will set an array of matched class IDs
+      return matchedClassIds; // Return the array of matched class IDs
+    };
+
+    admin();
+  }, [classes, adminAccessClasses]);
+
+
+  const adminAccess = (classId) => {
+    if (adminClasses.includes(classId)) {
+      return true;
+    }
+    return false;
+  }
+
+
   const handleShowAddNewClass = () => {
     setShowAddNewClass(!showAddNewClass);
   }
@@ -84,9 +117,9 @@ const Classes = ({ useEffectTrigger, classes }) => {
           </button>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className='my-3'>
-          {useAuthAdmin() ? <div onClick={handleShowAddNewClass}>
+          <div onClick={handleShowAddNewClass}>
             <FaButton element={<MdLibraryAdd />} color={'dark'} />
-          </div> : <></>}
+          </div>
         </div>
       </div>
 
@@ -111,7 +144,7 @@ const Classes = ({ useEffectTrigger, classes }) => {
               <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
               <div className="d-flex align-items-center gap-2">
                 <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' />
-                {useAuthAdmin() ? <div ><MdEditCalendar className='fs-5 text-primary cursorPointer' /></div> : <></>}
+                {adminAccess(classItem.classId) ? <div ><MdEditCalendar className='fs-5 text-primary cursorPointer' /></div> : <></>}
               </div>
             </div>
           </div>

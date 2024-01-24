@@ -1,43 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import Classes from '../components/classes/classes';
-import { FetchAllTogether } from '../apirequest/apiRequest';
+import { FetchAllTogether, ProfileDetails } from '../apirequest/apiRequest';
 import AppNavbar from '../components/shared/AppNavbar';
-import ProfileStore from "../stores/ProfileStore";
-import useAuthAdmin from '../components/auth/useAuthAdmin';
 
 
 const DashboardPage = () => {
     const [classesData, setClassesData] = useState([]);
     const [change, setChange] = useState(0);
-    const { ProfileDetailsRequest } = ProfileStore((state) => ({
-        ProfileDetailsRequest: state.ProfileDetailsRequest
-    }));
+    const [profileDetailsValue, setProfileDetailsValue] = useState({});
+    const [adminAccessClasses, setAdminAccessClasses] = useState({});
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await FetchAllTogether();
+
+                if (response) {
+                    setClassesData(response.data.data);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [change]);
 
 
     useEffect(() => {
-        (async () => {
-            const response = await FetchAllTogether();
-            if (response) {
-                setClassesData(response.data.data);
+        const fetchProfileDetails = async () => {
+            try {
+                const response = await ProfileDetails();
+                if (response) {
+                    setProfileDetailsValue(response);
+                    // console.log(response);
+                    setAdminAccessClasses(response.adminAccessClasses);
+                }
+            } catch (error) {
+                console.error("Error fetching profile details:", error);
             }
-            await ProfileDetailsRequest();
-            const { ProfileDetails } = ProfileStore.getState();
+        };
 
-            if (ProfileDetails) {
-                useAuthAdmin(ProfileDetails);
-            } else {
-                console.error("ProfileDetails is undefined");
-            };
+        fetchProfileDetails();
+    }, []);
 
-        })()
-    }, [change]);
 
-    console.log(useAuthAdmin);
     return (
         <div >
             <AppNavbar />
             <div className="container mt-3">
-                <Classes useEffectTrigger={() => setChange(new Date().getTime())} classes={classesData} />
+                <Classes useEffectTrigger={() => setChange(new Date().getTime())} classes={classesData} adminAccessClasses={adminAccessClasses} />
             </div>
         </div>
     );

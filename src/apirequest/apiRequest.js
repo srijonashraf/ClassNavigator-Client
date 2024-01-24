@@ -26,7 +26,8 @@ export const ProfileDetails = async () => {
     headers: { token: getToken() },
   });
   if (response.data.status === "success") {
-    return response;
+    // console.log(response.data.data);
+    return response.data.data;
   } else {
     return false;
   }

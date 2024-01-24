@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Fragment } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/landingPage.jsx";
@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import RegistrationPage from './pages/registrationPage';
 import DashboardPage from './pages/dashboardPage';
 import PrivateRoute from './components/shared/PrivateRoute.jsx';
+
 
 const App = () => {
 
