@@ -62,7 +62,7 @@ const AppNavbar = () => {
             </NavLink>
           </div>
 
-          <Dropdown className="user-dropdown">
+          {/* <Dropdown className="user-dropdown">
             <Dropdown.Toggle
               as={RxAvatar}
               id="dropdown-basic"
@@ -73,12 +73,12 @@ const AppNavbar = () => {
             <Dropdown.Menu className="user-dropdown-content">
               <div className="mt-4 text-center">
                 <NavLink className="nav-link" to="/profile">
-                  {/* <Avatar
+                  <Avatar
                     src={img}
                     size="40"
                     className="mb-2 cursorPointer"
                     round={true}
-                  /> */}
+                  />
                 </NavLink>
 
                 <h6 className="cursorPointer">
@@ -101,7 +101,7 @@ const AppNavbar = () => {
                 <CiLogout /> Logout
               </Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown> */}
         </Container>
       </Navbar>
 
