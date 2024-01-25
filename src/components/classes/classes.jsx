@@ -16,13 +16,12 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
     const [classEnrollmentSearchValue, setClassEnrollmentSearchValue] = useState('');
     const [adminClasses, setAdminClasses] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [change, setChange] = useState(0);
 
     // console.log(`Replying from Classes component ${adminAccessClasses}`);
     // console.log(`Replying from Classes component ${adminAccessClasses[0]}`);
     // console.log(typeof adminAccessClasses);
     // console.log(classes.map((classId) => classId.classId));
-
-    //!When adding new class, also add the admin checking useEffect should get triggered and its functionality should be added. Now it is not working.
 
     useEffect(() => {
         const admin = async () => {
@@ -39,7 +38,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
         };
 
         admin();
-    }, [classes, adminAccessClasses]);
+    }, [change, adminAccessClasses]);
 
 
     const adminAccess = (classId) => {
@@ -147,7 +146,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
             </div>
 
             <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                {showAddNewClass && <AddNewClass setProgress={setProgress} useEffectTrigger={useEffectTrigger} />}
+                {showAddNewClass && <AddNewClass AdminAccessFunctionTrigger={() => setChange(new Date().getTime())} setProgress={setProgress} useEffectTrigger={useEffectTrigger} />}
             </div>
             {classes.map((classItem, index) => (
                 <div key={classItem.classId} className="col-md-6 mb-4">

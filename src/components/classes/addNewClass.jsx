@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddNewClass as AddNewClassApi } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
-const AddNewClass = ({ useEffectTrigger, setProgress }) => {
+const AddNewClass = ({ useEffectTrigger, setProgress, AdminAccessFunctionTrigger }) => {
     const [classData, setClassData] = useState({
         className: '',
         section: '',
@@ -21,6 +21,7 @@ const AddNewClass = ({ useEffectTrigger, setProgress }) => {
 
                     successToast("Class Added Successfully")
                     useEffectTrigger()
+                    AdminAccessFunctionTrigger();
                 } else {
                     errorToast("Class Already Exists")
                 }
