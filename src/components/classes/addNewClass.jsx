@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { AddNewClass as AddNewClassApi } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
-
-const AddNewClass = ({ useEffectTrigger }) => {
+const AddNewClass = ({ useEffectTrigger, setProgress }) => {
     const [classData, setClassData] = useState({
         className: '',
         section: '',
     });
 
+
     const handleFormSubmission = async (e) => {
         e.preventDefault();
+        setProgress(50);
         try {
             if (classData.className.length === 0 || classData.section.length === 0) {
                 errorToast("Please enter all the fields");
@@ -34,6 +35,8 @@ const AddNewClass = ({ useEffectTrigger }) => {
                 className: '',
                 section: '',
             });
+
+            setProgress(100);
         }
     };
 
