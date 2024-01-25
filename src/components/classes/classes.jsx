@@ -8,6 +8,7 @@ import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiReq
 import { MdDeleteOutline } from "react-icons/md";
 import { MdEditCalendar } from "react-icons/md";
 import LoadingBarComponent from './../loading/loadingBar';
+import { ImExit } from "react-icons/im";
 
 
 const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
@@ -167,8 +168,8 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
                             <h5 className="card-title">{classItem.className}</h5>
                             <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
 
-                            <p className="badge bg-danger card-footer  cursorPointer"
-                                onClick={() => handleUnEnrollClass(classItem.classId)}>Unenroll</p>
+                            <p className="badge bg-danger  card-footer  cursorPointer"
+                                onClick={() => handleUnEnrollClass(classItem.classId)}><ImExit /> Unenroll</p>
                             <div className="d-flex align-items-center gap-2">
                                 {adminAccess(classItem.classId) ?
                                     <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)}
