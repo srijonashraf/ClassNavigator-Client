@@ -6,41 +6,30 @@ import AddNewClass from './addNewClass';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
 import { MdDeleteOutline } from "react-icons/md";
-import { MdEditCalendar } from "react-icons/md";
 import LoadingBarComponent from './../loading/loadingBar';
 import { ImExit } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
+import ContentStore from '../../stores/ContentStore.js';
+import ProfileStore from '../../stores/ProfileStore.js';
 
 
-const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
+const Classes = ({ DashboardAPIRefresh }) => {
     const [copiedIndex, setCopiedIndex] = useState(null);
     const [showAddNewClass, setShowAddNewClass] = useState(false);
     const [classEnrollmentSearchValue, setClassEnrollmentSearchValue] = useState('');
-    const [adminClasses, setAdminClasses] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [classes, setClasses] = useState([]);
+    const [adminClasses, setAdminClasses] = useState([]);
     const [change, setChange] = useState(0);
 
-    // console.log(`Replying from Classes component ${adminAccessClasses}`);
-    // console.log(`Replying from Classes component ${adminAccessClasses[0]}`);
-    // console.log(typeof adminAccessClasses);
-    // console.log(classes.map((classId) => classId.classId));
+    const { FetchAllTogether } = ContentStore();
+    const { AdminAccessClasses } = ProfileStore();
 
     useEffect(() => {
-        const admin = async () => {
-            const adminAccessValues = Object.values(adminAccessClasses);
+        setClasses(FetchAllTogether);
+        setAdminClasses(AdminAccessClasses);
+    });
 
-            const classIds = classes.map((classItem) => classItem.classId); //This classIds are props from parent component
-
-            const matchedClassIds = classIds.filter((classId) =>
-                adminAccessValues.includes(classId)
-            );
-
-            setAdminClasses(matchedClassIds); // Will set an array of matched class IDs
-            return matchedClassIds; // Return the array of matched class IDs
-        };
-
-        admin();
-    }, [classes, change, adminAccessClasses]);
 
 
     const adminAccess = (classId) => {
@@ -73,7 +62,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
             const response = await EnrollClass(classId);
             // setProgress(50);
             if (response) {
-                useEffectTrigger();
+                DashboardAPIRefresh();
                 successToast('Class Enrolled');
             } else {
                 errorToast('Wrong Class Id');
@@ -90,7 +79,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
         try {
             const response = await DeleteClass(classId);
             if (response) {
-                useEffectTrigger();
+                DashboardAPIRefresh();
                 successToast('Class Deleted');
             } else {
                 errorToast('Wrong Class Id');
@@ -106,7 +95,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
         try {
             const response = await UnEnrollClass(classId);
             if (response) {
-                useEffectTrigger();
+                DashboardAPIRefresh();
                 successToast('Class UnEnrolled');
             } else {
                 errorToast('Wrong Class Id');
@@ -148,9 +137,9 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
             </div>
 
             <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                {showAddNewClass && <AddNewClass AdminAccessFunctionTrigger={() => setChange(new Date().getTime())} setProgress={setProgress} useEffectTrigger={useEffectTrigger} />}
+                {showAddNewClass && <AddNewClass setProgress={setProgress} DashboardAPIRefresh={DashboardAPIRefresh} />}
             </div>
-            {classes.map((classItem, index) => (
+            {classes?.map((classItem, index) => (
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">

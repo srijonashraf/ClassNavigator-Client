@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddNewClass as AddNewClassApi } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
-const AddNewClass = ({ useEffectTrigger, setProgress, AdminAccessFunctionTrigger }) => {
+const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
     const [classData, setClassData] = useState({
         className: '',
         section: '',
@@ -18,10 +18,8 @@ const AddNewClass = ({ useEffectTrigger, setProgress, AdminAccessFunctionTrigger
                 const response = await AddNewClassApi(classData);
 
                 if (response) {
-
+                    DashboardAPIRefresh();
                     successToast("Class Added Successfully")
-                    useEffectTrigger()
-                    AdminAccessFunctionTrigger();
                 } else {
                     errorToast("Class Already Exists")
                 }
@@ -60,7 +58,7 @@ const AddNewClass = ({ useEffectTrigger, setProgress, AdminAccessFunctionTrigger
                                 className="form-control rounded-1 focus-none"
                                 id="className"
                                 name="className"
-                                placeholder="Enter Class Name"
+                                placeholder="Enter Class Name (eg. 56_F Spring'24)"
                                 value={classData.className}
                                 onChange={handleChange}
                             />
@@ -72,7 +70,7 @@ const AddNewClass = ({ useEffectTrigger, setProgress, AdminAccessFunctionTrigger
                                 className="form-control rounded-1 focus-none"
                                 id="section"
                                 name="section"
-                                placeholder="Enter Section"
+                                placeholder="Enter Section (eg. 56_F)"
                                 value={classData.section}
                                 onChange={handleChange}
                             />
