@@ -113,7 +113,7 @@ const AppNavbar = () => {
           <ul className="list-group list-group-flush list-unstyled">
             <li>
               <NavLink
-                to="/"
+                to="/dashboard"
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >

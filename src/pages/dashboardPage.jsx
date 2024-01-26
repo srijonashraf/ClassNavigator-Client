@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Classes from '../components/classes/classes';
 import { FetchAllTogether, ProfileDetails } from '../apirequest/apiRequest';
 import AppNavbar from '../components/shared/AppNavbar';
+import Courses from './../components/courses/courses';
 
 
 const DashboardPage = () => {
@@ -42,7 +43,7 @@ const DashboardPage = () => {
         };
 
         fetchProfileDetails();
-    }, []);
+    }, [change]);
 
 
     return (

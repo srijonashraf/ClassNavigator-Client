@@ -9,6 +9,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { MdEditCalendar } from "react-icons/md";
 import LoadingBarComponent from './../loading/loadingBar';
 import { ImExit } from "react-icons/im";
+import { FiEdit } from "react-icons/fi";
 
 
 const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
@@ -39,7 +40,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
         };
 
         admin();
-    }, [change, adminAccessClasses]);
+    }, [classes, change, adminAccessClasses]);
 
 
     const adminAccess = (classId) => {
@@ -176,7 +177,7 @@ const Classes = ({ useEffectTrigger, classes, adminAccessClasses }) => {
                                         className='fs-4 text-danger cursorPointer' /> : <></>}
                                 {/* <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' /> */}
                                 {adminAccess(classItem.classId) ?
-                                    <div><MdEditCalendar className='fs-5 text-primary cursorPointer' /></div> : <></>}
+                                    <div><FiEdit className='fs-5 text-primary cursorPointer' /></div> : <></>}
                             </div>
                         </div>
                     </div>
