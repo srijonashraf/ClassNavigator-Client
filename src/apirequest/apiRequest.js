@@ -97,3 +97,15 @@ export const DeleteClass = async (classId) => {
     return false;
   }
 };
+
+
+export const AddNewCourses = async (data, classId) => {
+  const response = await axios.post(`${BaseURL}/addCourse/${classId}`, data, {
+    headers: { token: getToken() },
+  });
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+}

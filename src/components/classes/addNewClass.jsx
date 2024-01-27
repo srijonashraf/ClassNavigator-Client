@@ -14,6 +14,7 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
         try {
             if (classData.className.length === 0 || classData.section.length === 0) {
                 errorToast("Please enter all the fields");
+                setProgress(0);
             } else {
                 const response = await AddNewClassApi(classData);
 
@@ -58,7 +59,7 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
                                 className="form-control rounded-1 focus-none"
                                 id="className"
                                 name="className"
-                                placeholder="Enter Class Name (eg. 56_F Spring'24)"
+                                placeholder="Class Name (eg. 56_F Spring'24)"
                                 value={classData.className}
                                 onChange={handleChange}
                             />
@@ -70,7 +71,7 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
                                 className="form-control rounded-1 focus-none"
                                 id="section"
                                 name="section"
-                                placeholder="Enter Section (eg. 56_F)"
+                                placeholder="Section (eg. 56_F)"
                                 value={classData.section}
                                 onChange={handleChange}
                             />

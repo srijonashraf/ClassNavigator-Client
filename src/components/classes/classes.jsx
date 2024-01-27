@@ -11,6 +11,7 @@ import { ImExit } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
+import { Link } from 'react-router-dom';
 
 
 const Classes = ({ DashboardAPIRefresh }) => {
@@ -20,7 +21,6 @@ const Classes = ({ DashboardAPIRefresh }) => {
     const [progress, setProgress] = useState(0);
     const [classes, setClasses] = useState([]);
     const [adminClasses, setAdminClasses] = useState([]);
-    const [change, setChange] = useState(0);
 
     const { FetchAllTogether } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
@@ -33,11 +33,12 @@ const Classes = ({ DashboardAPIRefresh }) => {
 
 
     const adminAccess = (classId) => {
-        if (adminClasses.includes(classId)) {
+        if (adminClasses && adminClasses.includes(classId)) {
             return true;
         }
         return false;
     }
+
 
 
     const handleShowAddNewClass = () => {
@@ -155,7 +156,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                             </p>
                             {adminAccess(classItem.classId) ?
                                 <p className='card-subtitle badge bg-success  mb-2'>Admin</p> : <></>}
-                            <h5 className="card-title">{classItem.className}</h5>
+                            <Link to={`/courses/${classItem.classId}`}><h5 className="card-title cursorPointer">{classItem.className}</h5></Link>
                             <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
 
                             <p className="badge bg-danger  card-footer  cursorPointer"
@@ -164,7 +165,6 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 {adminAccess(classItem.classId) ?
                                     <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)}
                                         className='fs-4 text-danger cursorPointer' /> : <></>}
-                                {/* <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)} className='fs-4 text-danger cursorPointer' /> */}
                                 {adminAccess(classItem.classId) ?
                                     <div><FiEdit className='fs-5 text-primary cursorPointer' /></div> : <></>}
                             </div>

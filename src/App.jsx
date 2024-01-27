@@ -29,7 +29,7 @@ const App = () => {
 
                     <Route path="/" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
                     <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
-                    <Route path="/courses" element={<PrivateRoute><CoursePage /></PrivateRoute>} />
+                    <Route path="/courses/:classId" element={<PrivateRoute><CoursePage /></PrivateRoute>} />
 
                     <Route path="/*" element={<Fragment><div className='d-flex flex-column vh-100 align-items-center justify-content-center' ><p className='text-center fs-2'>Page Not Found</p><button className="btn btn-primary" onClick={() => window.location.href = "/dashboard"}>Return to Home</button></div></Fragment>} />
                 </Routes>
