@@ -19,10 +19,11 @@ const ProfileStore = create((set) => ({
         ProfileDetails: res.data.data,
         AdminAccessClasses: res.data.data.adminAccessClasses,
       });
-      // console.log(res.data.data);
+      console.log(res.data.data);
       // console.log(res.data.data.adminAccessClasses);
     }
   },
 }));
+
 
 export default ProfileStore;

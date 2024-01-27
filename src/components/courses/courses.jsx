@@ -66,7 +66,7 @@ const Courses = ({ CourseAPIRefresh }) => {
                 </div>
             </div>
 
-            {courses && courses.map((course, index) => (
+            {courses && courses.sort((a, b) => a.courseCode.localeCompare(b.courseCode)).map((course, index) => (
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">

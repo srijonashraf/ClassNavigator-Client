@@ -140,7 +140,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
             <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
                 {showAddNewClass && <AddNewClass setProgress={setProgress} DashboardAPIRefresh={DashboardAPIRefresh} />}
             </div>
-            {classes?.map((classItem, index) => (
+            {classes && classes.sort((a, b) => a.classId.localeCompare(b.classId)).map((classItem, index) => (
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
