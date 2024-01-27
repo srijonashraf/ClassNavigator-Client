@@ -1,7 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
 import { getToken } from "../helper/sessionHelper";
-
+let BASE_URL = "";
 if (process.env.NODE_ENV === "production") {
   BASE_URL = "https://class-navigator.onrender.com/api/v1";
 } else {
