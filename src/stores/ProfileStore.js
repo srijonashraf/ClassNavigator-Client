@@ -2,7 +2,11 @@ import axios from "axios";
 import { create } from "zustand";
 import { getToken } from "../helper/sessionHelper";
 
-const BASE_URL = "http://localhost:4500/api/v1/";
+if (process.env.NODE_ENV === "production") {
+  BASE_URL = "https://class-navigator.onrender.com/api/v1";
+} else {
+  BASE_URL = "http://localhost:4500/api/v1";
+}
 const ProfileStore = create((set) => ({
   ProfileDetails: null,
   AdminAccessClasses: null,
