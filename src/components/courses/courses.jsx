@@ -3,7 +3,7 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import FaButton from './../buttons/fab';
 import { MdLibraryAdd } from "react-icons/md";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
+import { DeleteCourse } from '../../apirequest/apiRequest';
 import { MdDeleteOutline } from "react-icons/md";
 import LoadingBarComponent from './../loading/loadingBar';
 import { ImExit } from "react-icons/im";
@@ -31,14 +31,14 @@ const Courses = ({ CourseAPIRefresh }) => {
         (async () => {
             await FetchAllCoursesByClassRequest(classId);
         })()
-    }, [classId]);
+    }, [classId, CourseAPIRefresh]);
 
 
     useEffect(() => {
         setClasses(FetchAllTogether);
         setAdminClasses(AdminAccessClasses);
         setCourses(FetchAllCoursesByClass || []);
-    }, [FetchAllTogether, FetchAllCoursesByClass, AdminAccessClasses]);
+    }, [FetchAllTogether, FetchAllCoursesByClass, AdminAccessClasses, CourseAPIRefresh]);
 
 
     const adminAccess = (classId) => {
@@ -51,7 +51,21 @@ const Courses = ({ CourseAPIRefresh }) => {
     const handleShowAddNewCourse = () => {
         setShowAddNewCourse(!showAddNewCourse);
     }
-
+    const handleDeleteCourse = async (classId, courseId) => {
+        setProgress(50);
+        try {
+            const response = await DeleteCourse(classId, courseId);
+            if (response) {
+                CourseAPIRefresh();
+                successToast('Course Deleted');
+            } else {
+                errorToast('Failed to Delete Course');
+            }
+        } catch (err) {
+            errorToast('Error Deleting Class');
+        }
+        setProgress(100);
+    }
 
     return (
         <div className="row">
@@ -75,6 +89,13 @@ const Courses = ({ CourseAPIRefresh }) => {
                             <p>Faculty: {course.facultyName}</p>
                             <p>Faculty Initial: {course.facultyInitial}</p>
                             <p>Class ID: {course.classId}</p>
+                            <div className="d-flex align-items-center gap-2">
+                                {adminAccess(course.classId) ?
+                                    <MdDeleteOutline onClick={() => handleDeleteCourse(course.classId, course._id)}
+                                        className='fs-4 text-danger cursorPointer' /> : <></>}
+                                {adminAccess(course.classId) ?
+                                    <div><FiEdit className='fs-5 text-primary cursorPointer' /></div> : <></>}
+                            </div>
                         </div>
                     </div>
                 </div>

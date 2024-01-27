@@ -98,7 +98,6 @@ export const DeleteClass = async (classId) => {
   }
 };
 
-
 export const AddNewCourses = async (data, classId) => {
   const response = await axios.post(`${BaseURL}/addCourse/${classId}`, data, {
     headers: { token: getToken() },
@@ -108,4 +107,18 @@ export const AddNewCourses = async (data, classId) => {
   } else {
     return false;
   }
-}
+};
+
+export const DeleteCourse = async (classId, courseId) => {
+  const response = await axios.get(
+    `${BaseURL}/${classId}/deleteCourse/${courseId}`,
+    {
+      headers: { token: getToken() },
+    }
+  );
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
