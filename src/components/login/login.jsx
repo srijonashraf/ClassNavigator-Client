@@ -6,14 +6,14 @@ import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 const Login = () => {
 
     const [formValue, setFormValue] = React.useState({
-        email: "",
+        userId: "",
         password: ""
     });
 
 
     const loginRequest = async (e) => {
         e.preventDefault();
-        if (formValue.email.length === 0 || formValue.password.length === 0) {
+        if (formValue.userId.length === 0 || formValue.password.length === 0) {
             errorToast("Please enter all the fields");
         } else {
 
@@ -35,10 +35,10 @@ const Login = () => {
                     <div className="card-body">
                         <form onSubmit={loginRequest} className="form d-flex flex-column gap-3">
                             <input
-                                type="email"
-                                placeholder="Email"
-                                value={formValue.email}
-                                onChange={(e) => setFormValue({ ...formValue, email: e.target.value })}
+                                type="text"
+                                placeholder="Student ID"
+                                value={formValue.userId}
+                                onChange={(e) => setFormValue({ ...formValue, userId: e.target.value })}
                                 className="form-control"
                             />
                             <input
