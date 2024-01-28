@@ -3,7 +3,7 @@ import { setToken, getToken } from "../helper/sessionHelper.js";
 let BaseURL = "";
 
 if (process.env.NODE_ENV === "production") {
-  BaseURL = "https://class-navigator.onrender.com/api/v1";
+  BaseURL = "https://classnavigator-srijonashraf.vercel.app/api/v1";
 } else {
   BaseURL = "http://localhost:4500/api/v1";
 }
