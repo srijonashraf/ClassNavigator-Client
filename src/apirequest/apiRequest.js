@@ -64,6 +64,32 @@ export const AddNewClass = async (data) => {
   }
 };
 
+export const FetchClassesById = async (classId) => {
+  const response = await axios.get(`${BaseURL}/fetchClassesById/${classId}`, {
+    headers: { token: getToken() },
+  });
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
+export const EditClassDetails = async (data, classId) => {
+  const response = await axios.post(
+    `${BaseURL}/editClassDetails/${classId}`,
+    data,
+    {
+      headers: { token: getToken() },
+    }
+  );
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
 export const EnrollClass = async (classId) => {
   const response = await axios.get(`${BaseURL}/enrollClass/${classId}`, {
     headers: { token: getToken() },

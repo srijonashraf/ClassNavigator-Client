@@ -1,14 +1,36 @@
-import React, { useState } from 'react';
-import { AddNewClass as AddNewClassApi } from '../../apirequest/apiRequest';
+import React, { useEffect, useState } from 'react';
+import { AddNewClass as AddNewClassApi, EditClassDetails, FetchClassesById } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
+import { useParams } from 'react-router-dom';
 const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
     const [classData, setClassData] = useState({
         className: '',
         section: '',
     });
 
+    const [classId, setClassId] = useState(null);
 
-    const handleFormSubmission = async (e) => {
+    const id = useParams().classId;
+
+    useEffect(() => {
+        if (id) {
+            setClassId(id);
+            fillFrom(id);
+        }
+    }, [id]);
+
+
+
+    const fillFrom = async (classId) => {
+        const res = await FetchClassesById(classId);
+        setClassData({
+            className: res.data.data.className,
+            section: res.data.data.section,
+        });
+    };
+
+
+    const handleNewFormSubmission = async (e) => {
         e.preventDefault();
         setProgress(50);
         try {
@@ -16,16 +38,19 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
                 errorToast("Please enter all the fields");
                 setProgress(0);
             } else {
-                const response = await AddNewClassApi(classData);
 
+
+                const response = await EditClassDetails(classData, classId);
                 if (response) {
-                    DashboardAPIRefresh();
-                    successToast("Class Added Successfully")
+                    DashboardAPIRefresh();;
+                    successToast("Class Edited Successfully")
                 } else {
                     errorToast("Class Already Exists")
                 }
             }
+
         }
+
         catch (err) {
             errorToast("Error Adding Class")
         }
@@ -51,7 +76,7 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress }) => {
         <div className=''>
             <div className="row">
                 <div className="col">
-                    <form onSubmit={handleFormSubmission}>
+                    <form onSubmit={handleNewFormSubmission}>
                         <div className="mb-3">
                             <label htmlFor="className" className="form-label fw-bold">Class Name</label>
                             <input

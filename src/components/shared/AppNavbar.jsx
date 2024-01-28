@@ -48,7 +48,7 @@ const AppNavbar = () => {
       <Navbar
         collapseOnSelect
         expand="lg"
-        className="bg-primary bg-gradient text-light"
+        className="bg-primary text-light"
         data-bs-theme="dark"
       >
         <Container className="my-2 my-lg-0  d-flex justify-content-between">

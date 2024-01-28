@@ -40,7 +40,6 @@ const Classes = ({ DashboardAPIRefresh }) => {
     }
 
 
-
     const handleShowAddNewClass = () => {
         setShowAddNewClass(!showAddNewClass);
     }
@@ -107,6 +106,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
         setProgress(100);
     }
 
+
     return (
 
         <div className="row">
@@ -138,8 +138,15 @@ const Classes = ({ DashboardAPIRefresh }) => {
             </div>
 
             <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                {showAddNewClass && <AddNewClass setProgress={setProgress} DashboardAPIRefresh={DashboardAPIRefresh} />}
+                {showAddNewClass && (
+                    <AddNewClass
+                        setProgress={setProgress}
+                        DashboardAPIRefresh={DashboardAPIRefresh}
+                    />
+                )}
             </div>
+
+
             {classes && classes.sort((a, b) => a.classId.localeCompare(b.classId)).map((classItem, index) => (
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
@@ -165,8 +172,11 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 {adminAccess(classItem.classId) ?
                                     <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)}
                                         className='fs-4 text-danger cursorPointer' /> : <></>}
-                                {adminAccess(classItem.classId) ?
-                                    <div><FiEdit className='fs-5 text-primary cursorPointer' /></div> : <></>}
+                                {adminAccess(classItem.classId) && (
+                                    <Link to={`/classes/edit/${classItem.classId}`}>
+                                        <FiEdit onClick={handleShowAddNewClass} className='fs-5 text-primary cursorPointer' />
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
