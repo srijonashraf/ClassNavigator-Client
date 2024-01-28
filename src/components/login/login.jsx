@@ -23,7 +23,7 @@ const Login = () => {
                 successToast('Login Successful');
                 window.location.href = '/dashboard';
             } else {
-                errorToast('Wrong Credentials Or User Type');
+                errorToast('Wrong Credentials!');
             }
         }
     }

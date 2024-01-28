@@ -24,6 +24,7 @@ export const Login = async (data) => {
 export const Register = async (data) => {
   const response = await axios.post(`${BaseURL}/registration`, data);
   if (response.data.status === "success") {
+    // console.log(response.data.data);
     return response;
   } else {
     return false;
