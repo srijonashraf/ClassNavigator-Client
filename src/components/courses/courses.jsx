@@ -9,6 +9,7 @@ import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import getRandomImage from '../../utility/imageGenerator.js';
+
 const Courses = ({ CourseAPIRefresh }) => {
     const [classes, setClasses] = useState(null);
     const [courses, setCourses] = useState(null);
