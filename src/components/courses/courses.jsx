@@ -8,7 +8,7 @@ import { DeleteCourse } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
-
+import getRandomImage from '../../utility/imageGenerator.js';
 const Courses = ({ CourseAPIRefresh }) => {
     const [classes, setClasses] = useState(null);
     const [courses, setCourses] = useState(null);
@@ -68,7 +68,8 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <Link className='nav-link'><p className="card-title cursorPointer fw-bold fs-4">{course.courseName}</p></Link>
+                            <img className='card-img-top' src={getRandomImage()} style={{ objectFit: 'cover', width: '100%', height: '100px' }}/>
+                            <Link className='nav-link'><p className="card-title cursorPointer fw-bold fs-4 mt-3">{course.courseName}</p></Link>
                             <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
                             {/* <p>Class ID: {course.classId}</p> */}
                             <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
