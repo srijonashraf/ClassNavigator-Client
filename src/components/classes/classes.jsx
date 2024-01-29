@@ -57,6 +57,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
         setProgress(100);
     };
 
+
     return (
         <div className="row">
             <div className='d-flex flex-row align-items-center gap-3'>
@@ -99,13 +100,13 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 {classItem.classId}
                                 {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
                             </p>
-                            {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success  mb-2'>Admin</p>}
-                            <Link to={`/courses/${classItem.classId}`}><h5 className="card-title cursorPointer">{classItem.className}</h5></Link>
-                            <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
+                            {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success mb-2'>Admin</p>}
+                            <Link className='nav-link' to={`/courses/${classItem.classId}`}><p className="card-title cursorPointer fw-bold fs-5">{classItem.className}</p></Link>
+                            <p className="card-subtitle mb-2 text-muted fs-6">Section: {classItem.section}</p>
                             <p className="badge bg-danger  card-footer  cursorPointer" onClick={() => handleClassAction(classItem.classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')}><ImExit /> Unenroll</p>
                             <div className="d-flex align-items-center gap-2">
                                 {adminAccess(classItem.classId) && <MdDeleteOutline onClick={() => handleClassAction(classItem.classId, DeleteClass, 'Class Deleted', 'Error Deleting Class')} className='fs-4 text-danger cursorPointer' />}
-                                {adminAccess(classItem.classId) && <Link to={`/classes/edit/${classItem.classId}`}><FiEdit className='fs-5 text-primary cursorPointer' /></Link>}
+                                {adminAccess(classItem.classId) && <Link to={`/classes/edit/${classItem.classId}`}><FiEdit onClick={handleShowAddNewClass} className='fs-5 text-primary cursorPointer' /></Link>}
                             </div>
                         </div>
                     </div>

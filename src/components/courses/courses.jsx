@@ -68,11 +68,10 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <Link><h5 className="card-title cursorPointer">{course.courseName}</h5></Link>
-                            <h6 className="card-subtitle mb-2 text-muted">Course Code: {course.courseCode}</h6>
-                            <p>Faculty: {course.facultyName}</p>
-                            <p>Faculty Initial: {course.facultyInitial}</p>
-                            <p>Class ID: {course.classId}</p>
+                            <Link className='nav-link'><p className="card-title cursorPointer fw-bold fs-4">{course.courseName}</p></Link>
+                            <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
+                            {/* <p>Class ID: {course.classId}</p> */}
+                            <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
                             <div className="d-flex align-items-center gap-2">
                                 {adminAccess(course.classId) &&
                                     <MdDeleteOutline onClick={() => handleDeleteCourse(course.classId, course._id)} className='fs-4 text-danger cursorPointer' />
