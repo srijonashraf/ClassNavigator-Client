@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { MdOutlineContentCopy } from "react-icons/md";
-import FaButton from './../buttons/fab';
-import { MdLibraryAdd } from "react-icons/md";
-import AddNewClass from './addNewClass';
-import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
-import { MdDeleteOutline } from "react-icons/md";
-import LoadingBarComponent from './../loading/loadingBar';
+import { MdOutlineContentCopy, MdLibraryAdd, MdDeleteOutline } from "react-icons/md";
 import { ImExit } from "react-icons/im";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi"
+import { Link } from 'react-router-dom';
+import AddNewClass from './addNewClass';
+import LoadingBarComponent from './../loading/loadingBar';
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
-import { Link } from 'react-router-dom';
-
+import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
+import { errorToast, successToast } from "../../helper/ToasterHelper.js";
+import FaButton from './../buttons/fab';
 
 const Classes = ({ DashboardAPIRefresh }) => {
     const [copiedIndex, setCopiedIndex] = useState(null);
@@ -26,21 +23,11 @@ const Classes = ({ DashboardAPIRefresh }) => {
 
     useEffect(() => {
         setClasses(FetchAllTogether);
-    });
+    }, [FetchAllTogether]);
 
+    const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
-
-    const adminAccess = (classId) => {
-        if (AdminAccessClasses && AdminAccessClasses.includes(classId)) {
-            return true;
-        }
-        return false;
-    }
-
-
-    const handleShowAddNewClass = () => {
-        setShowAddNewClass(!showAddNewClass);
-    }
+    const handleShowAddNewClass = () => setShowAddNewClass(!showAddNewClass);
 
     const handleCopyClick = async (classId, index) => {
         try {
@@ -54,60 +41,23 @@ const Classes = ({ DashboardAPIRefresh }) => {
         }
     };
 
-    const handleClassEnrollment = async (classId) => {
+    const handleClassAction = async (classId, actionFunc, successMessage, errorMessage) => {
         setProgress(50);
         try {
-            const response = await EnrollClass(classId);
-            // setProgress(50);
-            if (response) {
-                setClassEnrollmentSearchValue('');
-                DashboardAPIRefresh();
-                successToast('Class Enrolled');
-            } else {
-                errorToast('Wrong Class Id');
-                setProgress(0);
-            }
-        } catch (err) {
-            errorToast('Error Enrolling Class');
-        }
-        setProgress(100);
-    }
-
-    const handleDeleteClass = async (classId) => {
-        setProgress(50);
-        try {
-            const response = await DeleteClass(classId);
+            const response = await actionFunc(classId);
             if (response) {
                 DashboardAPIRefresh();
-                successToast('Class Deleted');
+                successToast(successMessage);
             } else {
                 errorToast('Wrong Class Id');
             }
         } catch (err) {
-            errorToast('Error Deleting Class');
+            errorToast(errorMessage);
         }
         setProgress(100);
-    }
-
-    const handleUnEnrollClass = async (classId) => {
-        setProgress(50);
-        try {
-            const response = await UnEnrollClass(classId);
-            if (response) {
-                DashboardAPIRefresh();
-                successToast('Class UnEnrolled');
-            } else {
-                errorToast('Wrong Class Id');
-            }
-        } catch (err) {
-            errorToast('Error UnEnrolling Class');
-        }
-        setProgress(100);
-    }
-
+    };
 
     return (
-
         <div className="row">
             <div className='d-flex flex-row align-items-center gap-3'>
                 <LoadingBarComponent progress={progress} />
@@ -122,7 +72,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                         aria-describedby="basic-addon2"
                     />
                     <button
-                        onClick={() => handleClassEnrollment(classEnrollmentSearchValue)}
+                        onClick={() => handleClassAction(classEnrollmentSearchValue, EnrollClass, 'Class Enrolled', 'Error Enrolling Class')}
                         className="btn btn-outline-dark"
                         type="submit"
                     >
@@ -137,52 +87,30 @@ const Classes = ({ DashboardAPIRefresh }) => {
             </div>
 
             <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                {showAddNewClass && (
-                    <AddNewClass
-                        setProgress={setProgress}
-                        DashboardAPIRefresh={DashboardAPIRefresh}
-                        showAddNewClassTrigger={handleShowAddNewClass}
-                    />
-                )}
+                {showAddNewClass && <AddNewClass setProgress={setProgress} DashboardAPIRefresh={DashboardAPIRefresh} showAddNewClassTrigger={handleShowAddNewClass} />}
             </div>
-
 
             {classes && classes.sort((a, b) => a.classId.localeCompare(b.classId)).map((classItem, index) => (
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <p
-                                className="card-text d-flex align-items-center gap-2 float-end cursorPointer bg-primary bg-gradient text-light rounded-1 p-2"
-                                onClick={(e) => handleCopyClick(classItem.classId, index)}
-                            >
+                            <p className="card-text d-flex align-items-center gap-2 float-end cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
                                 <MdOutlineContentCopy />
                                 {classItem.classId}
-                                {copiedIndex === index && (
-                                    <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>
-                                )}
+                                {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
                             </p>
-                            {adminAccess(classItem.classId) ?
-                                <p className='card-subtitle badge bg-success  mb-2'>Admin</p> : <></>}
+                            {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success  mb-2'>Admin</p>}
                             <Link to={`/courses/${classItem.classId}`}><h5 className="card-title cursorPointer">{classItem.className}</h5></Link>
                             <h6 className="card-subtitle mb-2 text-muted">Section: {classItem.section}</h6>
-
-                            <p className="badge bg-danger  card-footer  cursorPointer"
-                                onClick={() => handleUnEnrollClass(classItem.classId)}><ImExit /> Unenroll</p>
+                            <p className="badge bg-danger  card-footer  cursorPointer" onClick={() => handleClassAction(classItem.classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')}><ImExit /> Unenroll</p>
                             <div className="d-flex align-items-center gap-2">
-                                {adminAccess(classItem.classId) ?
-                                    <MdDeleteOutline onClick={() => handleDeleteClass(classItem.classId)}
-                                        className='fs-4 text-danger cursorPointer' /> : <></>}
-                                {adminAccess(classItem.classId) && (
-                                    <Link to={`/classes/edit/${classItem.classId}`}>
-                                        <FiEdit onClick={handleShowAddNewClass} className='fs-5 text-primary cursorPointer' />
-                                    </Link>
-                                )}
+                                {adminAccess(classItem.classId) && <MdDeleteOutline onClick={() => handleClassAction(classItem.classId, DeleteClass, 'Class Deleted', 'Error Deleting Class')} className='fs-4 text-danger cursorPointer' />}
+                                {adminAccess(classItem.classId) && <Link to={`/classes/edit/${classItem.classId}`}><FiEdit className='fs-5 text-primary cursorPointer' /></Link>}
                             </div>
                         </div>
                     </div>
                 </div>
             ))}
-
         </div>
     );
 };
