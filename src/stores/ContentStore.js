@@ -19,6 +19,7 @@ const ContentStore = create((set) => ({
     if (res.data["status"] === "success") {
       set({
         FetchAllTogether: res.data.data,
+        // FetchAllCoursesByClass: null,
       });
       // console.log(res.data.data);
     }
@@ -28,8 +29,10 @@ const ContentStore = create((set) => ({
     let res = await axios.get(`${BASE_URL}/fetchAllCoursesByClass/${classId}`, {
       headers: { token: getToken() },
     });
+    
     if (res.data["status"] === "success") {
       set({
+        FetchAllCoursesByClass: null,
         FetchAllCoursesByClass: res.data.data,
       });
 

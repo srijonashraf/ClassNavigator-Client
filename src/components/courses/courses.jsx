@@ -14,20 +14,46 @@ import { Link, useParams } from 'react-router-dom';
 
 const Courses = ({ CourseAPIRefresh }) => {
 
-    const [classes, setClasses] = useState([]);
-    const [courses, setCourses] = useState(0);
+    const [classes, setClasses] = useState(null);
+    const [courses, setCourses] = useState(null);
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    const { FetchAllTogether, FetchAllCoursesByClass } = ContentStore();
+    const { FetchAllTogether, FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
 
     const { classId } = useParams();
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await FetchAllCoursesByClassRequest(classId);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [classId, FetchAllCoursesByClassRequest]);
+
+
+    useEffect(() => {
         setClasses(FetchAllTogether);
-        setCourses(FetchAllCoursesByClass || []);
+        setCourses(FetchAllCoursesByClass || null);
     }, [FetchAllTogether, FetchAllCoursesByClass, AdminAccessClasses, CourseAPIRefresh]);
+
+    //Display Loading untill data loaded from DB for the specefic class
+
+    if (FetchAllCoursesByClass && FetchAllCoursesByClass.length !== 0) {
+        if (FetchAllCoursesByClass && FetchAllCoursesByClass[0]?.classId !== classId) {
+            return <p className='text-center'>Loading!</p>;
+        }
+    }
+
+    else {
+        return <p className='text-center'>No Course Found!</p>;
+    }
 
 
     const adminAccess = (classId) => {

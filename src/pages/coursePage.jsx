@@ -26,7 +26,6 @@ const CoursePage = () => {
         fetchData();
     }, [change]);
 
-    console.log('from coursePage',classId);
 
     return (
         <div>
