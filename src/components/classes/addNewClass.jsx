@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AddNewClass as AddNewClassApi, EditClassDetails, FetchClassesById } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 const AddNewClass = ({ DashboardAPIRefresh, setProgress, showAddNewClassTrigger }) => {
     const [classData, setClassData] = useState({
         className: '',
@@ -9,6 +9,7 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress, showAddNewClassTrigger 
     });
 
     const [classId, setClassId] = useState(null);
+    const navigate = useNavigate();
 
     const id = useParams().classId;
 
@@ -44,6 +45,8 @@ const AddNewClass = ({ DashboardAPIRefresh, setProgress, showAddNewClassTrigger 
                         DashboardAPIRefresh();
                         showAddNewClassTrigger();
                         successToast("Class Updated Successfully")
+                        navigate('/dashboard');
+                        
                     } else {
                         errorToast("Failed to Update Class")
                     }

@@ -6,7 +6,6 @@ import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { DeleteCourse } from '../../apirequest/apiRequest';
 import { MdDeleteOutline } from "react-icons/md";
 import LoadingBarComponent from './../loading/loadingBar';
-import { ImExit } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
@@ -20,19 +19,11 @@ const Courses = ({ CourseAPIRefresh }) => {
     const [adminClasses, setAdminClasses] = useState([]);
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [change, setChange] = useState(0);
 
-    const { FetchAllTogether, FetchAllCoursesByClassRequest, FetchAllCoursesByClass } = ContentStore();
+    const { FetchAllTogether, FetchAllCoursesByClass } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
 
     const { classId } = useParams();
-
-    useEffect(() => {
-        (async () => {
-            await FetchAllCoursesByClassRequest(classId);
-        })()
-    }, [classId, CourseAPIRefresh]);
-
 
     useEffect(() => {
         setClasses(FetchAllTogether);
@@ -76,7 +67,7 @@ const Courses = ({ CourseAPIRefresh }) => {
                     : <></>
                 }
                 <div className={`mb-4 ${showAddNewCourse ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                    {showAddNewCourse && <AddNewCourses setProgress={setProgress} CourseAPIRefresh={CourseAPIRefresh} />}
+                    {showAddNewCourse && <AddNewCourses ShowAddNewCourseTrigger={handleShowAddNewCourse} setProgress={setProgress} CourseAPIRefresh={CourseAPIRefresh} />}
                 </div>
             </div>
 
@@ -94,7 +85,11 @@ const Courses = ({ CourseAPIRefresh }) => {
                                     <MdDeleteOutline onClick={() => handleDeleteCourse(course.classId, course._id)}
                                         className='fs-4 text-danger cursorPointer' /> : <></>}
                                 {adminAccess(course.classId) ?
-                                    <div><FiEdit className='fs-5 text-primary cursorPointer' /></div> : <></>}
+                                    <Link to={`/courses/${classId}/edit/${course._id}`}>
+                                        <div><FiEdit onClick={handleShowAddNewCourse} className='fs-5 text-primary cursorPointer' />
+                                        </div>
+                                    </Link>
+                                    : <></>}
                             </div>
                         </div>
                     </div>

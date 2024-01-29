@@ -62,6 +62,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
             const response = await EnrollClass(classId);
             // setProgress(50);
             if (response) {
+                setClassEnrollmentSearchValue('');
                 DashboardAPIRefresh();
                 successToast('Class Enrolled');
             } else {
@@ -116,7 +117,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Course Id"
+                        placeholder="Class Id"
                         value={classEnrollmentSearchValue}
                         onChange={(e) => setClassEnrollmentSearchValue(e.target.value)}
                         aria-label="Search"

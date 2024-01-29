@@ -136,6 +136,36 @@ export const AddNewCourses = async (data, classId) => {
   }
 };
 
+export const FetchCoursesById = async (classId, courseId) => {
+  const response = await axios.get(
+    `${BaseURL}/fetchCoursesById/${classId}/${courseId}`,
+    {
+      headers: { token: getToken() },
+    }
+  );
+
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
+export const EditCourseDetails = async (data, classId, courseId) => {
+  const response = await axios.post(
+    `${BaseURL}/${classId}/editCourseDetails/${courseId}`,
+    data,
+    {
+      headers: { token: getToken() },
+    }
+  );
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
 export const DeleteCourse = async (classId, courseId) => {
   const response = await axios.get(
     `${BaseURL}/${classId}/deleteCourse/${courseId}`,
