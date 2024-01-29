@@ -16,7 +16,6 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     const [classes, setClasses] = useState([]);
     const [courses, setCourses] = useState(0);
-    const [adminClasses, setAdminClasses] = useState([]);
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
     const [progress, setProgress] = useState(0);
 
@@ -27,13 +26,12 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     useEffect(() => {
         setClasses(FetchAllTogether);
-        setAdminClasses(AdminAccessClasses);
         setCourses(FetchAllCoursesByClass || []);
     }, [FetchAllTogether, FetchAllCoursesByClass, AdminAccessClasses, CourseAPIRefresh]);
 
 
     const adminAccess = (classId) => {
-        if (adminClasses && adminClasses.includes(classId)) {
+        if (AdminAccessClasses && AdminAccessClasses.includes(classId)) {
             return true;
         }
         return false;

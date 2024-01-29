@@ -20,20 +20,18 @@ const Classes = ({ DashboardAPIRefresh }) => {
     const [classEnrollmentSearchValue, setClassEnrollmentSearchValue] = useState('');
     const [progress, setProgress] = useState(0);
     const [classes, setClasses] = useState([]);
-    const [adminClasses, setAdminClasses] = useState([]);
 
     const { FetchAllTogether } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
 
     useEffect(() => {
         setClasses(FetchAllTogether);
-        setAdminClasses(AdminAccessClasses);
     });
 
 
 
     const adminAccess = (classId) => {
-        if (adminClasses && adminClasses.includes(classId)) {
+        if (AdminAccessClasses && AdminAccessClasses.includes(classId)) {
             return true;
         }
         return false;
