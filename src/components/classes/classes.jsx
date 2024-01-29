@@ -142,6 +142,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                     <AddNewClass
                         setProgress={setProgress}
                         DashboardAPIRefresh={DashboardAPIRefresh}
+                        showAddNewClassTrigger={handleShowAddNewClass}
                     />
                 )}
             </div>

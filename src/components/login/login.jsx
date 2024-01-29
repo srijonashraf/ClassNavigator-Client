@@ -16,7 +16,6 @@ const Login = () => {
         if (formValue.userId.length === 0 || formValue.password.length === 0) {
             errorToast("Please enter all the fields");
         } else {
-
             const response = await LoginApi(formValue);
 
             if (response) {
