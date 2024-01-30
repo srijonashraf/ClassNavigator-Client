@@ -43,3 +43,13 @@
 .title-color{
     color: #016A70 !important;
 }
+
+
+.ql-editor{
+    resize: vertical;
+    min-height: 200px;
+}
+
+/* .m-less{
+    margin-bottom: -15px;
+} */

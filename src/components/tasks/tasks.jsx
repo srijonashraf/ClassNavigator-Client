@@ -9,8 +9,6 @@ import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
 import AddNewTasks from './addNewTasks';
-import { CiCalendar } from "react-icons/ci";
-import { IoCalendarNumber } from "react-icons/io5";
 import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
 
@@ -20,7 +18,8 @@ const Tasks = ({ TaskApiRefresh }) => {
     const [tasks, setTasks] = useState([]);
     const [showAddNewTask, setShowAddNewTask] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [remainingTimeFromFunc, setRemainingTimeFromFunc] = useState(0);
+    const [showFullDescription, setShowFullDescription] = useState(false);
+
     const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
@@ -49,6 +48,10 @@ const Tasks = ({ TaskApiRefresh }) => {
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
     const handleShowAddNewTask = () => setShowAddNewTask(!showAddNewTask);
+
+    const toggleDescription = () => {
+        setShowFullDescription(!showFullDescription);
+    };
 
     const handleDeleteTask = async (classId, courseId, taskId) => {
         setProgress(50);
@@ -126,7 +129,24 @@ const Tasks = ({ TaskApiRefresh }) => {
                                 <button className='btn btn-secondary btn-sm rounded-1'>Group: {task.group}</button>
                             </div>
                             <p className="card-title fw-bold fs-5 title-color">{task.taskTitle}</p>
-                            <p className="card-subtitle mb-2 text-muted small">Description: {task.taskDescription}</p>
+                            <div className="card-subtitle mb-2 text-muted small">
+                                <span><u>Description:</u></span>
+                                <div>
+                                    {showFullDescription ? (
+                                        <>
+                                            <div dangerouslySetInnerHTML={{ __html: task.taskDescription }}></div>
+                                            <span onClick={toggleDescription} className="text-secondary cursorPointer">See Less</span>
+                                        </>
+                                    ) : (
+                                        <div className='d-flex gap-1'>
+                                            <div className='m-less' dangerouslySetInnerHTML={{ __html: task.taskDescription.substring(0, 100) }}></div>
+                                            {task.taskDescription.length > 100 && (
+                                                <span onClick={toggleDescription} className="text-primary cursorPointer">See More...</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
 
                             <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
 

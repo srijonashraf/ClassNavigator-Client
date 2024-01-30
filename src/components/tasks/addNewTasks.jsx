@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { successToast, errorToast } from '../../helper/ToasterHelper';
 import { AddNewTask as AddNewTaskApi, FetchTaskById, EditTaskDetails } from '../../apirequest/apiRequest';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import QuillToolbar from './../../utility/ReactQuillModules';
 
 const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => {
     const [taskData, setTaskData] = useState({
@@ -120,14 +123,29 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                         </div>
                         <div className="mb-3">
                             <label htmlFor="taskDescription" className="form-label fw-bold">Description</label>
-                            <textarea
+                            <ReactQuill
+                                theme="snow"
+                                id="taskDescription"
+                                name="taskDescription"
+                                placeholder="Task Description"
+                                value={taskData.taskDescription}
+                                modules={{
+                                    toolbar: QuillToolbar,
+                                }}
+                                onChange={(value) => setTaskData((prevFields) => ({
+                                    ...prevFields,
+                                    taskDescription: value,
+                                  }))}
+                            />
+
+                            {/* <textarea
                                 className="form-control rounded-1 focus-none"
                                 id="taskDescription"
                                 name="taskDescription"
                                 placeholder="Task Description"
                                 value={taskData.taskDescription}
                                 onChange={handleChange}
-                            />
+                            /> */}
                         </div>
 
                         <div className="mb-3">
