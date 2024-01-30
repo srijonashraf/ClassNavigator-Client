@@ -47,7 +47,10 @@ const Tasks = ({ TaskApiRefresh }) => {
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
-    const handleShowAddNewTask = () => setShowAddNewTask(!showAddNewTask);
+    const handleShowAddNewTask = () => {
+        setShowAddNewTask(!showAddNewTask)
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
+    };
 
     const toggleDescription = () => {
         setShowFullDescription(!showFullDescription);

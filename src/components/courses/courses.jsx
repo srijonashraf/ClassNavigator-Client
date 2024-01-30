@@ -42,7 +42,10 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
-    const handleShowAddNewCourse = () => setShowAddNewCourse(!showAddNewCourse);
+    const handleShowAddNewCourse = () => {
+        setShowAddNewCourse(!showAddNewCourse);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     const handleDeleteCourse = async (classId, courseId) => {
         setProgress(50);
