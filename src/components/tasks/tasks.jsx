@@ -171,7 +171,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                 </div>
             </div>
             {isLoading ? <p className='text-center'>Loading...</p> : (tasks && tasks.length === 0) ?
-                <p className='text-center'>No Course Found!</p> : renderCourseCards()}
+                <p className='text-center'>No Tasks Found!</p> : renderCourseCards()}
         </div>
     );
 };
