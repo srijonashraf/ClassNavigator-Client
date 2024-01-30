@@ -105,8 +105,8 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 </p>
                                 {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success mb-2'>Admin</p>}
                             </div>
-                            <Link className='nav-link' to={`/courses/${classItem.classId}`}><p className="card-title cursorPointer fw-bold fs-5">{classItem.className}</p></Link>
-                            <p className="card-subtitle mb-2 text-muted fs-6">Section: {classItem.section}</p>
+                            <Link className='nav-link' to={`/courses/${classItem.classId}`}><p className="card-title cursorPointer fw-bold fs-5 title-color">{classItem.className}</p></Link>
+                            <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
                             <p className="badge bg-danger  card-footer  cursorPointer" onClick={() => handleClassAction(classItem.classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')}><ImExit /> Unenroll</p>
                             <div className="d-flex align-items-center gap-2">
                                 {adminAccess(classItem.classId) && <MdDeleteOutline onClick={() => handleClassAction(classItem.classId, DeleteClass, 'Class Deleted', 'Error Deleting Class')} className='fs-4 text-danger cursorPointer' />}

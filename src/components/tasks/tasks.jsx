@@ -125,7 +125,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                                 <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>
                                 <button className='btn btn-secondary btn-sm rounded-1'>Group: {task.group}</button>
                             </div>
-                            <p className="card-title fw-bold fs-5">{task.taskTitle}</p>
+                            <p className="card-title fw-bold fs-5 title-color">{task.taskTitle}</p>
                             <p className="card-subtitle mb-2 text-muted small">Description: {task.taskDescription}</p>
 
                             <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
