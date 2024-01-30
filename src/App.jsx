@@ -9,6 +9,7 @@ import DashboardPage from './pages/dashboardPage';
 import PrivateRoute from './components/shared/PrivateRoute.jsx';
 import CoursePage from './pages/coursePage';
 import useAuth from './components/auth/useAuth.js';
+import TaskPage from './pages/taskPage';
 
 
 const App = () => {
@@ -32,7 +33,11 @@ const App = () => {
                     <Route path="/classes/edit/:classId" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
                     <Route path="/courses/:classId" element={<PrivateRoute><CoursePage /></PrivateRoute>} />
                     <Route path="/courses/:classId/edit/:courseId" element={<PrivateRoute><CoursePage /></PrivateRoute>} />
-                    
+                    <Route path="/tasks/:classId/:courseId" element={<PrivateRoute><TaskPage /></PrivateRoute>} />
+                    <Route path="/tasks/:classId/:courseId/edit/:taskId" element={<PrivateRoute><TaskPage /></PrivateRoute>} />
+
+
+
                     <Route path="/*" element={<Fragment><div className='d-flex flex-column vh-100 align-items-center justify-content-center' ><p className='text-center fs-2'>Page Not Found</p><button className="btn btn-primary" onClick={() => window.location.href = "/dashboard"}>Return to Home</button></div></Fragment>} />
                 </Routes>
             </Router>

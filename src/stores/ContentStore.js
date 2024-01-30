@@ -12,12 +12,14 @@ if (process.env.NODE_ENV === "production") {
 const ContentStore = create((set) => ({
   FetchAllTogether: null,
   FetchAllCoursesByClass: null,
+  FetchAllTasksByCourse: null,
   FetchAllTogetherRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTogether`, {
       headers: { token: getToken() },
     });
     if (res.data["status"] === "success") {
       set({
+        FetchAllTogether: null,
         FetchAllTogether: res.data.data,
         // FetchAllCoursesByClass: null,
       });
@@ -29,7 +31,7 @@ const ContentStore = create((set) => ({
     let res = await axios.get(`${BASE_URL}/fetchAllCoursesByClass/${classId}`, {
       headers: { token: getToken() },
     });
-    
+
     if (res.data["status"] === "success") {
       set({
         FetchAllCoursesByClass: null,
@@ -37,6 +39,24 @@ const ContentStore = create((set) => ({
       });
 
       // console.log(res.data.data);
+    }
+  },
+
+  FetchAllTasksByCourseRequest: async (classId, courseId) => {
+    let res = await axios.get(
+      `${BASE_URL}/fetchAllTasksByCourse/${classId}/${courseId}`,
+      {
+        headers: { token: getToken() },
+      }
+    );
+
+    if (res.data["status"] === "success") {
+      set({
+        FetchAllTasksByCourse: null,
+        FetchAllTasksByCourse: res.data.data,
+      });
+
+      // console.log('From FetchAllTasksByCourse Store:',res.data.data);
     }
   },
 }));

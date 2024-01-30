@@ -179,3 +179,65 @@ export const DeleteCourse = async (classId, courseId) => {
     return false;
   }
 };
+
+export const AddNewTask = async (data, classId, courseId) => {
+  const response = await axios.post(
+    `${BaseURL}/${classId}/${courseId}/addTask`,
+    data,
+    {
+      headers: { token: getToken() },
+    }
+  );
+
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
+
+export const FetchTaskById = async (classId, courseId, taskId) => {
+  const response = await axios.get(
+    `${BaseURL}/fetchTasksById/${classId}/${courseId}/${taskId}`,
+    {
+      headers: { token: getToken() },
+    }
+  );
+  if (response.data.status === "success") {
+
+    return response;
+  } else {
+    return false;
+  }
+}
+
+export const EditTaskDetails = async (data, classId, courseId, taskId) => {
+  const response = await axios.post(
+    `${BaseURL}/${classId}/${courseId}/editTaskDetails/${taskId}`,
+    data,
+    {
+      headers: { token: getToken() },
+    }
+  );
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+}
+
+export const DeleteTask = async (classId, courseId, taskId) => {
+  const response = await axios.get(
+    `${BaseURL}/${classId}/${courseId}/deleteTask/${taskId}`,
+    {
+      headers: { token: getToken() },
+    }
+  );
+
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};

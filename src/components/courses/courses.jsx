@@ -11,13 +11,12 @@ import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
 
 const Courses = ({ CourseAPIRefresh }) => {
-    const [classes, setClasses] = useState(null);
     const [courses, setCourses] = useState(null);
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { FetchAllTogether, FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
+    const { FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
 
@@ -38,9 +37,8 @@ const Courses = ({ CourseAPIRefresh }) => {
     }, [classId, FetchAllCoursesByClassRequest]);
 
     useEffect(() => {
-        setClasses(FetchAllTogether);
         setCourses(FetchAllCoursesByClass || null);
-    }, [FetchAllTogether, FetchAllCoursesByClass, AdminAccessClasses, CourseAPIRefresh]);
+    }, [FetchAllCoursesByClass, AdminAccessClasses, CourseAPIRefresh]);
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
@@ -69,8 +67,8 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2' />
-                            <Link className='nav-link'><p className="card-title cursorPointer fw-bold fs-4 mt-3">{course.courseName}</p></Link>
+                            <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' />
+                            <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'><p className="card-title cursorPointer fw-bold fs-4 mt-3">{course.courseName}</p></Link>
                             <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
                             {/* <p>Class ID: {course.classId}</p> */}
                             <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
