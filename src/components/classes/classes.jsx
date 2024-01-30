@@ -10,7 +10,7 @@ import ProfileStore from '../../stores/ProfileStore.js';
 import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
-import getRandomImage from './../../utility/imageGenerator';
+import Avatar from 'react-avatar';
 
 const Classes = ({ DashboardAPIRefresh }) => {
     const [copiedIndex, setCopiedIndex] = useState(null);
@@ -96,7 +96,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <img className='card-img-top'  src={getRandomImage()} style={{ objectFit: 'cover', width: '100%', height: '100px' }}/>
+                        <Avatar name= {classItem.className} className='bg-primary w-100' />
                             <div className="top-section mt-3">
                                 <p className="card-text d-flex align-items-center gap-2 float-end cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
                                     <MdOutlineContentCopy />
