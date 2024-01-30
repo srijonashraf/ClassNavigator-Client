@@ -96,7 +96,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                        <Avatar name= {classItem.className} className='bg-primary w-100' />
+                        <Avatar name= {classItem.className} className='bg-primary w-100 rounded-top-2' />
                             <div className="top-section mt-3">
                                 <p className="card-text d-flex align-items-center gap-2 float-end cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
                                     <MdOutlineContentCopy />
