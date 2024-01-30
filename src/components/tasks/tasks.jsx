@@ -128,7 +128,8 @@ const Tasks = ({ TaskApiRefresh }) => {
                             <p className="card-title fw-bold fs-5">{task.taskTitle}</p>
                             <p className="card-subtitle mb-2 text-muted small">Description: {task.taskDescription}</p>
 
-                            <p className='btn btn-info badge rounded-1 float-end'>• {task.mode}</p>
+                            <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
+
                             <div className='d-flex flex-row gap-2'>
                                 <p className='fw-bold d-flex align-items-center gap-1'>
                                     <LuCalendarCheck className='text-primary fs-5' /> {formatDate(new Date(task.date))}
