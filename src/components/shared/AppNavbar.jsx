@@ -10,15 +10,14 @@ import { BsMenuButtonWideFill } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
 import Dropdown from "react-bootstrap/Dropdown";
 import { CiLogout } from "react-icons/ci";
-// import { GetProfileDetails } from "../apiRequest/apiRequest";
 import Avatar from "react-avatar";
-
+import ProfileStore from './../../stores/ProfileStore';
 const AppNavbar = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [firstName, setFirstName] = useState("");
-  const [profileDetails, setProfileDetails] = useState([]);
   const [img, setImg] = useState("");
 
+  const { ProfileDetailsRequest, ProfileDetails } = ProfileStore();
   const toggleOffcanvas = () => {
     setShowOffcanvas(!showOffcanvas);
   };
@@ -27,21 +26,19 @@ const AppNavbar = () => {
     setShowOffcanvas(false);
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await GetProfileDetails();
-  //       setFirstName(res.data.data[0].firstName);
-  //       setProfileDetails(res.data.data[0]);
-  //       setImg(res.data.data[0].img);
-  //     } catch (error) {
-  //       console.log("Frontend: Error fetching data.");
-  //       console.error(error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await ProfileDetailsRequest();
 
-  //   fetchData();
-  // }, []);
+      } catch (error) {
+        console.log("Frontend: Error fetching data.");
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={`app-container ${showOffcanvas ? "offcanvas-open" : ""}`}>
@@ -51,7 +48,7 @@ const AppNavbar = () => {
         className="bg-primary text-light"
         data-bs-theme="dark"
       >
-        <Container className="my-2 my-lg-0  d-flex justify-content-between">
+        <Container className="my-2 my-lg-0  d-flex justify-content-between align-items-center">
           <div className="NavBrand d-flex align-items-center">
             <BsMenuButtonWideFill
               className="text-light mx-2 cursorPointer fs-5"
@@ -60,6 +57,9 @@ const AppNavbar = () => {
             <NavLink to={"/"} className="navbar-brand">
               Class Navigator
             </NavLink>
+          </div>
+          <div>
+            <p className="m-0">Hello, {ProfileDetails?.name || "User"} ({ProfileDetails?.userId})</p>
           </div>
 
           {/* <Dropdown className="user-dropdown">
