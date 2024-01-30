@@ -70,7 +70,8 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' />
+                            <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'>
+                                <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' /></Link>
                             <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'><p className="card-title cursorPointer fw-bold fs-5 mt-3 title-color">{course.courseName}</p></Link>
                             <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
                             {/* <p>Class ID: {course.classId}</p> */}
@@ -94,6 +95,16 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     return (
         <div className="row">
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    {/* <li className="breadcrumb-item small">
+                        <Link to="/">Home</Link>
+                    </li> */}
+                    <li className="breadcrumb-item small">
+                        <Link to={`/`}>Classes</Link>
+                    </li>
+                </ol>
+            </nav>
             <div className=''>
                 <LoadingBarComponent progress={progress} />
                 {adminAccess(classId) &&

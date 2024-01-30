@@ -184,6 +184,19 @@ const Tasks = ({ TaskApiRefresh }) => {
 
     return (
         <div className="row">
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    {/* <li className="breadcrumb-item small">
+                        <Link to="/">Home</Link>
+                    </li> */}
+                    <li className="breadcrumb-item small">
+                        <Link to={`/`}>Classes</Link>
+                    </li>
+                    <li className="breadcrumb-item small">
+                        <Link to={`/courses/${classId}`}>Courses</Link>
+                    </li>
+                </ol>
+            </nav>
             <div className=''>
                 <LoadingBarComponent progress={progress} />
                 {adminAccess(classId) &&
