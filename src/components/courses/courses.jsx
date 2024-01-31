@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi"
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import AddNewCourses from './addNewCourses';
 import { DeleteCourse } from '../../apirequest/apiRequest';
@@ -9,6 +9,7 @@ import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 const Courses = ({ CourseAPIRefresh }) => {
     const [courses, setCourses] = useState(null);
@@ -16,6 +17,7 @@ const Courses = ({ CourseAPIRefresh }) => {
     const [progress, setProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
+    const navigate = useNavigate();
     const { FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
@@ -95,16 +97,14 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     return (
         <div className="row">
-            <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                    {/* <li className="breadcrumb-item small">
-                        <Link to="/">Home</Link>
-                    </li> */}
-                    <li className="breadcrumb-item small">
-                        <Link to={`/`}>Classes</Link>
-                    </li>
-                </ol>
-            </nav>
+            <Breadcrumb>
+                <Breadcrumb.Item >
+                    <Link to={`/`}>Home</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>
+                    Courses
+                </Breadcrumb.Item>
+            </Breadcrumb>
             <div className=''>
                 <LoadingBarComponent progress={progress} />
                 {adminAccess(classId) &&

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi"
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, NavLink } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import { DeleteTask } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
@@ -11,6 +11,7 @@ import Avatar from 'react-avatar';
 import AddNewTasks from './addNewTasks';
 import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 const Tasks = ({ TaskApiRefresh }) => {
 
@@ -184,19 +185,16 @@ const Tasks = ({ TaskApiRefresh }) => {
 
     return (
         <div className="row">
-            <nav aria-label="breadcrumb">
-                <ol className="breadcrumb">
-                    {/* <li className="breadcrumb-item small">
-                        <Link to="/">Home</Link>
-                    </li> */}
-                    <li className="breadcrumb-item small">
-                        <Link to={`/`}>Classes</Link>
-                    </li>
-                    <li className="breadcrumb-item small">
-                        <Link to={`/courses/${classId}`}>Courses</Link>
-                    </li>
-                </ol>
-            </nav>
+            <Breadcrumb>
+                <Breadcrumb.Item >
+                    <Link to={`/`}>Home</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>
+                    <Link to={`/courses/${classId}`}>Courses</Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Tasks</Breadcrumb.Item>
+            </Breadcrumb>
+
             <div className=''>
                 <LoadingBarComponent progress={progress} />
                 {adminAccess(classId) &&
