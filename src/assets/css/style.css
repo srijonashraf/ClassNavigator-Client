@@ -53,3 +53,9 @@
 /* .m-less{
     margin-bottom: -15px;
 } */
+
+.bg-expired {
+    position: relative;
+    filter: grayscale(100%) !important;
+}
+

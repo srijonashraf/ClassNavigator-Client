@@ -20,6 +20,7 @@ const Tasks = ({ TaskApiRefresh }) => {
     const [showAddNewTask, setShowAddNewTask] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
+    const [statusFromFunc, setStatusFromFunc] = useState('');
 
     const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
@@ -94,6 +95,8 @@ const Tasks = ({ TaskApiRefresh }) => {
         const days = Math.floor(remainingTime / (3600 * 24));
         const hours = Math.floor((remainingTime % (3600 * 24)) / 3600);
         const minutes = Math.floor((remainingTime % 3600) / 60);
+
+
         return (
             <div>
                 {remainingTime > 0 ? (
@@ -119,15 +122,19 @@ const Tasks = ({ TaskApiRefresh }) => {
 
 
 
+
     const renderCourseCards = () => {
         return (
             tasks &&
             tasks
                 .sort((a, b) => new Date(a.date) - new Date(b.date))
                 .map((task, index) => (
+                    // Todo Sort Pending wise
                     <div key={task._id} className="col-md-6 mb-4">
                         <div className="card shadow-sm border border-light-subtle">
-                            <div className="card-body">
+
+                            <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
+
                                 {renderCountdown(task)}
                                 <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
                                 <div className='mb-2'>
@@ -184,6 +191,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                 ))
         );
     };
+
 
     return (
         <div className="row">
