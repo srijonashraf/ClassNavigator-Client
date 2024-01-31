@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi"
-import { Link, useParams, NavLink } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import { DeleteTask } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
@@ -25,6 +25,8 @@ const Tasks = ({ TaskApiRefresh }) => {
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -185,14 +187,14 @@ const Tasks = ({ TaskApiRefresh }) => {
 
     return (
         <div className="row">
-            <Breadcrumb>
-                <Breadcrumb.Item >
-                    <Link to={`/`}>Home</Link>
+          <Breadcrumb>
+                <Breadcrumb.Item onClick={() => navigate('/')} >Home</Breadcrumb.Item>
+                <Breadcrumb.Item onClick={() => navigate(`/courses/${classId}`)}>
+                    Courses
                 </Breadcrumb.Item>
-                <Breadcrumb.Item>
-                    <Link to={`/courses/${classId}`}>Courses</Link>
+                <Breadcrumb.Item active>
+                    Tasks
                 </Breadcrumb.Item>
-                <Breadcrumb.Item active>Tasks</Breadcrumb.Item>
             </Breadcrumb>
 
             <div className=''>

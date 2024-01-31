@@ -16,11 +16,11 @@ const Courses = ({ CourseAPIRefresh }) => {
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-
-    const navigate = useNavigate();
     const { FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,9 +98,7 @@ const Courses = ({ CourseAPIRefresh }) => {
     return (
         <div className="row">
             <Breadcrumb>
-                <Breadcrumb.Item >
-                    <Link to={`/`}>Home</Link>
-                </Breadcrumb.Item>
+                <Breadcrumb.Item onClick={() => navigate('/')} >Home</Breadcrumb.Item>
                 <Breadcrumb.Item active>
                     Courses
                 </Breadcrumb.Item>
