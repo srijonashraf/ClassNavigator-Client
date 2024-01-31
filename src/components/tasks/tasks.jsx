@@ -77,11 +77,8 @@ const Tasks = ({ TaskApiRefresh }) => {
     };
 
     function formatDate(date) {
-        const options = { day: '2-digit', month: 'short', year: '2-digit' };
-        const formattedDate = date.toLocaleDateString('en-GB', options);
-        const parts = formattedDate.split(' ');
-        const formatted = `${parts[0]}-${parts[1]}-${parts[2]}`;
-        return formatted;
+        const options = { weekday: 'short', day: '2-digit', month: 'short', year: '2-digit' };
+        return date.toLocaleDateString('en-GB', options);
     }
 
     function formatTime(timeString) {
@@ -154,8 +151,8 @@ const Tasks = ({ TaskApiRefresh }) => {
                                 </div>
                             </div>
 
-                            <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
 
+                            <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
                             <div className='d-flex flex-row gap-2'>
                                 <p className='fw-bold d-flex align-items-center gap-1'>
                                     <LuCalendarCheck className='text-primary fs-5' /> {formatDate(new Date(task.date))}
