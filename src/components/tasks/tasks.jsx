@@ -177,7 +177,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                                     </Link>
                                 }
                             </div>
-                            <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString()}</footer>
+                            <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
                         </div>
                     </div>
                 </div>
