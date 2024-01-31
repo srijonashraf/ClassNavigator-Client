@@ -129,7 +129,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
                             {renderCountdown(task)}
-                            <Avatar name={task.taskTitle} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
+                            <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
                             <div className='mb-2'>
                                 <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>
                                 <button className='btn btn-secondary btn-sm rounded-1'>Group: {task.group}</button>
