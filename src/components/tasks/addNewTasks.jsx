@@ -24,6 +24,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
     useEffect(() => {
         (async () => {
             if (classId && courseId && taskId) {
+                ShowAddNewTaskTrigger
                 await fillFrom(classId, courseId, taskId);
             }
         })();

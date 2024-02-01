@@ -120,7 +120,7 @@ const AppNavbar = () => {
                 Dashboard
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink
                 to="/task"
                 className="list-group-item border-0 rounded-1"
@@ -128,8 +128,8 @@ const AppNavbar = () => {
               >
                 Routine
               </NavLink>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <NavLink
                 to="/allTask"
                 className="list-group-item border-0 rounded-1"
@@ -137,17 +137,17 @@ const AppNavbar = () => {
               >
                 Assessment
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink
-                to="/pending"
+                to="/inCourse/allTasks"
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >
                 In Course
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink
                 to="/inProgress"
                 className="list-group-item border-0 rounded-1"
@@ -155,8 +155,8 @@ const AppNavbar = () => {
               >
                 Link Library
               </NavLink>
-            </li>
-
+            </li> */}
+{/* 
             <li>
               <NavLink
                 to="/profile"
@@ -165,7 +165,7 @@ const AppNavbar = () => {
               >
                 Settings
               </NavLink>
-            </li>
+            </li> */}
             <Button
               onClick={clearSessions}
               className="d-flex rounded-1"

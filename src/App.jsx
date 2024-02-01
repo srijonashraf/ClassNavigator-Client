@@ -10,6 +10,7 @@ import PrivateRoute from './components/shared/PrivateRoute.jsx';
 import CoursePage from './pages/coursePage';
 import useAuth from './components/auth/useAuth.js';
 import TaskPage from './pages/taskPage';
+import InCoursePage from './pages/inCoursePage';
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
                     <Route path="/courses/:classId/edit/:courseId" element={<PrivateRoute><CoursePage /></PrivateRoute>} />
                     <Route path="/tasks/:classId/:courseId" element={<PrivateRoute><TaskPage /></PrivateRoute>} />
                     <Route path="/tasks/:classId/:courseId/edit/:taskId" element={<PrivateRoute><TaskPage /></PrivateRoute>} />
+                    <Route path="/inCourse/allTasks" element={<PrivateRoute><InCoursePage /></PrivateRoute>} />
 
 
 

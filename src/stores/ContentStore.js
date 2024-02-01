@@ -13,6 +13,8 @@ const ContentStore = create((set) => ({
   FetchAllTogether: null,
   FetchAllCoursesByClass: null,
   FetchAllTasksByCourse: null,
+  FetchAllTasks: null,
+
   FetchAllTogetherRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTogether`, {
       headers: { token: getToken() },
@@ -57,6 +59,21 @@ const ContentStore = create((set) => ({
       });
 
       // console.log('From FetchAllTasksByCourse Store:',res.data.data);
+    }
+  },
+
+  FetchAllTasksRequest: async () => {
+    let res = await axios.get(`${BASE_URL}/fetchAllTasks`, {
+      headers: { token: getToken() },
+    });
+
+    if (res.data["status"] === "success") {
+      set({
+        FetchAllTasks: null,
+        FetchAllTasks: res.data.data,
+      });
+
+      console.log("From FetchAllTasksRequest Store:", res.data.data);
     }
   },
 }));

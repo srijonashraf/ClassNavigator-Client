@@ -8,53 +8,25 @@ import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
-import AddNewTasks from './addNewTasks';
 import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
-const Tasks = ({ TaskPageApiRefresh }) => {
+const AllTasks = () => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [tasks, setTasks] = useState([]);
     const [showAddNewTask, setShowAddNewTask] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [change, setChange] = useState('');
 
-    const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
+    const { FetchAllTasks } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
 
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setIsLoading(true);
-                await FetchAllTasksByCourseRequest(classId, courseId);
-                setIsLoading(false);
-            } catch (error) {
-                setIsLoading(false);
-                console.error("Error fetching data:", error);
-                errorToast('Error fetching data');
-            }
-        };
-
-        fetchData();
-    }, [classId, FetchAllTasksByCourseRequest, change]);
-
-    useEffect(() => {
-        setTasks(FetchAllTasksByCourse || null);
-    }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
-
-    const handleShowAddNewTask = () => {
-        setShowAddNewTask(!showAddNewTask)
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
-    };
 
     const toggleDescription = () => {
         setShowFullDescription(!showFullDescription);
@@ -118,16 +90,22 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     };
 
 
-    const renderCourseCards = () => {
-        return (
-            tasks &&
-            tasks
-                .sort((a, b) => new Date(a.date) - new Date(b.date))
-                .map((task, index) => (
-                    // Todo Sort Pending wise
-                    <div key={task._id} className="col-md-6 mb-4">
-                        <div className="card shadow-sm border border-light-subtle">
+    return (
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="form-group">
+                    <label htmlFor="courseSelect" className='fw-bold'>Select Course:</label>
+                    <select className="form-control rounded-1" id="courseSelect">
+                        {/!!* Fetch Course Name here and switch task based on course */}
+                        {FetchAllTasks && FetchAllTasks.map((task) => (
+                            <option key={task._id} value={task._id}>{task._id}</option>
+                        ))}
+                    </select>
+                </div>
 
+                {FetchAllTasks && FetchAllTasks.map((task) => (
+                    <div key={task._id} className="col-md-6 mb-4 mt-5">
+                        <div className="card shadow-sm border border-light-subtle">
                             <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
                                 {renderCountdown(task)}
                                 <p className='btn btn-danger badge float-end'>{task?.status}</p>
@@ -156,7 +134,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                     </div>
                                 </div>
 
-
                                 <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
                                 <div className='d-flex flex-row gap-2'>
                                     <p className='fw-bold d-flex align-items-center gap-1'>
@@ -169,51 +146,21 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
 
                                 <div className="d-flex align-items-center gap-2">
-                                    {adminAccess(classId) &&
-                                        <MdDeleteOutline onClick={() => handleDeleteTask(classId, courseId, task._id)} className='fs-4 text-danger cursorPointer' />
-
-                                    }
-                                    {adminAccess(classId) &&
-                                        <Link to={`/tasks/${classId}/${courseId}/edit/${task._id}`}>
-                                            <div><FiEdit onClick={handleShowAddNewTask} className='fs-5 text-primary cursorPointer' /></div>
+                                   
+                                    {adminAccess(task?.classId) &&
+                                        <Link to={`/tasks/${task?.classId}/${task?.courseId}`}>
+                                            <div><button className='btn btn-dark rounded-1 cursorPointer'>Go to Task</button></div>
                                         </Link>
                                     }
                                 </div>
                                 <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
                             </div>
-
                         </div>
                     </div>
-                ))
-        );
-    };
-
-
-    return (
-        <div className="row">
-            <Breadcrumb>
-                <Breadcrumb.Item onClick={() => navigate('/')} >Home</Breadcrumb.Item>
-                <Breadcrumb.Item onClick={() => navigate(`/courses/${classId}`)}>
-                    Courses
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    Tasks
-                </Breadcrumb.Item>
-            </Breadcrumb>
-
-            <div className=''>
-                <LoadingBarComponent progress={progress} />
-                {adminAccess(classId) &&
-                    <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
-                }
-                <div className={`mb-4 ${showAddNewTask ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                    {showAddNewTask && <AddNewTasks ShowAddNewTaskTrigger={handleShowAddNewTask} setProgress={setProgress} TaskApiRefresh={() => setChange(new Date().getTime())} />}
-                </div>
+                ))}
             </div>
-            {isLoading ? <p className='text-center'>Loading...</p> : (tasks && tasks.length === 0) ?
-                <p className='text-center'>No Tasks Found!</p> : renderCourseCards()}
         </div>
     );
 };
 
-export default Tasks;
+export default AllTasks;
