@@ -32,7 +32,7 @@ const TaskPage = () => {
         <div>
             <AppNavbar />
             <div className="container mt-3">
-                <Tasks TaskApiRefresh={() => setChange(new Date().getTime())} />
+                <Tasks TaskPageApiRefresh={() => setChange(new Date().getTime())} />
             </div>
         </div>
     );

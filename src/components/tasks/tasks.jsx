@@ -13,14 +13,14 @@ import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
-const Tasks = ({ TaskApiRefresh }) => {
+const Tasks = ({ TaskPageApiRefresh }) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [tasks, setTasks] = useState([]);
     const [showAddNewTask, setShowAddNewTask] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
-    const [statusFromFunc, setStatusFromFunc] = useState('');
+    const [change, setChange] = useState('');
 
     const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
@@ -43,11 +43,11 @@ const Tasks = ({ TaskApiRefresh }) => {
         };
 
         fetchData();
-    }, [classId, FetchAllTasksByCourseRequest]);
+    }, [classId, FetchAllTasksByCourseRequest, change]);
 
     useEffect(() => {
         setTasks(FetchAllTasksByCourse || null);
-    }, [FetchAllTasksByCourse, AdminAccessClasses, TaskApiRefresh]);
+    }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
@@ -65,7 +65,7 @@ const Tasks = ({ TaskApiRefresh }) => {
         try {
             const response = await DeleteTask(classId, courseId, taskId);
             if (response) {
-                TaskApiRefresh();
+                TaskPageApiRefresh();
                 successToast('Task Deleted');
             } else {
                 errorToast('Failed to Task Course');
@@ -108,19 +108,14 @@ const Tasks = ({ TaskApiRefresh }) => {
                                 {hours}h {minutes}m
                             </span>
                         </div>
-                        <div>
-                            <p className='fw-bold d-flex justify-content-end bg-danger rounded-1 badge fs-6'>Pending</p>
-                        </div>
+
                     </div>
-                ) : <p className='fw-bold float-end bg-success rounded-1 badge fs-6'>Done</p>}
+                ) : null}
             </div>
 
 
         );
     };
-
-
-
 
 
     const renderCourseCards = () => {
@@ -134,8 +129,8 @@ const Tasks = ({ TaskApiRefresh }) => {
                         <div className="card shadow-sm border border-light-subtle">
 
                             <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-
                                 {renderCountdown(task)}
+                                <p className='btn btn-danger badge float-end'>{task?.status}</p>
                                 <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
                                 <div className='mb-2'>
                                     <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>
@@ -211,7 +206,7 @@ const Tasks = ({ TaskApiRefresh }) => {
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
                 <div className={`mb-4 ${showAddNewTask ? 'animated fadeInRight' : 'animated fadeOut'}`}>
-                    {showAddNewTask && <AddNewTasks ShowAddNewTaskTrigger={handleShowAddNewTask} setProgress={setProgress} TaskApiRefresh={TaskApiRefresh} />}
+                    {showAddNewTask && <AddNewTasks ShowAddNewTaskTrigger={handleShowAddNewTask} setProgress={setProgress} TaskApiRefresh={() => setChange(new Date().getTime())} />}
                 </div>
             </div>
             {isLoading ? <p className='text-center'>Loading...</p> : (tasks && tasks.length === 0) ?

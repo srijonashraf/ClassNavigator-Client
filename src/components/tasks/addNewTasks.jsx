@@ -137,15 +137,6 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                                     taskDescription: value,
                                   }))}
                             />
-
-                            {/* <textarea
-                                className="form-control rounded-1 focus-none"
-                                id="taskDescription"
-                                name="taskDescription"
-                                placeholder="Task Description"
-                                value={taskData.taskDescription}
-                                onChange={handleChange}
-                            /> */}
                         </div>
 
                         <div className="mb-3">
