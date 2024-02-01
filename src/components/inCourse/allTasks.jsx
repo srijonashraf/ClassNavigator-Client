@@ -19,10 +19,8 @@ const AllTasks = () => {
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [change, setChange] = useState('');
 
-    const { FetchAllTasks } = ContentStore();
+    const { FetchAllTaskCommonStore, FetchAllTasksByCourseRequest, FetchAllCourses } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
-    const { classId } = useParams();
-    const { courseId } = useParams();
 
 
 
@@ -32,22 +30,11 @@ const AllTasks = () => {
         setShowFullDescription(!showFullDescription);
     };
 
-    const handleDeleteTask = async (classId, courseId, taskId) => {
-        setProgress(50);
-        try {
-            const response = await DeleteTask(classId, courseId, taskId);
-            if (response) {
-                TaskPageApiRefresh();
-                successToast('Task Deleted');
-            } else {
-                errorToast('Failed to Task Course');
-            }
-        } catch (err) {
-            errorToast('Error Deleting Task');
-        } finally {
-            setProgress(100);
-        }
-    };
+
+    const handleTaskFilterByCourseOption = async (classId, courseId) => {
+        const response = await FetchAllTasksByCourseRequest(classId, courseId);
+
+    }
 
     function formatDate(date) {
         const options = { weekday: 'short', day: '2-digit', month: 'short', year: '2-digit' };
@@ -89,75 +76,94 @@ const AllTasks = () => {
         );
     };
 
+    useEffect(() => {
+        if (!FetchAllTaskCommonStore) {
+            setIsLoading(true);
+        }
+        else {
+            setIsLoading(false);
+        }
+    }, [FetchAllTaskCommonStore])
+
 
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="form-group">
                     <label htmlFor="courseSelect" className='fw-bold'>Select Course:</label>
-                    <select className="form-control rounded-1" id="courseSelect">
-                        {/* Fetch Course Name here and switch task based on course */}
-                        {FetchAllTasks && FetchAllTasks.map((task) => (
-                            <option key={task._id} value={task._id}>{task._id}</option>
-                        ))}
+                    <select onChange={(e) => handleTaskFilterByCourseOption(e.target.options[e.target.selectedIndex].getAttribute('data-class-id'), e.target.value)} className="form-control rounded-1" id="courseSelect">
+                        {FetchAllCourses && FetchAllCourses.map((task) => {
+                            return (
+                                <option key={task._id} value={task._id} data-class-id={task.classId}>{task.courseName}</option>
+                            );
+                        })}
                     </select>
                 </div>
 
-                {FetchAllTasks && FetchAllTasks.map((task) => (
-                    <div key={task._id} className="col-md-6 mb-4 mt-5">
-                        <div className="card shadow-sm border border-light-subtle">
-                            <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-                                {renderCountdown(task)}
-                                <p className='btn btn-danger badge float-end'>{task?.status}</p>
-                                <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
-                                <div className='mb-2'>
-                                    <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>
-                                    <button className='btn btn-secondary btn-sm rounded-1'>Group: {task.group}</button>
-                                </div>
-                                <p className="card-title fw-bold fs-5 title-color">{task.taskTitle}</p>
-                                <div className="card-subtitle mb-2 text-muted small">
-                                    <span><u>Description:</u></span>
-                                    <div>
-                                        {showFullDescription ? (
-                                            <>
-                                                <div dangerouslySetInnerHTML={{ __html: task.taskDescription }}></div>
-                                                <span onClick={toggleDescription} className="text-secondary cursorPointer">See Less</span>
-                                            </>
-                                        ) : (
-                                            <div className='d-flex gap-1'>
-                                                <div className='m-less' dangerouslySetInnerHTML={{ __html: task.taskDescription.substring(0, 100) }}></div>
-                                                {task.taskDescription.length > 100 && (
-                                                    <span onClick={toggleDescription} className="text-primary cursorPointer">See More...</span>
+
+                {isLoading ? (
+                    <p className='text-center mt-3'>Loading...</p>
+                ) : FetchAllTaskCommonStore && FetchAllTaskCommonStore.length > 0 ? (
+                    FetchAllTaskCommonStore
+                        .sort((a, b) => new Date(a.date) - new Date(b.date))
+                        .map((task) => (
+                            <div key={task._id} className="col-md-6 mb-4 mt-5">
+                                <div className="card shadow-sm border border-light-subtle">
+                                    <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
+                                        {renderCountdown(task)}
+                                        <p className='btn btn-danger badge float-end'>{task?.status}</p>
+                                        <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
+                                        <div className='mb-2'>
+                                            <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>
+                                            <button className='btn btn-secondary btn-sm rounded-1'>Group: {task.group}</button>
+                                        </div>
+                                        <p className="card-title fw-bold fs-5 title-color">{task.taskTitle}</p>
+                                        <div className="card-subtitle mb-2 text-muted small">
+                                            <span><u>Description:</u></span>
+                                            <div>
+                                                {showFullDescription ? (
+                                                    <>
+                                                        <div dangerouslySetInnerHTML={{ __html: task.taskDescription }}></div>
+                                                        <span onClick={toggleDescription} className="text-secondary cursorPointer">See Less</span>
+                                                    </>
+                                                ) : (
+                                                    <div className='d-flex gap-1'>
+                                                        <div className='m-less' dangerouslySetInnerHTML={{ __html: task.taskDescription.substring(0, 100) }}></div>
+                                                        {task.taskDescription.length > 100 && (
+                                                            <span onClick={toggleDescription} className="text-primary cursorPointer">See More...</span>
+                                                        )}
+                                                    </div>
                                                 )}
                                             </div>
-                                        )}
+                                        </div>
+
+                                        <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
+                                        <div className='d-flex flex-row gap-2'>
+                                            <p className='fw-bold d-flex align-items-center gap-1'>
+                                                <LuCalendarCheck className='text-primary fs-5' /> {formatDate(new Date(task.date))}
+                                            </p>
+                                            <p className='fw-bold d-flex align-items-center gap-1'>
+                                                <IoTimeSharp className='text-primary fs-5' /> {formatTime(task.time)}
+                                            </p >
+                                        </div>
+
+
+                                        <div className="d-flex align-items-center gap-2">
+
+                                            {adminAccess(task?.classId) &&
+                                                <Link to={`/tasks/${task?.classId}/${task?.courseId}`}>
+                                                    <div><button className='btn btn-dark rounded-1 cursorPointer'>Go to Task</button></div>
+                                                </Link>
+                                            }
+                                        </div>
+                                        <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
                                     </div>
                                 </div>
-
-                                <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
-                                <div className='d-flex flex-row gap-2'>
-                                    <p className='fw-bold d-flex align-items-center gap-1'>
-                                        <LuCalendarCheck className='text-primary fs-5' /> {formatDate(new Date(task.date))}
-                                    </p>
-                                    <p className='fw-bold d-flex align-items-center gap-1'>
-                                        <IoTimeSharp className='text-primary fs-5' /> {formatTime(task.time)}
-                                    </p >
-                                </div>
-
-
-                                <div className="d-flex align-items-center gap-2">
-                                   
-                                    {adminAccess(task?.classId) &&
-                                        <Link to={`/tasks/${task?.classId}/${task?.courseId}`}>
-                                            <div><button className='btn btn-dark rounded-1 cursorPointer'>Go to Task</button></div>
-                                        </Link>
-                                    }
-                                </div>
-                                <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
                             </div>
-                        </div>
-                    </div>
-                ))}
+                        ))
+                ) : (
+                    <p className='text-center mt-3'>No Tasks Found!</p>
+                )}
             </div>
         </div>
     );

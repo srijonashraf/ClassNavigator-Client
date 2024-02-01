@@ -4,12 +4,13 @@ import AppNavbar from './../components/shared/AppNavbar';
 import ContentStore from '../stores/ContentStore';
 
 const InCoursePage = () => {
-    const { FetchAllTasksRequest } = ContentStore();
+    const { FetchAllTasksRequest, FetchAllCoursesRequest } = ContentStore();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await FetchAllTasksRequest()
+                await FetchAllTasksRequest();
+                await FetchAllCoursesRequest();
 
             } catch (error) {
                 console.error("Error fetching data:", error);
