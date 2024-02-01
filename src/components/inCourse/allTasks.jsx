@@ -96,7 +96,7 @@ const AllTasks = () => {
                 <div className="form-group">
                     <label htmlFor="courseSelect" className='fw-bold'>Select Course:</label>
                     <select className="form-control rounded-1" id="courseSelect">
-                        {/!!* Fetch Course Name here and switch task based on course */}
+                        {/* Fetch Course Name here and switch task based on course */}
                         {FetchAllTasks && FetchAllTasks.map((task) => (
                             <option key={task._id} value={task._id}>{task._id}</option>
                         ))}
