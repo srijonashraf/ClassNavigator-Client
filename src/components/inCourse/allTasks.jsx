@@ -155,12 +155,10 @@ const AllTasks = () => {
 
 
                                         <div className="d-flex align-items-center gap-2">
-
-                                            {adminAccess(task?.classId) &&
-                                                <Link to={`/tasks/${task?.classId}/${task?.courseId}`}>
+                                            {/* Sending task id as a search param with the link to navigate to the task from target page */}
+                                                <Link to={`/tasks/${task?.classId}/${task?.courseId}?taskId=${task?._id}`}>
                                                     <div><button className='btn btn-dark rounded-1 cursorPointer'>Go to Task</button></div>
                                                 </Link>
-                                            }
                                         </div>
                                         <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
                                     </div>

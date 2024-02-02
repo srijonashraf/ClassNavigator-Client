@@ -13,6 +13,7 @@ import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import MoonLoader from "react-spinners/ClipLoader";
+import { useLocation } from 'react-router-dom';
 
 const Tasks = ({ TaskPageApiRefresh }) => {
 
@@ -28,6 +29,12 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
+
+    // //!Working Here
+    // const location = useLocation();
+    // const searchParams = new URLSearchParams(location.search);
+    // const taskId = searchParams.get('taskId');
+    // //!
 
     const navigate = useNavigate();
 
@@ -50,6 +57,21 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     useEffect(() => {
         setTasks(FetchAllTasksByCourse || null);
     }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
+
+    // //!Working Here
+    // useEffect(() => {
+    //     if (taskId) {
+    //         const targetElement = document.getElementById(taskId);
+    //         if (targetElement) {
+    //             targetElement.scrollIntoView({ behavior: 'smooth' });
+    //         }
+    //     }
+    // }, [taskId]);
+    // //!
+
+
+    // console.log(taskId);
+
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
     const completed = (TaskId) => completedTasks && completedTasks.includes(TaskId);
@@ -155,7 +177,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     <div key={task._id} className="col-md-6 mb-4">
                         <div className="card shadow-sm border border-light-subtle">
 
-                            <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
+                            <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
 
                                 {/* When task is marked as Done countdown will not show */}
                                 {!completedTasks.includes(task._id) ? (
