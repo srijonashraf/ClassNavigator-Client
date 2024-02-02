@@ -3,7 +3,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi"
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
-import { DeleteTask } from '../../apirequest/apiRequest';
+import { DeleteTask, TaskCompletion } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
@@ -12,6 +12,7 @@ import AddNewTasks from './addNewTasks';
 import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import MoonLoader from "react-spinners/ClipLoader";
 
 const Tasks = ({ TaskPageApiRefresh }) => {
 
@@ -21,9 +22,10 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [change, setChange] = useState('');
+    const [loadingSpinner, setLoadingSpinner] = useState(false);
 
     const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
-    const { AdminAccessClasses } = ProfileStore();
+    const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
 
@@ -50,6 +52,16 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
+    const completed = (TaskId) => completedTasks && completedTasks.includes(TaskId);
+
+    const handleTaskCompletion = async (classId, courseId, taskId) => {
+        setLoadingSpinner(true);
+        const response = await TaskCompletion(classId, courseId, taskId);
+        if (response) {
+            await ProfileDetailsRequest();
+            setLoadingSpinner(false);
+        }
+    }
 
     const handleShowAddNewTask = () => {
         setShowAddNewTask(!showAddNewTask)
@@ -130,7 +142,26 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
                             <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
                                 {renderCountdown(task)}
-                                <p className='btn btn-danger badge float-end'>{task?.status}</p>
+
+                                <div className='d-flex justify-content-between align-items-baseline my-2'>
+                                    <button onClick={() => handleTaskCompletion(task.classId, task.courseId, task._id)} className='btn btn-outline-secondary btn-sm rounded-1 d-flex gap-2'>
+                                        <MoonLoader
+                                            color={'#adadad'}
+                                            loading={loadingSpinner}
+                                            size={20}
+                                            aria-label="Loading Spinner"
+                                            data-testid="loader"
+                                        />
+                                        {completed(task._id) ? (
+                                            'Done'
+                                        ) : (
+                                            'Mark as Done'
+                                        )}
+                                    </button>
+
+
+                                    <p className='btn btn-danger badge'>{task?.status}</p>
+                                </div>
                                 <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
                                 <div className='mb-2'>
                                     <button className='btn btn-primary btn-sm rounded-1 float-end'>{task.type}</button>

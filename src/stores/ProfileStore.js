@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === "production") {
 const ProfileStore = create((set) => ({
   ProfileDetails: null,
   AdminAccessClasses: null,
+  completedTasks: null,
   ProfileDetailsRequest: async () => {
     let res = await axios.get(`${BASE_URL}/profileDetails`, {
       headers: { token: getToken() },
@@ -18,8 +19,9 @@ const ProfileStore = create((set) => ({
       set({
         ProfileDetails: res.data.data,
         AdminAccessClasses: res.data.data.adminAccessClasses,
+        completedTasks: res.data.data.completedTasks,
       });
-      // console.log(res.data.data);
+      // console.log('Profile Store:',res.data.data.completedTasks);
       // console.log(res.data.data.adminAccessClasses);
     }
   },

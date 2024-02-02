@@ -241,3 +241,20 @@ export const DeleteTask = async (classId, courseId, taskId) => {
     return false;
   }
 };
+
+
+export const TaskCompletion = async (classId, courseId, taskId) => {
+  const response = await axios.get(
+    `${BaseURL}/taskCompletionByUser/${classId}/${courseId}/${taskId}`,
+    {
+      headers: { token: getToken() },
+    }
+  );
+
+  // console.log('From ApiRequest:',response);
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+}

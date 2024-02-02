@@ -63,7 +63,7 @@ const ContentStore = create((set) => ({
         FetchAllTasksByCourse: res.data.data,
       });
 
-      console.log('From FetchAllTasksByCourse Store:',res.data.data);
+      // console.log('From FetchAllTasksByCourse Store:',res.data.data);
     }
   },
 
