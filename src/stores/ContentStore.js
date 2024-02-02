@@ -84,6 +84,31 @@ const ContentStore = create((set) => ({
     }
   },
 
+
+  FetchCompletedTaskByCourseRequest : async (classId, courseId) => {
+    let res = await axios.get(`${BASE_URL}/fetchCompletedTasksByCourse/${classId}/${courseId}`, {
+      headers: { token: getToken() },
+    });
+    if (res.data["status"] === "success") {
+      set({
+        FetchAllTasksByCourse: null,
+        FetchAllTasksByCourse: res.data.data,
+      });
+    }
+  },
+
+  FetchUnCompletedTaskByCourseRequest : async (classId, courseId) => {
+    let res = await axios.get(`${BASE_URL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`, {
+      headers: { token: getToken() },
+    });
+    if (res.data["status"] === "success") {
+      set({
+        FetchAllTasksByCourse: null,
+        FetchAllTasksByCourse: res.data.data,
+      });
+    }
+  },
+
   FetchAllCoursesRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllCourses`, {
       headers: { token: getToken() },

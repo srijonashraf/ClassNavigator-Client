@@ -24,7 +24,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const [change, setChange] = useState('');
     const [taskLoadingSpinner, setTaskLoadingSpinner] = useState(null);
 
-    const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
+    const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse, FetchCompletedTaskByCourseRequest, FetchUnCompletedTaskByCourseRequest } = ContentStore();
     const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
@@ -55,14 +55,29 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const completed = (TaskId) => completedTasks && completedTasks.includes(TaskId);
 
     const handleTaskCompletion = async (classId, courseId, taskId) => {
-       setTaskLoadingSpinner(taskId);
+        setTaskLoadingSpinner(taskId);
         const response = await TaskCompletion(classId, courseId, taskId);
         if (response) {
             await ProfileDetailsRequest();
         }
         setTaskLoadingSpinner(null);
     }
-    
+
+    const handleFilterTaskByCompletion = async (value) => {
+        if (value === 'all') {
+            await FetchAllTasksByCourseRequest(classId, courseId);
+        }
+
+        else if (value === 'done') {
+            await FetchCompletedTaskByCourseRequest(classId, courseId);
+        }
+
+        else if (value === 'undone') {
+            await FetchUnCompletedTaskByCourseRequest(classId, courseId);
+
+        }
+    }
+
     const handleShowAddNewTask = () => {
         setShowAddNewTask(!showAddNewTask)
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
@@ -141,7 +156,14 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                         <div className="card shadow-sm border border-light-subtle">
 
                             <div className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-                                {renderCountdown(task)}
+
+                                {/* When task is marked as Done countdown will not show */}
+                                {!completedTasks.includes(task._id) ? (
+                                    renderCountdown(task)
+                                ) : (
+                                    <></>
+                                )}
+
 
                                 <div className='d-flex justify-content-between align-items-baseline my-2'>
                                     <button onClick={() => handleTaskCompletion(task.classId, task.courseId, task._id)} className='btn btn-outline-secondary btn-sm rounded-1 d-flex gap-2'>
@@ -159,8 +181,13 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                         )}
                                     </button>
 
+                                    {/* When task is marked as Done task status will not show */}
+                                    {!completedTasks.includes(task._id) ? (
 
-                                    <p className='btn btn-danger badge'>{task?.status}</p>
+                                        <p className='btn btn-danger badge'>{task?.status}</p>
+                                    ) : (
+                                        <></>
+                                    )}
                                 </div>
                                 <Avatar name={task.type} className='bg-warning card-img-top w-100 rounded-top-2 mb-3' />
                                 <div className='mb-2'>
@@ -237,6 +264,14 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                 {adminAccess(classId) &&
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
+
+
+                <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select form-select-sm w-25 me-2 float-end' defaultValue="all">
+                    <option value="done">Complete</option>
+                    <option value="undone">In Complete</option>
+                    <option value="all">All</option>
+                </select>
+
                 <div className={`mb-4 ${showAddNewTask ? 'animated fadeInRight' : 'animated fadeOut'}`}>
                     {showAddNewTask && <AddNewTasks ShowAddNewTaskTrigger={handleShowAddNewTask} setProgress={setProgress} TaskApiRefresh={() => setChange(new Date().getTime())} />}
                 </div>
