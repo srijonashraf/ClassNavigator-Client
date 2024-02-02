@@ -22,7 +22,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [change, setChange] = useState('');
-    const [loadingSpinner, setLoadingSpinner] = useState(false);
+    const [taskLoadingSpinner, setTaskLoadingSpinner] = useState(null);
 
     const { FetchAllTasksByCourseRequest, FetchAllTasksByCourse } = ContentStore();
     const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
@@ -55,14 +55,14 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const completed = (TaskId) => completedTasks && completedTasks.includes(TaskId);
 
     const handleTaskCompletion = async (classId, courseId, taskId) => {
-        setLoadingSpinner(true);
+       setTaskLoadingSpinner(taskId);
         const response = await TaskCompletion(classId, courseId, taskId);
         if (response) {
             await ProfileDetailsRequest();
-            setLoadingSpinner(false);
         }
+        setTaskLoadingSpinner(null);
     }
-
+    
     const handleShowAddNewTask = () => {
         setShowAddNewTask(!showAddNewTask)
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top of the page
@@ -147,7 +147,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                     <button onClick={() => handleTaskCompletion(task.classId, task.courseId, task._id)} className='btn btn-outline-secondary btn-sm rounded-1 d-flex gap-2'>
                                         <MoonLoader
                                             color={'#adadad'}
-                                            loading={loadingSpinner}
+                                            loading={task?._id === taskLoadingSpinner ? true : false}
                                             size={20}
                                             aria-label="Loading Spinner"
                                             data-testid="loader"
