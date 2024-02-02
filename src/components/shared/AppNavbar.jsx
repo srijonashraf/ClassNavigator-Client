@@ -110,7 +110,7 @@ const AppNavbar = () => {
           <Offcanvas.Title>Class Navigator</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <ul className="list-group list-group-flush list-unstyled">
+          <ul className="list-group list-group-flush list-unstyled gap-2">
             <li>
               <NavLink
                 to="/dashboard"
