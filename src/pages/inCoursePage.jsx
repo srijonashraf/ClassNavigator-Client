@@ -18,7 +18,7 @@ const InCoursePage = () => {
         };
 
         fetchData();
-    }, [FetchAllTasksRequest]);
+    }, [FetchAllTasksRequest,FetchAllCoursesRequest]);
 
     return (
         <>

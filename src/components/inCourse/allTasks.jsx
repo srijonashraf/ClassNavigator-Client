@@ -19,7 +19,7 @@ const AllTasks = () => {
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [change, setChange] = useState('');
 
-    const { FetchAllTaskCommonStore, FetchAllTasksByCourseRequest, FetchAllCourses } = ContentStore();
+    const { FetchAllTaskCommonStore, FetchAllTasksByCourseRequest, FetchAllCourses, FetchAllTasksRequest } = ContentStore();
     const { AdminAccessClasses } = ProfileStore();
 
 
@@ -91,12 +91,18 @@ const AllTasks = () => {
             <div className="row justify-content-center">
                 <div className="form-group">
                     <label htmlFor="courseSelect" className='fw-bold'>Select Course:</label>
-                    <select onChange={(e) => handleTaskFilterByCourseOption(e.target.options[e.target.selectedIndex].getAttribute('data-class-id'), e.target.value)} className="form-control rounded-1" id="courseSelect">
-                        {FetchAllCourses && FetchAllCourses.map((task) => {
-                            return (
-                                <option key={task._id} value={task._id} data-class-id={task.classId}>{task.courseName}</option>
-                            );
-                        })}
+                    <select onChange={(e) => {
+                        const selectedValue = e.target.value;
+                        if (!selectedValue) {
+                            FetchAllTasksRequest();
+                        } else {
+                            handleTaskFilterByCourseOption(e.target.options[e.target.selectedIndex].getAttribute('data-class-id'), selectedValue);
+                        }
+                    }} className="form-control rounded-1" id="courseSelect">
+                        <option value="">Select a course</option>
+                        {FetchAllCourses && FetchAllCourses.map((task) => (
+                            <option key={task._id} value={task._id} data-class-id={task.classId}>{task.courseName}</option>
+                        ))}
                     </select>
                 </div>
 
