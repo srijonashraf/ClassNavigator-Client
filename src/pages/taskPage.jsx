@@ -18,7 +18,7 @@ const TaskPage = () => {
         const fetchData = async () => {
             try {
                 await ProfileDetailsRequest();
-                await FetchAllTasksByCourseRequest(classId, courseId);
+                // await FetchAllTasksByCourseRequest(classId, courseId); //!If Tasks not fetched properly then uncomment this
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

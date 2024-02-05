@@ -155,7 +155,6 @@ const AllTasks = () => {
 
 
                                         <div className="d-flex align-items-center gap-2">
-                                            {/* Sending task id as a search param with the link to navigate to the task from target page */}
                                                 <Link to={`/tasks/${task?.classId}/${task?.courseId}?taskId=${task?._id}`}>
                                                     <div><button className='btn btn-dark rounded-1 cursorPointer'>Go to Task</button></div>
                                                 </Link>

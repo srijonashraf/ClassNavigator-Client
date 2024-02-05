@@ -29,13 +29,9 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
-
-    // //!Working Here
-    // const location = useLocation();
-    // const searchParams = new URLSearchParams(location.search);
-    // const taskId = searchParams.get('taskId');
-    // //!
-
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const taskId = searchParams.get('taskId');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -58,19 +54,29 @@ const Tasks = ({ TaskPageApiRefresh }) => {
         setTasks(FetchAllTasksByCourse || null);
     }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
 
-    // //!Working Here
-    // useEffect(() => {
-    //     if (taskId) {
-    //         const targetElement = document.getElementById(taskId);
-    //         if (targetElement) {
-    //             targetElement.scrollIntoView({ behavior: 'smooth' });
-    //         }
-    //     }
-    // }, [taskId]);
-    // //!
 
+    //Need Improvement: Function should work inside useEffect with the dependencies as well
+    const handleScroll = () => {
+        if (taskId) {
+            const target = document.getElementById(taskId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                target.classList.add('blink_me');
 
-    // console.log(taskId);
+                // Set a timeout to remove the blink class after 3 seconds (adjust as needed)
+                setTimeout(() => {
+                    target.classList.remove('blink_me');
+                }, 1500); // 1500 milliseconds = 1.5 seconds
+            }
+        }
+    };
+
+    useEffect(() => {
+        handleScroll();
+    });
+
+    //Need Improvement: Function should work inside useEffect with the dependencies as well --end
+
 
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
@@ -286,6 +292,8 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                 {adminAccess(classId) &&
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
+
+                {/* <button onClick={handleScroll} className='btn btn-warning mx-3'>Scroll</button> */}
 
 
                 <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select form-select-sm w-25 me-2 float-end' defaultValue="all">
