@@ -61,15 +61,20 @@ const Tasks = ({ TaskPageApiRefresh }) => {
             const target = document.getElementById(taskId);
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
-                target.classList.add('blink_me');
-
-                // Set a timeout to remove the blink class after 3 seconds (adjust as needed)
+    
+                // Set a timeout to add the blink class after 500 milliseconds
                 setTimeout(() => {
-                    target.classList.remove('blink_me');
-                }, 1500); // 1500 milliseconds = 1.5 seconds
+                    target.classList.add('blink_me');
+    
+                    // Set a timeout to remove the blink class after 1.5 seconds (adjust as needed)
+                    setTimeout(() => {
+                        target.classList.remove('blink_me');
+                    }, 1500); // 1500 milliseconds = 1.5 seconds
+                }, 500); // 500 milliseconds = 0.5 seconds
             }
         }
     };
+    
 
     useEffect(() => {
         handleScroll();
