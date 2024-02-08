@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi"
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -29,9 +29,9 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const { AdminAccessClasses, completedTasks, ProfileDetailsRequest } = ProfileStore();
     const { classId } = useParams();
     const { courseId } = useParams();
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const taskId = searchParams.get('taskId');
+
+    const taskIdFromURL = useLocation().search.split('=')[1];
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -55,32 +55,31 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     }, [FetchAllTasksByCourse, AdminAccessClasses, change]);
 
 
-    //Need Improvement: Function should work inside useEffect with the dependencies as well
-    const handleScroll = () => {
-        if (taskId) {
-            const target = document.getElementById(taskId);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-    
-                // Set a timeout to add the blink class after 500 milliseconds
-                setTimeout(() => {
-                    target.classList.add('blink_me');
-    
-                    // Set a timeout to remove the blink class after 1.5 seconds (adjust as needed)
-                    setTimeout(() => {
-                        target.classList.remove('blink_me');
-                    }, 1500); // 1500 milliseconds = 1.5 seconds
-                }, 500); // 500 milliseconds = 0.5 seconds
-            }
-        }
-    };
-    
 
     useEffect(() => {
+        const handleScroll = () => {
+            if (taskIdFromURL) {
+                const target = document.getElementById(taskIdFromURL);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+
+                    // Set a timeout to add the blink class after 500 milliseconds
+                    setTimeout(() => {
+                        target.classList.add('blink_me');
+
+                        // Set a timeout to remove the blink class after 1.5 seconds (adjust as needed)
+                        setTimeout(() => {
+                            target.classList.remove('blink_me');
+                        }, 1500); // 1500 milliseconds = 1.5 seconds
+                    }, 500); // 500 milliseconds = 0.5 seconds
+                }
+            }
+        };
+
         handleScroll();
+
     });
 
-    //Need Improvement: Function should work inside useEffect with the dependencies as well --end
 
 
 

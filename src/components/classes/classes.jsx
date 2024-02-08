@@ -120,6 +120,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                     </div>
                 </div>
             ))}
+            {classes && classes.length === 0 && <p className='text-center'>No classes found</p>}
         </div>
     );
 };
