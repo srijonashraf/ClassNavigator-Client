@@ -125,6 +125,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
             const response = await DeleteTask(classId, courseId, taskId);
             if (response) {
                 TaskPageApiRefresh();
+                setChange(new Date().getTime());
                 successToast('Task Deleted');
             } else {
                 errorToast('Failed to Task Course');
@@ -269,7 +270,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                         </Link>
                                     }
                                 </div>
-                                <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
+                                <footer className='sm-text float-end mt-3 text-muted'>Updated: {task.editedAt ? new Date(task.editedAt).toLocaleString("en-AU") : "N/A"}</footer>
                             </div>
 
                         </div>
