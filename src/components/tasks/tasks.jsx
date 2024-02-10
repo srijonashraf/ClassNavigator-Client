@@ -13,6 +13,7 @@ import { LuCalendarCheck } from "react-icons/lu";
 import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import MoonLoader from "react-spinners/ClipLoader";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { useLocation } from 'react-router-dom';
 
 const Tasks = ({ TaskPageApiRefresh }) => {
@@ -177,6 +178,13 @@ const Tasks = ({ TaskPageApiRefresh }) => {
         );
     };
 
+    // const renderActionButton = () =>
+    // {
+    //     return(
+
+    //     )
+    // }
+
 
     const renderCourseCards = () => {
         return (
@@ -187,15 +195,16 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     // Todo Sort Pending wise
                     <div key={task._id} className="col-md-6 mb-4">
                         <div className="card shadow-sm border border-light-subtle">
-
                             <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-
-                                {/* When task is marked as Done countdown will not show */}
-                                {!completedTasks.includes(task._id) ? (
-                                    renderCountdown(task)
-                                ) : (
-                                    <></>
-                                )}
+                                <div className='d-flex justify-content-between'>
+                                    {/* When task is marked as Done countdown will not show */}
+                                    {!completedTasks.includes(task._id) ? (
+                                        renderCountdown(task)
+                                    ) : (
+                                        <></>
+                                    )}
+                                    <BsThreeDotsVertical />
+                                </div>
 
 
                                 <div className='d-flex justify-content-between align-items-baseline my-2'>
@@ -297,9 +306,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                 {adminAccess(classId) &&
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
-
-                {/* <button onClick={handleScroll} className='btn btn-warning mx-3'>Scroll</button> */}
-
 
                 <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select form-select-sm w-25 me-2 float-end' defaultValue="all">
                     <option value="done">Complete</option>
