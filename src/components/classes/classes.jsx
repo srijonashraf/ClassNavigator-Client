@@ -7,7 +7,7 @@ import AddNewClass from './addNewClass';
 import LoadingBarComponent from './../loading/loadingBar';
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
-import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest';
+import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
