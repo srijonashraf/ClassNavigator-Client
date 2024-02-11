@@ -1,0 +1,42 @@
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown toggle button */
+.dropdown-toggler {
+  background-color: #ffffff;
+  border:0;
+  color: #333333;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: -250%;
+  z-index: 1000;
+  display: block;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-top: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  list-style-type: none;
+  padding: 8px 0;
+}
+
+/* Dropdown menu items */
+.dropdown-menu li {
+  padding: 8px 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect on dropdown menu items */
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
