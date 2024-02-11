@@ -10,6 +10,7 @@ import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import DropdownMenu from './../shared/DropdownMenu';
 
 const Courses = ({ CourseAPIRefresh }) => {
     const [courses, setCourses] = useState(null);
@@ -66,28 +67,43 @@ const Courses = ({ CourseAPIRefresh }) => {
         }
     };
 
+    const handleMenuSelection = (selectedOption, classId, courseId) => {
+        // Perform action based on the selected item
+        switch (selectedOption) {
+            case 'Delete':
+                handleDeleteCourse(classId, courseId);
+                break;
+            case 'Edit':
+                handleShowAddNewCourse();
+                navigate(`/courses/${classId}/edit/${courseId}`)
+                break;
+            default:
+                break;
+        }
+    };
+
     const renderCourseCards = () => {
         return (
             courses && courses.sort((a, b) => a.courseCode.localeCompare(b.courseCode)).map((course, index) => (
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
+                            <div className='mb-3 float-end'>
+                                {adminAccess(course.classId) && (
+                                    <DropdownMenu
+                                        menuItems={['Delete', 'Edit']}
+                                        onSelect={(selectedOption) => {
+                                            handleMenuSelection(selectedOption, course.classId, course._id);
+                                        }}
+                                    />
+                                )}
+                            </div>
                             <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'>
                                 <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' /></Link>
                             <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'><p className="card-title cursorPointer fw-bold fs-5 mt-3 title-color">{course.courseName}</p></Link>
                             <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
                             {/* <p>Class ID: {course.classId}</p> */}
                             <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
-                            <div className="d-flex align-items-center gap-2">
-                                {adminAccess(course.classId) &&
-                                    <MdDeleteOutline onClick={() => handleDeleteCourse(course.classId, course._id)} className='fs-4 text-danger cursorPointer' />
-                                }
-                                {adminAccess(course.classId) &&
-                                    <Link to={`/courses/${classId}/edit/${course._id}`}>
-                                        <div><FiEdit onClick={handleShowAddNewCourse} className='fs-5 text-primary cursorPointer' /></div>
-                                    </Link>
-                                }
-                            </div>
                         </div>
                     </div>
                 </div>

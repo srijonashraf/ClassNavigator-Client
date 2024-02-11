@@ -14,6 +14,7 @@ import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import MoonLoader from "react-spinners/ClipLoader";
 import { useLocation } from 'react-router-dom';
+import DropdownMenu from './../shared/DropdownMenu';
 
 const Tasks = ({ TaskPageApiRefresh }) => {
 
@@ -137,6 +138,23 @@ const Tasks = ({ TaskPageApiRefresh }) => {
         }
     };
 
+    const handleMenuSelection = (selectedOption, classId, courseId, taskId) => {
+        // Perform action based on the selected item
+        switch (selectedOption) {
+            case 'Delete':
+                handleDeleteTask(classId, courseId, taskId);
+                break;
+            case 'Edit':
+                handleShowAddNewTask();
+                navigate(`/tasks/${classId}/${courseId}/edit/${taskId}`)
+                break;
+            default:
+                break;
+        }
+    };
+
+
+
     function formatDate(date) {
         const options = { weekday: 'short', day: '2-digit', month: 'short', year: '2-digit' };
         return date.toLocaleDateString('en-GB', options);
@@ -190,6 +208,17 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
                             <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
 
+                                <div className='float-end'>
+                                    {adminAccess(task.classId) && (
+                                        <DropdownMenu
+                                            menuItems={['Delete', 'Edit']}
+                                            onSelect={(selectedOption) => {
+                                                handleMenuSelection(selectedOption, task.classId, task.courseId, task._id);
+                                            }}
+                                        />
+                                    )}
+                                </div>
+
                                 {/* When task is marked as Done countdown will not show */}
                                 {!completedTasks.includes(task._id) ? (
                                     renderCountdown(task)
@@ -197,8 +226,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                     <></>
                                 )}
 
-
-                                <div className='d-flex justify-content-between align-items-baseline my-2'>
+                                <div className='d-flex justify-content-between align-items-baseline my-3'>
                                     <button onClick={() => handleTaskCompletion(task.classId, task.courseId, task._id)} className='btn btn-outline-secondary btn-sm rounded-1 d-flex gap-2'>
                                         <MoonLoader
                                             color={'#adadad'}
@@ -257,19 +285,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                         <IoTimeSharp className='text-primary fs-5' /> {formatTime(task.time)}
                                     </p >
                                 </div>
-
-
-                                <div className="d-flex align-items-center gap-2">
-                                    {adminAccess(classId) &&
-                                        <MdDeleteOutline onClick={() => handleDeleteTask(classId, courseId, task._id)} className='fs-4 text-danger cursorPointer' />
-
-                                    }
-                                    {adminAccess(classId) &&
-                                        <Link to={`/tasks/${classId}/${courseId}/edit/${task._id}`}>
-                                            <div><FiEdit onClick={handleShowAddNewTask} className='fs-5 text-primary cursorPointer' /></div>
-                                        </Link>
-                                    }
-                                </div>
                                 <footer className='sm-text float-end mt-3 text-muted'>Updated: {task.editedAt ? new Date(task.editedAt).toLocaleString("en-AU") : "N/A"}</footer>
                             </div>
 
@@ -298,10 +313,8 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
 
-                {/* <button onClick={handleScroll} className='btn btn-warning mx-3'>Scroll</button> */}
 
-
-                <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select form-select-sm w-25 me-2 float-end' defaultValue="all">
+                <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select mb-2 form-select-sm w-25 me-2 float-end' defaultValue="all">
                     <option value="done">Complete</option>
                     <option value="undone">In Complete</option>
                     <option value="all">All</option>
