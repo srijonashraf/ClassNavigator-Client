@@ -5,6 +5,11 @@
   font-family: Poppins, sans-serif;
 }
 
+p{
+  margin: 0 !important;
+}
+
+
 .sm-text {
   font-size: 12px;
 }
@@ -44,9 +49,6 @@
   min-height: 200px;
 }
 
-/* .m-less{
-    margin-bottom: -15px;
-} */
 
 .bg-expired {
   position: relative;
