@@ -144,8 +144,6 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 <p className="card-title cursorPointer fw-bold fs-5 title-color">{classItem.className}</p>
                             </Link>
                             <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
-                            <p className="badge bg-danger  card-footer  cursorPointer" onClick={() => handleClassAction(classItem.classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')}><ImExit /> Unenroll</p>
-
                         </div>
                     </div>
                 </div>
