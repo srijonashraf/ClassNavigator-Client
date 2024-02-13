@@ -9,7 +9,8 @@ import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiReq
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
-import DropDownMenu from './../shared/DropdownMenu';
+import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { Dropdown} from 'antd';
 
 const Classes = ({ DashboardAPIRefresh }) => {
     const [copiedIndex, setCopiedIndex] = useState(null);
@@ -52,6 +53,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
             const response = await actionFunc(classId);
             if (response) {
                 DashboardAPIRefresh();
+                setClassEnrollmentSearchValue('');
                 successToast(successMessage);
             } else {
                 errorToast('Wrong Class Id');
@@ -66,20 +68,37 @@ const Classes = ({ DashboardAPIRefresh }) => {
 
     const handleMenuSelection = (selectedOption, classId) => {
         switch (selectedOption) {
-            case 'Delete':
-                handleClassAction(classId, DeleteClass, 'Class Deleted', 'Error Deleting Class');
-                break;
-            case 'Edit':
+            case '1':
                 handleShowAddNewClass();
                 navigate(`/classes/edit/${classId}`)
                 break;
-            case 'Unenroll':
+            case '2':
+                handleClassAction(classId, DeleteClass, 'Class Deleted', 'Error Deleting Class');
+                break;
+            case '3':
                 handleClassAction(classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')
             default:
                 break;
         }
     };
 
+    const items = [
+        {
+            key: '1',
+            label: 'Edit',
+            icon: <EditOutlined />,
+        },
+        {
+            key: '2',
+            label: 'Delete',
+            icon: <DeleteOutlined />,
+        },
+        {
+            key: '3',
+            label: 'Unenroll',
+            icon: <CloseCircleOutlined />,
+        }
+    ];
 
 
     return (
@@ -120,12 +139,17 @@ const Classes = ({ DashboardAPIRefresh }) => {
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
                             <div className='mb-3 float-end'>
-                                <DropDownMenu
-                                    menuItems={adminAccess(classItem.classId) ? ['Delete', 'Edit', 'Unenroll'] : ['Unenroll']}
-                                    onSelect={(selectedOption) => {
-                                        handleMenuSelection(selectedOption, classItem.classId);
+                                <Dropdown
+                                    menu={{
+                                        items: adminAccess(classItem.classId) ? items : items.slice(2),
+                                        selectable: false,
+                                        onClick: (info) => {
+                                            handleMenuSelection(info.key, classItem.classId);
+                                        },
                                     }}
-                                />
+                                >
+                                    <MoreOutlined className='cursorPointer' />
+                                </Dropdown>
                             </div>
                             <Link className='nav-link' to={`/courses/${classItem.classId}`}>
                                 <Avatar name={classItem.className} className='bg-primary w-100 rounded-top-2' />

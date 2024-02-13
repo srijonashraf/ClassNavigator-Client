@@ -8,7 +8,8 @@ import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
 import Avatar from 'react-avatar';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import DropdownMenu from './../shared/DropdownMenu';
+import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { Dropdown } from 'antd';
 
 const Courses = ({ CourseAPIRefresh }) => {
     const [courses, setCourses] = useState(null);
@@ -43,6 +44,19 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
 
+    const items = [
+        {
+            key: '1',
+            label: 'Edit',
+            icon: <EditOutlined />,
+        },
+        {
+            key: '2',
+            label: 'Delete',
+            icon: <DeleteOutlined />,
+        },
+    ];
+
     const handleShowAddNewCourse = () => {
         setShowAddNewCourse(!showAddNewCourse);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,12 +81,12 @@ const Courses = ({ CourseAPIRefresh }) => {
 
     const handleMenuSelection = (selectedOption, classId, courseId) => {
         switch (selectedOption) {
-            case 'Delete':
-                handleDeleteCourse(classId, courseId);
-                break;
-            case 'Edit':
+            case '1':
                 handleShowAddNewCourse();
                 navigate(`/courses/${classId}/edit/${courseId}`)
+                break;
+            case '2':
+                handleDeleteCourse(classId, courseId);
                 break;
             default:
                 break;
@@ -87,12 +101,17 @@ const Courses = ({ CourseAPIRefresh }) => {
                         <div className="card-body">
                             <div className='mb-3 float-end'>
                                 {adminAccess(course.classId) && (
-                                    <DropdownMenu
-                                        menuItems={['Delete', 'Edit']}
-                                        onSelect={(selectedOption) => {
-                                            handleMenuSelection(selectedOption, course.classId, course._id);
+                                    <Dropdown
+                                        menu={{
+                                            items,
+                                            selectable: false,
+                                            onClick: (info) => {
+                                                handleMenuSelection(info.key, course.classId, course._id);
+                                            },
                                         }}
-                                    />
+                                    >
+                                        <MoreOutlined className='cursorPointer' />
+                                    </Dropdown>
                                 )}
                             </div>
                             <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'>

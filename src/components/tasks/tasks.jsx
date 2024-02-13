@@ -12,7 +12,8 @@ import { IoTimeSharp } from "react-icons/io5";
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import MoonLoader from "react-spinners/ClipLoader";
 import { useLocation } from 'react-router-dom';
-import DropdownMenu from './../shared/DropdownMenu';
+import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { Dropdown } from 'antd';
 
 const Tasks = ({ TaskPageApiRefresh }) => {
 
@@ -79,7 +80,18 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
     });
 
-
+    const items = [
+        {
+            key: '1',
+            label: 'Edit',
+            icon: <EditOutlined />,
+        },
+        {
+            key: '2',
+            label: 'Delete',
+            icon: <DeleteOutlined />,
+        },
+    ];
 
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
@@ -138,12 +150,12 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
     const handleMenuSelection = (selectedOption, classId, courseId, taskId) => {
         switch (selectedOption) {
-            case 'Delete':
-                handleDeleteTask(classId, courseId, taskId);
-                break;
-            case 'Edit':
+            case '1':
                 handleShowAddNewTask();
                 navigate(`/tasks/${classId}/${courseId}/edit/${taskId}`)
+                break;
+            case '2':
+                handleDeleteTask(classId, courseId, taskId);
                 break;
             default:
                 break;
@@ -201,15 +213,19 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                         <div className="card shadow-sm border border-light-subtle">
 
                             <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-
                                 <div className='float-end'>
                                     {adminAccess(task.classId) && (
-                                        <DropdownMenu
-                                            menuItems={['Delete', 'Edit']}
-                                            onSelect={(selectedOption) => {
-                                                handleMenuSelection(selectedOption, task.classId, task.courseId, task._id);
+                                        <Dropdown
+                                            menu={{
+                                                items,
+                                                selectable: false,
+                                                onClick: (info) => {
+                                                    handleMenuSelection(info.key, task.classId, task.courseId, task._id);
+                                                },
                                             }}
-                                        />
+                                        >
+                                            <MoreOutlined className='cursorPointer' />
+                                        </Dropdown>
                                     )}
                                 </div>
 
