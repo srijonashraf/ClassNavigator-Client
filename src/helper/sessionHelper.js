@@ -1,10 +1,20 @@
+import Cookies from "js-cookie";
+
 class SessionHelper {
-  setToken(token) {
-    localStorage.setItem("token", token);
+  setAccessToken(accessToken) {
+    localStorage.setItem("accessToken", accessToken);
   }
 
-  getToken() {
-    return localStorage.getItem("token");
+  getAccessToken() {
+    return localStorage.getItem("accessToken");
+  }
+
+  setRefreshToken(refreshToken) {
+    localStorage.setItem("refreshToken", refreshToken);
+  }
+
+  getRefreshToken() {
+    return localStorage.getItem("refreshToken");
   }
 
   setLoggedIn(value) {
@@ -17,15 +27,18 @@ class SessionHelper {
 
   clearSessions() {
     localStorage.clear();
+    Cookies.remove("refreshToken");
+    Cookies.remove("accessToken");
     window.location.href = "/";
   }
 }
 
 export const {
-  setToken,
-  getToken,
+  setAccessToken,
+  getAccessToken,
+  setRefreshToken,
+  getRefreshToken,
   setLoggedIn,
   getLoggedIn,
-
   clearSessions,
 } = new SessionHelper();

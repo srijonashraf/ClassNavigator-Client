@@ -1,6 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
-import { getToken } from "../helper/sessionHelper";
+import { clearSessions, getAccessToken } from "../helper/sessionHelper";
+import Cookies from "js-cookie";
 
 let BASE_URL = "";
 if (process.env.NODE_ENV === "production") {
@@ -9,6 +10,34 @@ if (process.env.NODE_ENV === "production") {
   BASE_URL = "http://localhost:4500/api/v1";
 }
 
+axios.interceptors.response.use(
+  function(response) {
+    return response;
+  },
+  function(error) {
+    if (error.response && error.response.status === 401) {
+      clearSessions();
+    }
+    return Promise.reject(error);
+  }
+);
+
+const AutomaticallyRefreshToken = async () => {
+  const response = await axios.post(`${BaseURL}/refreshToken`, {
+    refreshToken: Cookies.get("refreshToken"),
+  });
+  
+  if (response.data.status === "success") {
+    setAccessToken(response.data.accessToken);
+    setRefreshToken(response.data.refreshToken);
+    Cookies.set("accessToken", response.data.accessToken);
+    Cookies.set("refreshToken", response.data.refreshToken);
+  }
+}
+
+setInterval(AutomaticallyRefreshToken, 15 * 60 * 1000);
+
+
 const ContentStore = create((set) => ({
   FetchAllTogether: null,
   FetchAllCoursesByClass: null,
@@ -16,11 +45,11 @@ const ContentStore = create((set) => ({
   FetchAllTasks: null,
   FetchAllCourses: null,
 
-  FetchAllTaskCommonStore : null, //Applied for allTasks.jsx [By Landing will fetch all the tasks but when any class is selected then it will fetch all the tasks of that class and store here]
+  FetchAllTaskCommonStore: null, //Applied for allTasks.jsx [By Landing will fetch all the tasks but when any class is selected then it will fetch all the tasks of that class and store here]
 
   FetchAllTogetherRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTogether`, {
-      headers: { token: getToken() },
+      headers: { token: getAccessToken() },
     });
     if (res.data["status"] === "success") {
       set({
@@ -34,7 +63,7 @@ const ContentStore = create((set) => ({
 
   FetchAllCoursesByClassRequest: async (classId) => {
     let res = await axios.get(`${BASE_URL}/fetchAllCoursesByClass/${classId}`, {
-      headers: { token: getToken() },
+      headers: { token: getAccessToken() },
     });
 
     if (res.data["status"] === "success") {
@@ -51,7 +80,7 @@ const ContentStore = create((set) => ({
     let res = await axios.get(
       `${BASE_URL}/fetchAllTasksByCourse/${classId}/${courseId}`,
       {
-        headers: { token: getToken() },
+        headers: { token: getAccessToken() },
       }
     );
 
@@ -59,7 +88,7 @@ const ContentStore = create((set) => ({
       set({
         FetchAllTasksByCourse: null,
         FetchAllTaskCommonStore: null,
-        FetchAllTaskCommonStore:res.data.data,
+        FetchAllTaskCommonStore: res.data.data,
         FetchAllTasksByCourse: res.data.data,
       });
 
@@ -69,14 +98,14 @@ const ContentStore = create((set) => ({
 
   FetchAllTasksRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTasks`, {
-      headers: { token: getToken() },
+      headers: { token: getAccessToken() },
     });
 
     if (res.data["status"] === "success") {
       set({
         FetchAllTasks: null,
-        FetchAllTaskCommonStore:null,
-        FetchAllTaskCommonStore:res.data.data,
+        FetchAllTaskCommonStore: null,
+        FetchAllTaskCommonStore: res.data.data,
         FetchAllTasks: res.data.data,
       });
 
@@ -84,11 +113,13 @@ const ContentStore = create((set) => ({
     }
   },
 
-
-  FetchCompletedTaskByCourseRequest : async (classId, courseId) => {
-    let res = await axios.get(`${BASE_URL}/fetchCompletedTasksByCourse/${classId}/${courseId}`, {
-      headers: { token: getToken() },
-    });
+  FetchCompletedTaskByCourseRequest: async (classId, courseId) => {
+    let res = await axios.get(
+      `${BASE_URL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
+      {
+        headers: { token: getAccessToken() },
+      }
+    );
     if (res.data["status"] === "success") {
       set({
         FetchAllTasksByCourse: null,
@@ -97,10 +128,13 @@ const ContentStore = create((set) => ({
     }
   },
 
-  FetchUnCompletedTaskByCourseRequest : async (classId, courseId) => {
-    let res = await axios.get(`${BASE_URL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`, {
-      headers: { token: getToken() },
-    });
+  FetchUnCompletedTaskByCourseRequest: async (classId, courseId) => {
+    let res = await axios.get(
+      `${BASE_URL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
+      {
+        headers: { token: getAccessToken() },
+      }
+    );
     if (res.data["status"] === "success") {
       set({
         FetchAllTasksByCourse: null,
@@ -111,7 +145,7 @@ const ContentStore = create((set) => ({
 
   FetchAllCoursesRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllCourses`, {
-      headers: { token: getToken() },
+      headers: { token: getAccessToken() },
     });
     if (res.data["status"] === "success") {
       set({
@@ -120,7 +154,7 @@ const ContentStore = create((set) => ({
       });
       // console.log('Fetch All Courses:',res.data.data);
     }
-  }
+  },
 }));
 
 export default ContentStore;

@@ -1,6 +1,6 @@
-import { getToken } from "../../helper/sessionHelper";
+import { getAccessToken } from "../../helper/sessionHelper";
 //Checking if user is logged in or not
 export default function useAuth() {
-  const auth = getToken();
+  const auth = getAccessToken();
   return auth ? true : false;
 }
