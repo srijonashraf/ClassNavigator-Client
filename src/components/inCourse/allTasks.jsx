@@ -145,7 +145,7 @@ const AllTasks = () => {
 
                                         <div className="d-flex align-items-center gap-2">
                                             <Link to={`/tasks/${task?.classId}/${task?.courseId}?taskId=${task?._id}`}>
-                                                <div><button className='btn btn-dark rounded-1 cursorPointer my-2'>Go to Task</button></div>
+                                                <div><button className='btn btn-dark rounded-1 cursorPointer mt-2'>Go to Task</button></div>
                                             </Link>
                                         </div>
                                         <footer className='sm-text float-end mt-3 text-muted'>Edited: {new Date(task.updatedAt).toLocaleString("en-AU")}</footer>
