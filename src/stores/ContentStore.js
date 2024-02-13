@@ -23,17 +23,19 @@ axios.interceptors.response.use(
 );
 
 const AutomaticallyRefreshToken = async () => {
-  const response = await axios.post(`${BaseURL}/refreshToken`, {
-    refreshToken: Cookies.get("refreshToken"),
-  });
-  
-  if (response.data.status === "success") {
-    setAccessToken(response.data.accessToken);
-    setRefreshToken(response.data.refreshToken);
-    Cookies.set("accessToken", response.data.accessToken);
-    Cookies.set("refreshToken", response.data.refreshToken);
+  if (getAccessToken()) {
+    const response = await axios.post(`${BaseURL}/refreshToken`, {
+      refreshToken: Cookies.get("refreshToken"),
+    });
+
+    if (response.data.status === "success") {
+      setAccessToken(response.data.accessToken);
+      setRefreshToken(response.data.refreshToken);
+      Cookies.set("accessToken", response.data.accessToken);
+      Cookies.set("refreshToken", response.data.refreshToken);
+    }
   }
-}
+};
 
 setInterval(AutomaticallyRefreshToken, 15 * 60 * 1000);
 
