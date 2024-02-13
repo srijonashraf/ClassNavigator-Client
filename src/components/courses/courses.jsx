@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { MdDeleteOutline } from "react-icons/md";
-import { FiEdit } from "react-icons/fi"
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import AddNewCourses from './addNewCourses';
@@ -68,7 +66,6 @@ const Courses = ({ CourseAPIRefresh }) => {
     };
 
     const handleMenuSelection = (selectedOption, classId, courseId) => {
-        // Perform action based on the selected item
         switch (selectedOption) {
             case 'Delete':
                 handleDeleteCourse(classId, courseId);
@@ -102,7 +99,6 @@ const Courses = ({ CourseAPIRefresh }) => {
                                 <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' /></Link>
                             <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'><p className="card-title cursorPointer fw-bold fs-5 mt-3 title-color">{course.courseName}</p></Link>
                             <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
-                            {/* <p>Class ID: {course.classId}</p> */}
                             <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
                         </div>
                     </div>

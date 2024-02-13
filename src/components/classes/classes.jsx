@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineContentCopy, MdLibraryAdd } from "react-icons/md";
-import { ImExit } from "react-icons/im";
 import { Link, useNavigate } from 'react-router-dom';
 import AddNewClass from './addNewClass';
 import LoadingBarComponent from './../loading/loadingBar';
@@ -64,9 +63,8 @@ const Classes = ({ DashboardAPIRefresh }) => {
     };
 
 
-    // Function to handle dropdown menu selection
+
     const handleMenuSelection = (selectedOption, classId) => {
-        // Perform action based on the selected item
         switch (selectedOption) {
             case 'Delete':
                 handleClassAction(classId, DeleteClass, 'Class Deleted', 'Error Deleting Class');

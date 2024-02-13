@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MdDeleteOutline } from "react-icons/md";
-import { FiEdit } from "react-icons/fi"
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import { DeleteTask, TaskCompletion } from '../../apirequest/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
@@ -139,7 +137,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     };
 
     const handleMenuSelection = (selectedOption, classId, courseId, taskId) => {
-        // Perform action based on the selected item
         switch (selectedOption) {
             case 'Delete':
                 handleDeleteTask(classId, courseId, taskId);
@@ -152,8 +149,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                 break;
         }
     };
-
-
 
     function formatDate(date) {
         const options = { weekday: 'short', day: '2-digit', month: 'short', year: '2-digit' };
@@ -194,7 +189,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
         );
     };
-
 
     const renderCourseCards = () => {
         return (
