@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import { clearSessions, getAccessToken, setAccessToken } from "../helper/sessionHelper";
+import { clearSessions, getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "../helper/sessionHelper";
 import Cookies from "js-cookie";
 
 let BASE_URL = "";
@@ -22,23 +22,6 @@ if (process.env.NODE_ENV === "production") {
 //   }
 // );
 
-const AutomaticallyRefreshToken = async () => {
-  if (getAccessToken()) {
-    const response = await axios.post(`${BASE_URL}/refreshToken`, {
-      refreshToken: Cookies.get("refreshToken"),
-    });
-
-    if (response.data.status === "success") {
-      setAccessToken(response.data.accessToken);
-      setRefreshToken(response.data.refreshToken);
-      Cookies.set("accessToken", response.data.accessToken);
-      Cookies.set("refreshToken", response.data.refreshToken);
-    }
-  }
-};
-
-setInterval(AutomaticallyRefreshToken, 15 * 60 * 1000);
-
 const ProfileStore = create((set) => ({
   ProfileDetails: null,
   AdminAccessClasses: null,
@@ -48,7 +31,6 @@ const ProfileStore = create((set) => ({
       headers: { token: getAccessToken() },
     });
 
-    console.log(getAccessToken());
     if (res.data["status"] === "success") {
       set({
         ProfileDetails: res.data.data,

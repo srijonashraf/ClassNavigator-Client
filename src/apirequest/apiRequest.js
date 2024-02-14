@@ -5,6 +5,7 @@ import {
   setRefreshToken,
   getAccessToken,
   clearSessions,
+  getRefreshToken,
 } from "../helper/sessionHelper.js";
 let BaseURL = "";
 
@@ -29,10 +30,10 @@ if (process.env.NODE_ENV === "production") {
 //   }
 // );
 
-const AutomaticallyRefreshToken = async () => {
+const AutoRefreshTokens = async () => {
   if (getAccessToken()) {
     const response = await axios.post(`${BaseURL}/refreshToken`, {
-      refreshToken: Cookies.get("refreshToken"),
+      refreshToken: getRefreshToken(),
     });
 
     if (response.data.status === "success") {
@@ -44,17 +45,15 @@ const AutomaticallyRefreshToken = async () => {
   }
 };
 
-setInterval(AutomaticallyRefreshToken, 15 * 60 * 1000);
+setInterval(AutoRefreshTokens, 1 * 60 * 1000);
 
 export const Login = async (data) => {
   const response = await axios.post(`${BaseURL}/login`, data);
   if (response.data.status === "success") {
     setAccessToken(response.data.accessToken);
     setRefreshToken(response.data.refreshToken);
-    Cookies.set("refreshToken", response.data.refreshToken);
     Cookies.set("accessToken", response.data.accessToken);
-
-    console.log(getAccessToken());
+    Cookies.set("refreshToken", response.data.refreshToken);
     return response;
   } else {
     return false;
@@ -72,6 +71,7 @@ export const Register = async (data) => {
 };
 
 export const ProfileDetails = async () => {
+  console.log(getAccessToken());
   const response = await axios.get(`${BaseURL}/profileDetails`, {
     headers: { token: getAccessToken() },
   });

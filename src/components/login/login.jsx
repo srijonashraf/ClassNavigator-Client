@@ -1,6 +1,7 @@
 import React from 'react';
 import { Login as LoginApi } from "../../apirequest/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
+import { getAccessToken } from '../../helper/sessionHelper.js';
 
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
 
 
     const loginRequest = async (e) => {
+        //!!ErrorToast is not showing
         e.preventDefault();
         if (formValue.userId.length === 0 || formValue.password.length === 0) {
             errorToast("Please enter all the fields");
@@ -20,6 +22,7 @@ const Login = () => {
             if (response) {
                 successToast('Login Successful');
                 window.location.href = '/dashboard';
+                // console.log(getAccessToken());
             } else {
                 errorToast('Wrong Credentials!');
             }
