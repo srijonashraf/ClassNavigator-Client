@@ -18,17 +18,17 @@ if (process.env.NODE_ENV === "production") {
 // Now you can use the BaseURL in your application
 // console.log("Base URL:", BaseURL);
 
-// axios.interceptors.response.use(
-//   function (response) {
-//     return response;
-//   },
-//   function (error) {
-//     if (error.response && error.response.status === 401) {
-//       clearSessions();
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response && error.response.status === 401) {
+      clearSessions();
+    }
+    return Promise.reject(error);
+  }
+);
 
 const AutoRefreshTokens = async () => {
   if (getAccessToken()) {
@@ -45,10 +45,14 @@ const AutoRefreshTokens = async () => {
   }
 };
 
+//Token will refresh after every 15 minutes
 setInterval(AutoRefreshTokens, 1 * 60 * 1000);
 
 export const Login = async (data) => {
   const response = await axios.post(`${BaseURL}/login`, data);
+  if (response.status === 404) {
+    return false;
+  }
   if (response.data.status === "success") {
     setAccessToken(response.data.accessToken);
     setRefreshToken(response.data.refreshToken);
