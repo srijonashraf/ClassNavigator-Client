@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-import { clearSessions, getAccessToken } from "../helper/sessionHelper";
+import { clearSessions, getAccessToken, setAccessToken } from "../helper/sessionHelper";
 import Cookies from "js-cookie";
 
 let BASE_URL = "";
@@ -10,21 +10,21 @@ if (process.env.NODE_ENV === "production") {
   BASE_URL = "http://localhost:4500/api/v1";
 }
 
-axios.interceptors.response.use(
-  function(response) {
-    return response;
-  },
-  function(error) {
-    if (error.response && error.response.status === 401) {
-      clearSessions();
-    }
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   function(response) {
+//     return response;
+//   },
+//   function(error) {
+//     if (error.response && error.response.status === 401) {
+//       clearSessions();
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 const AutomaticallyRefreshToken = async () => {
   if (getAccessToken()) {
-    const response = await axios.post(`${BaseURL}/refreshToken`, {
+    const response = await axios.post(`${BASE_URL}/refreshToken`, {
       refreshToken: Cookies.get("refreshToken"),
     });
 

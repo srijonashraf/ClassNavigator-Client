@@ -17,17 +17,17 @@ if (process.env.NODE_ENV === "production") {
 // Now you can use the BaseURL in your application
 // console.log("Base URL:", BaseURL);
 
-axios.interceptors.response.use(
-  function (response) {
-    return response;
-  },
-  function (error) {
-    if (error.response && error.response.status === 401) {
-      clearSessions();
-    }
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   function (response) {
+//     return response;
+//   },
+//   function (error) {
+//     if (error.response && error.response.status === 401) {
+//       clearSessions();
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 const AutomaticallyRefreshToken = async () => {
   if (getAccessToken()) {
@@ -53,6 +53,8 @@ export const Login = async (data) => {
     setRefreshToken(response.data.refreshToken);
     Cookies.set("refreshToken", response.data.refreshToken);
     Cookies.set("accessToken", response.data.accessToken);
+
+    console.log(getAccessToken());
     return response;
   } else {
     return false;
