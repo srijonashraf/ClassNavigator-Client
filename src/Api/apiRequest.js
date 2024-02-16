@@ -4,10 +4,9 @@ import {
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
-  setSessionExpire,
 } from "../helper/SessionHelper.js";
 import { axiosHeader, getBaseURL } from "../helper/FunctionHelper.js";
-import { LogoutWhenSessionExpired } from './../helper/FunctionHelper';
+import { LogoutWhenSessionExpired } from "./../helper/FunctionHelper";
 let BaseURL = getBaseURL();
 
 // Now you can use the BaseURL in your application
@@ -47,7 +46,6 @@ export const Login = async (data) => {
     Cookies.set("refreshToken", response.data.refreshToken);
     setAccessToken(response.data.accessToken);
     setRefreshToken(response.data.refreshToken);
-    setSessionExpire(false);
     return response;
   } else {
     return false;
@@ -55,11 +53,15 @@ export const Login = async (data) => {
 };
 
 export const Logout = async () => {
-  const response = await axios.post(`${BaseURL}/logout`, axiosHeader());
-  console.log(response);
-  if (response.data.status === "success") {
-    return response;
-  } else {
+  try {
+    const response = await axios.get(`${BaseURL}/logout`);
+    if (response.data.status === "success") {
+      return response;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Logout failed:", error);
     return false;
   }
 };

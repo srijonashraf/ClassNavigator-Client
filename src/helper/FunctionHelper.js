@@ -1,13 +1,6 @@
 import axios from "axios";
-import {
-  clearSessions,
-  getAccessToken,
-  setSessionExpire,
-} from "./SessionHelper.js";
+import { clearSessions, getAccessToken } from "./SessionHelper.js";
 import Cookies from "js-cookie";
-import { Toaster } from "react-hot-toast";
-import { errorToast } from "./ToasterHelper.js";
-
 export const getBaseURL = () => {
   if (process.env.NODE_ENV === "production") {
     return "https://classnavigator-srijonashraf.vercel.app/api/v1";

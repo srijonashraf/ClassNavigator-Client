@@ -12,6 +12,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { CiLogout } from "react-icons/ci";
 import Avatar from "react-avatar";
 import ProfileStore from './../../stores/ProfileStore';
+
 const AppNavbar = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -156,7 +157,7 @@ const AppNavbar = () => {
                 Link Library
               </NavLink>
             </li> */}
-{/* 
+            {/* 
             <li>
               <NavLink
                 to="/profile"
