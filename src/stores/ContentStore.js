@@ -1,7 +1,5 @@
 import axios from "axios";
 import { create } from "zustand";
-import { clearSessions, getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "../helper/sessionHelper";
-import Cookies from "js-cookie";
 
 let BASE_URL = "";
 if (process.env.NODE_ENV === "production") {
@@ -9,19 +7,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
   BASE_URL = "http://localhost:4500/api/v1";
 }
-
-// axios.interceptors.response.use(
-//   function(response) {
-//     return response;
-//   },
-//   function(error) {
-//     if (error.response && error.response.status === 401) {
-//       clearSessions();
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
 
 const ContentStore = create((set) => ({
   FetchAllTogether: null,
@@ -34,21 +19,19 @@ const ContentStore = create((set) => ({
 
   FetchAllTogetherRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTogether`, {
-      headers: { token: getAccessToken() },
+      withCredentials: true,
     });
     if (res.data["status"] === "success") {
       set({
         FetchAllTogether: null,
         FetchAllTogether: res.data.data,
-        // FetchAllCoursesByClass: null,
       });
-      // console.log(res.data.data);
     }
   },
 
   FetchAllCoursesByClassRequest: async (classId) => {
     let res = await axios.get(`${BASE_URL}/fetchAllCoursesByClass/${classId}`, {
-      headers: { token: getAccessToken() },
+      withCredentials: true,
     });
 
     if (res.data["status"] === "success") {
@@ -56,8 +39,6 @@ const ContentStore = create((set) => ({
         FetchAllCoursesByClass: null,
         FetchAllCoursesByClass: res.data.data,
       });
-
-      // console.log(res.data.data);
     }
   },
 
@@ -65,7 +46,7 @@ const ContentStore = create((set) => ({
     let res = await axios.get(
       `${BASE_URL}/fetchAllTasksByCourse/${classId}/${courseId}`,
       {
-        headers: { token: getAccessToken() },
+        withCredentials: true,
       }
     );
 
@@ -76,14 +57,12 @@ const ContentStore = create((set) => ({
         FetchAllTaskCommonStore: res.data.data,
         FetchAllTasksByCourse: res.data.data,
       });
-
-      // console.log('From FetchAllTasksByCourse Store:',res.data.data);
     }
   },
 
   FetchAllTasksRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllTasks`, {
-      headers: { token: getAccessToken() },
+      withCredentials: true,
     });
 
     if (res.data["status"] === "success") {
@@ -93,8 +72,6 @@ const ContentStore = create((set) => ({
         FetchAllTaskCommonStore: res.data.data,
         FetchAllTasks: res.data.data,
       });
-
-      // console.log("From FetchAllTasksRequest Store:", res.data.data);
     }
   },
 
@@ -102,7 +79,7 @@ const ContentStore = create((set) => ({
     let res = await axios.get(
       `${BASE_URL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
       {
-        headers: { token: getAccessToken() },
+        withCredentials: true,
       }
     );
     if (res.data["status"] === "success") {
@@ -117,7 +94,7 @@ const ContentStore = create((set) => ({
     let res = await axios.get(
       `${BASE_URL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
       {
-        headers: { token: getAccessToken() },
+        withCredentials: true,
       }
     );
     if (res.data["status"] === "success") {
@@ -130,14 +107,13 @@ const ContentStore = create((set) => ({
 
   FetchAllCoursesRequest: async () => {
     let res = await axios.get(`${BASE_URL}/fetchAllCourses`, {
-      headers: { token: getAccessToken() },
+      withCredentials: true,
     });
     if (res.data["status"] === "success") {
       set({
         FetchAllCourses: null,
         FetchAllCourses: res.data.data,
       });
-      // console.log('Fetch All Courses:',res.data.data);
     }
   },
 }));
