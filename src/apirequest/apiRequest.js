@@ -53,10 +53,11 @@ export const Login = async (data) => {
     return false;
   }
   if (response.data.status === "success") {
-    Cookies.set("refreshToken", response.data.data.refreshToken);
-    Cookies.set("accessToken", response.data.data.accessToken);
-    setAccessToken(response.data.data.accessToken);
-    setRefreshToken(response.data.data.refreshToken);
+    console.log(response.data);
+    Cookies.set("accessToken", response.data.accessToken);
+    Cookies.set("refreshToken", response.data.refreshToken);
+    setAccessToken(response.data.accessToken);
+    setRefreshToken(response.data.refreshToken);
     return response;
   } else {
     return false;
