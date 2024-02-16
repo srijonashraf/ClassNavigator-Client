@@ -21,7 +21,7 @@ const Login = () => {
             const response = await LoginApi(formValue);
             if (response) {
                 successToast('Login Successful');
-                window.location.href = '/dashboard';
+                // window.location.href = '/dashboard';
                 // console.log(getAccessToken());
             } else {
                 errorToast('Wrong Credentials!');
