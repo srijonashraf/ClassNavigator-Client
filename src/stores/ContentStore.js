@@ -1,12 +1,7 @@
 import axios from "axios";
 import { create } from "zustand";
-
-let BASE_URL = "";
-if (process.env.NODE_ENV === "production") {
-  BASE_URL = "https://classnavigator-srijonashraf.vercel.app/api/v1";
-} else {
-  BASE_URL = "http://localhost:4500/api/v1";
-}
+import { axiosHeader, getBaseURL } from "../helper/FunctionHelper.js";
+let BaseURL = getBaseURL();
 
 const ContentStore = create((set) => ({
   FetchAllTogether: null,
@@ -18,9 +13,7 @@ const ContentStore = create((set) => ({
   FetchAllTaskCommonStore: null, //Applied for allTasks.jsx [By Landing will fetch all the tasks but when any class is selected then it will fetch all the tasks of that class and store here]
 
   FetchAllTogetherRequest: async () => {
-    let res = await axios.get(`${BASE_URL}/fetchAllTogether`, {
-      withCredentials: true,
-    });
+    let res = await axios.get(`${BaseURL}/fetchAllTogether`, axiosHeader());
     if (res.data["status"] === "success") {
       set({
         FetchAllTogether: null,
@@ -30,9 +23,10 @@ const ContentStore = create((set) => ({
   },
 
   FetchAllCoursesByClassRequest: async (classId) => {
-    let res = await axios.get(`${BASE_URL}/fetchAllCoursesByClass/${classId}`, {
-      withCredentials: true,
-    });
+    let res = await axios.get(
+      `${BaseURL}/fetchAllCoursesByClass/${classId}`,
+      axiosHeader()
+    );
 
     if (res.data["status"] === "success") {
       set({
@@ -44,10 +38,8 @@ const ContentStore = create((set) => ({
 
   FetchAllTasksByCourseRequest: async (classId, courseId) => {
     let res = await axios.get(
-      `${BASE_URL}/fetchAllTasksByCourse/${classId}/${courseId}`,
-      {
-        withCredentials: true,
-      }
+      `${BaseURL}/fetchAllTasksByCourse/${classId}/${courseId}`,
+      axiosHeader()
     );
 
     if (res.data["status"] === "success") {
@@ -61,9 +53,7 @@ const ContentStore = create((set) => ({
   },
 
   FetchAllTasksRequest: async () => {
-    let res = await axios.get(`${BASE_URL}/fetchAllTasks`, {
-      withCredentials: true,
-    });
+    let res = await axios.get(`${BaseURL}/fetchAllTasks`, axiosHeader());
 
     if (res.data["status"] === "success") {
       set({
@@ -77,10 +67,8 @@ const ContentStore = create((set) => ({
 
   FetchCompletedTaskByCourseRequest: async (classId, courseId) => {
     let res = await axios.get(
-      `${BASE_URL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
-      {
-        withCredentials: true,
-      }
+      `${BaseURL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
+      axiosHeader()
     );
     if (res.data["status"] === "success") {
       set({
@@ -92,10 +80,8 @@ const ContentStore = create((set) => ({
 
   FetchUnCompletedTaskByCourseRequest: async (classId, courseId) => {
     let res = await axios.get(
-      `${BASE_URL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
-      {
-        withCredentials: true,
-      }
+      `${BaseURL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
+      axiosHeader()
     );
     if (res.data["status"] === "success") {
       set({
@@ -106,9 +92,7 @@ const ContentStore = create((set) => ({
   },
 
   FetchAllCoursesRequest: async () => {
-    let res = await axios.get(`${BASE_URL}/fetchAllCourses`, {
-      withCredentials: true,
-    });
+    let res = await axios.get(`${BaseURL}/fetchAllCourses`, axiosHeader());
     if (res.data["status"] === "success") {
       set({
         FetchAllCourses: null,

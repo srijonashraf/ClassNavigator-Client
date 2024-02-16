@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 const Landing = () => {
+
     return (
         <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
             <div className="col-lg-4 col-md-6 col-sm-8 text-center">

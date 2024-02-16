@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
-import { DeleteTask, TaskCompletion } from '../../apirequest/apiRequest';
+import { DeleteTask, TaskCompletion } from '../../Api/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
@@ -308,7 +308,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     return (
         <div className="row">
             <Breadcrumb>
-                <Breadcrumb.Item onClick={() => navigate('/')} >Home</Breadcrumb.Item>
+                <Breadcrumb.Item onClick={() => navigate('/dashboard')} >Home</Breadcrumb.Item>
                 <Breadcrumb.Item onClick={() => navigate(`/courses/${classId}`)}>
                     Courses
                 </Breadcrumb.Item>

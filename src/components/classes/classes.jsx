@@ -5,12 +5,12 @@ import AddNewClass from './addNewClass';
 import LoadingBarComponent from './../loading/loadingBar';
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
-import { EnrollClass, UnEnrollClass, DeleteClass } from '../../apirequest/apiRequest.js';
+import { EnrollClass, UnEnrollClass, DeleteClass } from '../../Api/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
 import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
-import { Dropdown} from 'antd';
+import { Dropdown } from 'antd';
 
 const Classes = ({ DashboardAPIRefresh }) => {
     const [copiedIndex, setCopiedIndex] = useState(null);

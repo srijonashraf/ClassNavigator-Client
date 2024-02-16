@@ -1,33 +1,24 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { setAccessToken, setRefreshToken } from "../helper/sessionHelper";
-let BaseURL = "";
-
-if (process.env.NODE_ENV === "production") {
-  BaseURL = "https://classnavigator-srijonashraf.vercel.app/api/v1";
-} else {
-  BaseURL = "http://localhost:4500/api/v1";
-}
+import {
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+  setSessionExpire,
+} from "../helper/SessionHelper.js";
+import { axiosHeader, getBaseURL } from "../helper/FunctionHelper.js";
+import { LogoutWhenSessionExpired } from './../helper/FunctionHelper';
+let BaseURL = getBaseURL();
 
 // Now you can use the BaseURL in your application
-// console.log("Base URL:", BaseURL);
+console.log("Base URL:", BaseURL);
 
-// axios.interceptors.response.use(
-//   function (response) {
-//     return response;
-//   },
-//   function (error) {
-//     if (error.response && error.response.status === 401) {
-//       clearSessions();
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+LogoutWhenSessionExpired();
 
 const AutoRefreshTokens = async () => {
-  if (Cookies.get("refreshToken") && Cookies.get("accessToken")) {
+  if (Cookies.get("refreshToken") || getRefreshToken()) {
     await axios.post(`${BaseURL}/refreshToken`, {
-      refreshToken: Cookies.get("refreshToken"),
+      refreshToken: Cookies.get("refreshToken") || getRefreshToken(),
     });
   }
 };
@@ -44,22 +35,19 @@ export const Register = async (data) => {
   }
 };
 
-
-//!! This withCredentials is not working in production fix this
+//!! This withCredentials: true is not working in production
 export const Login = async (data) => {
-  const response = await axios.post(`${BaseURL}/login`, data, {
-    withCredentials: true,
-  });
+  const response = await axios.post(`${BaseURL}/login`, data);
 
   if (response.status === 404) {
     return false;
   }
   if (response.data.status === "success") {
-    console.log(response.data);
     Cookies.set("accessToken", response.data.accessToken);
     Cookies.set("refreshToken", response.data.refreshToken);
     setAccessToken(response.data.accessToken);
     setRefreshToken(response.data.refreshToken);
+    setSessionExpire(false);
     return response;
   } else {
     return false;
@@ -67,9 +55,7 @@ export const Login = async (data) => {
 };
 
 export const Logout = async () => {
-  const response = await axios.post(`${BaseURL}/logout`, {
-    withCredentials: true,
-  });
+  const response = await axios.post(`${BaseURL}/logout`, axiosHeader());
   console.log(response);
   if (response.data.status === "success") {
     return response;
@@ -79,9 +65,7 @@ export const Logout = async () => {
 };
 
 export const ProfileDetails = async () => {
-  const response = await axios.get(`${BaseURL}/profileDetails`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(`${BaseURL}/profileDetails`, axiosHeader());
   if (response.data.status === "success") {
     return response.data.data;
   } else {
@@ -90,9 +74,10 @@ export const ProfileDetails = async () => {
 };
 
 export const FetchAllTogether = async () => {
-  const response = await axios.get(`${BaseURL}/fetchAllTogether`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${BaseURL}/fetchAllTogether`,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -101,9 +86,11 @@ export const FetchAllTogether = async () => {
 };
 
 export const AddNewClass = async (data) => {
-  const response = await axios.post(`${BaseURL}/addNewClass`, data, {
-    withCredentials: true,
-  });
+  const response = await axios.post(
+    `${BaseURL}/addNewClass`,
+    data,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -112,9 +99,10 @@ export const AddNewClass = async (data) => {
 };
 
 export const FetchClassesById = async (classId) => {
-  const response = await axios.get(`${BaseURL}/fetchClassesById/${classId}`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${BaseURL}/fetchClassesById/${classId}`,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -126,9 +114,8 @@ export const EditClassDetails = async (data, classId) => {
   const response = await axios.post(
     `${BaseURL}/editClassDetails/${classId}`,
     data,
-    {
-      withCredentials: true,
-    }
+
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;
@@ -138,9 +125,10 @@ export const EditClassDetails = async (data, classId) => {
 };
 
 export const EnrollClass = async (classId) => {
-  const response = await axios.get(`${BaseURL}/enrollClass/${classId}`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${BaseURL}/enrollClass/${classId}`,
+    axiosHeader()
+  );
 
   if (response.data.status === "success") {
     return response;
@@ -150,9 +138,10 @@ export const EnrollClass = async (classId) => {
 };
 
 export const UnEnrollClass = async (classId) => {
-  const response = await axios.get(`${BaseURL}/unEnrollClass/${classId}`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${BaseURL}/unEnrollClass/${classId}`,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -161,9 +150,10 @@ export const UnEnrollClass = async (classId) => {
 };
 
 export const DeleteClass = async (classId) => {
-  const response = await axios.get(`${BaseURL}/deleteClass/${classId}`, {
-    withCredentials: true,
-  });
+  const response = await axios.get(
+    `${BaseURL}/deleteClass/${classId}`,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -172,9 +162,11 @@ export const DeleteClass = async (classId) => {
 };
 
 export const AddNewCourses = async (data, classId) => {
-  const response = await axios.post(`${BaseURL}/addCourse/${classId}`, data, {
-    withCredentials: true,
-  });
+  const response = await axios.post(
+    `${BaseURL}/addCourse/${classId}`,
+    data,
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
@@ -185,9 +177,7 @@ export const AddNewCourses = async (data, classId) => {
 export const FetchCoursesById = async (classId, courseId) => {
   const response = await axios.get(
     `${BaseURL}/fetchCoursesById/${classId}/${courseId}`,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
 
   if (response.data.status === "success") {
@@ -201,9 +191,7 @@ export const EditCourseDetails = async (data, classId, courseId) => {
   const response = await axios.post(
     `${BaseURL}/${classId}/editCourseDetails/${courseId}`,
     data,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;
@@ -215,9 +203,7 @@ export const EditCourseDetails = async (data, classId, courseId) => {
 export const DeleteCourse = async (classId, courseId) => {
   const response = await axios.get(
     `${BaseURL}/${classId}/deleteCourse/${courseId}`,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;
@@ -230,9 +216,7 @@ export const AddNewTask = async (data, classId, courseId) => {
   const response = await axios.post(
     `${BaseURL}/${classId}/${courseId}/addTask`,
     data,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
 
   if (response.data.status === "success") {
@@ -245,9 +229,7 @@ export const AddNewTask = async (data, classId, courseId) => {
 export const FetchTaskById = async (classId, courseId, taskId) => {
   const response = await axios.get(
     `${BaseURL}/fetchTasksById/${classId}/${courseId}/${taskId}`,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;
@@ -260,9 +242,7 @@ export const EditTaskDetails = async (data, classId, courseId, taskId) => {
   const response = await axios.post(
     `${BaseURL}/${classId}/${courseId}/editTaskDetails/${taskId}`,
     data,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;
@@ -274,9 +254,7 @@ export const EditTaskDetails = async (data, classId, courseId, taskId) => {
 export const DeleteTask = async (classId, courseId, taskId) => {
   const response = await axios.get(
     `${BaseURL}/${classId}/${courseId}/deleteTask/${taskId}`,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
 
   if (response.data.status === "success") {
@@ -289,9 +267,7 @@ export const DeleteTask = async (classId, courseId, taskId) => {
 export const TaskCompletion = async (classId, courseId, taskId) => {
   const response = await axios.get(
     `${BaseURL}/taskCompletionByUser/${classId}/${courseId}/${taskId}`,
-    {
-      withCredentials: true,
-    }
+    axiosHeader()
   );
   if (response.data.status === "success") {
     return response;

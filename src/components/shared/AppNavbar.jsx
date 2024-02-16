@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { Container, Navbar, Offcanvas } from "react-bootstrap";
-import { clearSessions } from "../../helper/sessionHelper";
+import { clearSessions } from "../../helper/SessionHelper.js";
 import { NavLink } from "react-router-dom";
 import { BiUserCircle } from "react-icons/bi";
 import { RiMenuUnfoldFill } from "react-icons/ri";

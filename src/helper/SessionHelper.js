@@ -25,6 +25,14 @@ class SessionHelper {
     return JSON.parse(localStorage.getItem("loggedIn")) || null;
   }
 
+  setSessionExpire(value) {
+    Cookies.set("sessionExpire", value);
+  }
+
+  getSessionExpire() {
+    return Cookies.get("sessionExpire");
+  }
+
   clearSessions() {
     localStorage.clear();
     Cookies.remove("refreshToken");
@@ -41,4 +49,6 @@ export const {
   setLoggedIn,
   getLoggedIn,
   clearSessions,
+  setSessionExpire,
+  getSessionExpire
 } = new SessionHelper();

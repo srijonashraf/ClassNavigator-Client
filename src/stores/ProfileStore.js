@@ -1,21 +1,14 @@
 import axios from "axios";
 import { create } from "zustand";
-
-let BASE_URL = "";
-if (process.env.NODE_ENV === "production") {
-  BASE_URL = "https://classnavigator-srijonashraf.vercel.app/api/v1";
-} else {
-  BASE_URL = "http://localhost:4500/api/v1";
-}
+import { axiosHeader, getBaseURL } from "../helper/FunctionHelper.js";
+let BaseURL = getBaseURL();
 
 const ProfileStore = create((set) => ({
   ProfileDetails: null,
   AdminAccessClasses: null,
   completedTasks: null,
   ProfileDetailsRequest: async () => {
-    let res = await axios.get(`${BASE_URL}/profileDetails`, {
-      withCredentials: true,
-    });
+    let res = await axios.get(`${BaseURL}/profileDetails`, axiosHeader());
 
     if (res.data["status"] === "success") {
       set({
@@ -23,8 +16,6 @@ const ProfileStore = create((set) => ({
         AdminAccessClasses: res.data.data.adminAccessClasses,
         completedTasks: res.data.data.completedTasks,
       });
-      // console.log('Profile Store:',res.data.data.completedTasks);
-      // console.log(res.data.data.adminAccessClasses);
     }
   },
 }));

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { successToast, errorToast } from '../../helper/ToasterHelper';
-import { AddNewTask as AddNewTaskApi, FetchTaskById, EditTaskDetails } from '../../apirequest/apiRequest';
+import { AddNewTask as AddNewTaskApi, FetchTaskById, EditTaskDetails } from '../../Api/apiRequest';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import QuillToolbar from './../../utility/ReactQuillModules';
+import QuillToolbar from '../../utility/reactQuillModules.js';
 
 const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => {
     const [taskData, setTaskData] = useState({
