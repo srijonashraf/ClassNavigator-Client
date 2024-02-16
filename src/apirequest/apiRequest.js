@@ -34,6 +34,15 @@ const AutoRefreshTokens = async () => {
 //Token will refresh after every 15 minutes
 setInterval(AutoRefreshTokens, 15 * 60 * 1000);
 
+export const Register = async (data) => {
+  const response = await axios.post(`${BaseURL}/registration`, data);
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
 export const Login = async (data) => {
   const response = await axios.post(`${BaseURL}/login`, data, {
     withCredentials: true,
@@ -49,8 +58,11 @@ export const Login = async (data) => {
   }
 };
 
-export const Register = async (data) => {
-  const response = await axios.post(`${BaseURL}/registration`, data);
+export const Logout = async () => {
+  const response = await axios.post(`${BaseURL}/logout`, {
+    withCredentials: true,
+  });
+  console.log(response);
   if (response.data.status === "success") {
     return response;
   } else {
@@ -59,7 +71,9 @@ export const Register = async (data) => {
 };
 
 export const ProfileDetails = async () => {
-  const response = await axios.get(`${BaseURL}/profileDetails`);
+  const response = await axios.get(`${BaseURL}/profileDetails`, {
+    withCredentials: true,
+  });
   if (response.data.status === "success") {
     return response.data.data;
   } else {
@@ -68,7 +82,9 @@ export const ProfileDetails = async () => {
 };
 
 export const FetchAllTogether = async () => {
-  const response = await axios.get(`${BaseURL}/fetchAllTogether`);
+  const response = await axios.get(`${BaseURL}/fetchAllTogether`, {
+    withCredentials: true,
+  });
   if (response.data.status === "success") {
     return response;
   } else {
