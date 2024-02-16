@@ -1,7 +1,7 @@
 import React from 'react';
 import { Login as LoginApi } from "../../apirequest/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import { getAccessToken } from '../../helper/sessionHelper.js';
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -11,6 +11,7 @@ const Login = () => {
         password: ""
     });
 
+    const navigate = useNavigate();
 
     const loginRequest = async (e) => {
         //!!ErrorToast is not showing
@@ -21,8 +22,7 @@ const Login = () => {
             const response = await LoginApi(formValue);
             if (response) {
                 successToast('Login Successful');
-                // window.location.href = '/dashboard';
-                // console.log(getAccessToken());
+                navigate('/dashboard');
             } else {
                 errorToast('Wrong Credentials!');
             }
