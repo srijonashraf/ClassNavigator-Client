@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { setAccessToken, setRefreshToken } from "../helper/sessionHelper";
 let BaseURL = "";
 
 if (process.env.NODE_ENV === "production") {
@@ -54,6 +55,8 @@ export const Login = async (data) => {
   if (response.data.status === "success") {
     Cookies.set("refreshToken", response.data.data.refreshToken);
     Cookies.set("accessToken", response.data.data.accessToken);
+    setAccessToken(response.data.data.accessToken);
+    setRefreshToken(response.data.data.refreshToken);
     return response;
   } else {
     return false;
