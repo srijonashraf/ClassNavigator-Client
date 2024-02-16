@@ -52,6 +52,8 @@ export const Login = async (data) => {
     return false;
   }
   if (response.data.status === "success") {
+    Cookies.set("refreshToken", response.data.data.refreshToken);
+    Cookies.set("accessToken", response.data.data.accessToken);
     return response;
   } else {
     return false;
