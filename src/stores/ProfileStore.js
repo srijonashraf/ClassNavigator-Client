@@ -9,7 +9,6 @@ const ProfileStore = create((set) => ({
   completedTasks: null,
   ProfileDetailsRequest: async () => {
     let res = await axios.get(`${BaseURL}/profileDetails`, axiosHeader());
-
     if (res.data["status"] === "success") {
       set({
         ProfileDetails: res.data.data,

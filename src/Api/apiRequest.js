@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
+  clearSessions,
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
@@ -15,10 +16,25 @@ console.log("Base URL:", BaseURL);
 LogoutWhenSessionExpired();
 
 const AutoRefreshTokens = async () => {
-  if (Cookies.get("refreshToken") || getRefreshToken()) {
-    await axios.post(`${BaseURL}/refreshToken`, {
-      refreshToken: Cookies.get("refreshToken") || getRefreshToken(),
-    });
+  const refreshToken = Cookies.get("refreshToken") || getRefreshToken();
+  if (refreshToken) {
+    try {
+      const response = await axios.post(`${BaseURL}/refreshToken`, {
+        refreshToken: refreshToken,
+      });
+
+      console.log("From AutoRefreshToken Response: ", response.data);
+      if (response.status === 200) {
+        const { accessToken, refreshToken } = response.data;
+        Cookies.set("accessToken", accessToken);
+        Cookies.set("refreshToken", refreshToken);
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+      }
+    } catch (error) {
+      // Handle error here
+      console.error("Error refreshing tokens:", error);
+    }
   }
 };
 
