@@ -48,10 +48,12 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
         e.preventDefault();
         setProgress(50);
         try {
-            if (taskData.taskTitle.length === 0 || taskData.taskDescription.length === 0) {
+            if (taskData.taskTitle.length === 0 || taskData.taskDescription.length === 0 || taskData.mode === '' || taskData.group === '' || taskData.date === '' || taskData.time === '') {
                 errorToast("Please enter all the fields");
                 setProgress(0);
-            } else {
+            }
+
+            else {
                 let response;
                 if (classId && courseId && taskId) {
                     response = await EditTaskDetails(taskData, classId, courseId, taskId);
@@ -60,7 +62,16 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                 }
 
                 if (response) {
-                    alert(JSON.stringify(taskData));
+                    setTaskData({
+                        type: '',
+                        taskTitle: '',
+                        taskDescription: '',
+                        group: '',
+                        date: '',
+                        time: '',
+                        mode: '',
+                        status: '',
+                    });
                     ShowAddNewTaskTrigger();
                     TaskApiRefresh();
                     successToast(classId && courseId && taskId ? "Task Updated Successfully" : "Task Added Successfully");
@@ -72,16 +83,6 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
         } catch (err) {
             errorToast("Error Adding/Updating Task");
         } finally {
-            setTaskData({
-                type: '',
-                taskTitle: '',
-                taskDescription: '',
-                group: '',
-                date: '',
-                time: '',
-                mode: '',
-                status: '',
-            });
             setProgress(100);
         }
     };
@@ -187,6 +188,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                                 onChange={handleChange}
                                 defaultValue="Online"
                             >
+                                <option value="" disabled hidden>Select Mode</option>
                                 <option value="Online">Online</option>
                                 <option value="Offline">Offline</option>
                             </select>
