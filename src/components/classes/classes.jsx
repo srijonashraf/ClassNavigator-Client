@@ -9,7 +9,7 @@ import { EnrollClass, UnEnrollClass, DeleteClass } from '../../Api/apiRequest.js
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
-import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined, ControlOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 
 const Classes = ({ DashboardAPIRefresh }) => {
@@ -76,7 +76,11 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 handleClassAction(classId, DeleteClass, 'Class Deleted', 'Error Deleting Class');
                 break;
             case '3':
-                handleClassAction(classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class')
+                handleClassAction(classId, UnEnrollClass, 'Class Unenrolled', 'Error Unenrolling Class');
+                break;
+            case '4':
+                navigate(`/classes/newAdmin/${classId}`);
+                break;
             default:
                 break;
         }
@@ -97,6 +101,11 @@ const Classes = ({ DashboardAPIRefresh }) => {
             key: '3',
             label: 'Unenroll',
             icon: <CloseCircleOutlined />,
+        },
+        {
+            key: '4',
+            label: 'New Admin',
+            icon: <ControlOutlined />,
         }
     ];
 
@@ -138,36 +147,37 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
+                            <Dropdown
+                                className='float-end mb-3 fs-5'
+                                menu={{
+                                    items: adminAccess(classItem.classId) ? items : items.slice(2,3),
+                                    selectable: false,
+                                    onClick: (info) => {
+                                        handleMenuSelection(info.key, classItem.classId);
+                                    },
+                                }}
+                            >
+                                <MoreOutlined className='cursorPointer' />
+                            </Dropdown>
+
                             <Link className='nav-link' to={`/courses/${classItem.classId}`}>
-                                <Dropdown
-                                    className='float-end mb-3 fs-5'
-                                    menu={{
-                                        items: adminAccess(classItem.classId) ? items : items.slice(2),
-                                        selectable: false,
-                                        onClick: (info) => {
-                                            handleMenuSelection(info.key, classItem.classId);
-                                        },
-                                    }}
-                                >
-                                    <MoreOutlined className='cursorPointer' />
-                                </Dropdown>
-
-
                                 <Avatar name={classItem.className} className='bg-primary w-100 rounded-top-2' />
-
-                                <div className="top-section mt-3 d-flex flex-row-reverse align-items-center justify-content-between">
-                                    <p className="card-text d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
-                                        <MdOutlineContentCopy />
-                                        {classItem.classId}
-                                        {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
-                                    </p>
-                                    {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success'>Owner</p>}
-                                </div>
-
-                                <p className="card-title cursorPointer fw-bold fs-5 title-color">{classItem.className}</p>
-
-                                <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
                             </Link>
+
+
+                            <div className="top-section mt-3 d-flex flex-row-reverse align-items-center justify-content-between">
+                                <p className="card-text d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
+                                    <MdOutlineContentCopy />
+                                    {classItem.classId}
+                                    {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
+                                </p>
+                                {adminAccess(classItem.classId) ? <p className='card-subtitle badge bg-success'>Owner</p> : null}
+                            </div>
+                            <Link className='nav-link' to={`/courses/${classItem.classId}`}>
+                                <p className="card-title cursorPointer fw-bold fs-5 title-color">{classItem.className}</p>
+                            </Link>
+
+                            <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
                         </div>
                     </div>
                 </div>

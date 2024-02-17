@@ -9,6 +9,8 @@ const ContentStore = create((set) => ({
   FetchAllTasksByCourse: null,
   FetchAllTasks: null,
   FetchAllCourses: null,
+  FetchEnrolledStudentList: null,
+  FetchAdminList: null,
 
   FetchAllTaskCommonStore: null, //Applied for allTasks.jsx [By Landing will fetch all the tasks but when any class is selected then it will fetch all the tasks of that class and store here]
 
@@ -98,6 +100,38 @@ const ContentStore = create((set) => ({
         FetchAllCourses: null,
         FetchAllCourses: res.data.data,
       });
+    }
+  },
+
+  FetchEnrolledStudentListRequest: async (classId) => {
+    const response = await axios.get(
+      `${BaseURL}/fetchEnrollStudentList/${classId}`,
+      axiosHeader()
+    );
+    if (response.data["status"] === "success") {
+      set({
+        FetchEnrolledStudentList: null,
+        FetchEnrolledStudentList: response.data.data,
+      });
+      // console.log(response.data.data);
+    } else {
+      return false;
+    }
+  },
+
+  FetchAdminListRequest: async (classId) => {
+    const response = await axios.get(
+      `${BaseURL}/fetchAdminList/${classId}`,
+      axiosHeader()
+    );
+    if (response.data["status"] === "success") {
+      set({
+        FetchAdminList: null,
+        FetchAdminList: response.data.data,
+      });
+      // console.log(response.data.data);
+    } else {
+      return false;
     }
   },
 }));
