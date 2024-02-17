@@ -52,7 +52,6 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                 errorToast("Please enter all the fields");
                 setProgress(0);
             } else {
-
                 let response;
                 if (classId && courseId && taskId) {
                     response = await EditTaskDetails(taskData, classId, courseId, taskId);
@@ -61,6 +60,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                 }
 
                 if (response) {
+                    alert(JSON.stringify(taskData));
                     ShowAddNewTaskTrigger();
                     TaskApiRefresh();
                     successToast(classId && courseId && taskId ? "Task Updated Successfully" : "Task Added Successfully");
