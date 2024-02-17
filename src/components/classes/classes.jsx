@@ -138,8 +138,9 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 <div key={classItem.classId} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <div className='mb-3 float-end'>
+                            <Link className='nav-link' to={`/courses/${classItem.classId}`}>
                                 <Dropdown
+                                    className='float-end mb-3 fs-5'
                                     menu={{
                                         items: adminAccess(classItem.classId) ? items : items.slice(2),
                                         selectable: false,
@@ -150,28 +151,30 @@ const Classes = ({ DashboardAPIRefresh }) => {
                                 >
                                     <MoreOutlined className='cursorPointer' />
                                 </Dropdown>
-                            </div>
-                            <Link className='nav-link' to={`/courses/${classItem.classId}`}>
+
+
                                 <Avatar name={classItem.className} className='bg-primary w-100 rounded-top-2' />
-                            </Link>
-                            <div className="top-section mt-3 d-flex flex-row-reverse align-items-center justify-content-between">
-                                <p className="card-text d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
-                                    <MdOutlineContentCopy />
-                                    {classItem.classId}
-                                    {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
-                                </p>
-                                {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success'>Owner</p>}
-                            </div>
-                            <Link className='nav-link' to={`/courses/${classItem.classId}`}>
+
+                                <div className="top-section mt-3 d-flex flex-row-reverse align-items-center justify-content-between">
+                                    <p className="card-text d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-2" onClick={(e) => handleCopyClick(classItem.classId, index)}>
+                                        <MdOutlineContentCopy />
+                                        {classItem.classId}
+                                        {copiedIndex === index && <span className='float-end badge' style={{ fontSize: '12px' }}>Copied!</span>}
+                                    </p>
+                                    {adminAccess(classItem.classId) && <p className='card-subtitle badge bg-success'>Owner</p>}
+                                </div>
+
                                 <p className="card-title cursorPointer fw-bold fs-5 title-color">{classItem.className}</p>
+
+                                <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
                             </Link>
-                            <p className="card-subtitle mb-2 text-muted small">Section: {classItem.section}</p>
                         </div>
                     </div>
                 </div>
-            ))}
+            ))
+            }
             {classes && classes.length === 0 && <p className='text-center'>No classes found</p>}
-        </div>
+        </div >
     );
 };
 

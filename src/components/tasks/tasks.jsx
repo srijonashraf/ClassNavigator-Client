@@ -213,22 +213,21 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                         <div className="card shadow-sm border border-light-subtle">
 
                             <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
-                                <div className='float-end'>
-                                    {adminAccess(task.classId) && (
-                                        <Dropdown
-                                            menu={{
-                                                items,
-                                                selectable: false,
-                                                onClick: (info) => {
-                                                    handleMenuSelection(info.key, task.classId, task.courseId, task._id);
-                                                },
-                                            }}
-                                        >
-                                            <MoreOutlined className='cursorPointer' />
-                                        </Dropdown>
-                                    )}
-                                </div>
 
+                                {adminAccess(task.classId) && (
+                                    <Dropdown
+                                        className='float-end mb-3 fs-5'
+                                        menu={{
+                                            items,
+                                            selectable: false,
+                                            onClick: (info) => {
+                                                handleMenuSelection(info.key, task.classId, task.courseId, task._id);
+                                            },
+                                        }}
+                                    >
+                                        <MoreOutlined className='cursorPointer' />
+                                    </Dropdown>
+                                )}
                                 {/* When task is marked as Done countdown will not show */}
                                 {!completedTasks.includes(task._id) ? (
                                     renderCountdown(task)
@@ -284,7 +283,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                                         )}
                                     </div>
                                 </div>
-
 
                                 <p className={`btn badge rounded-1 float-end ${task.mode === 'Online' ? 'btn-info' : 'btn-secondary'}`}>• {task.mode}</p>
                                 <div className='d-flex flex-row gap-2'>

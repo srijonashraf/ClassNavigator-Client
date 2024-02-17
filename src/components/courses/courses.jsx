@@ -99,9 +99,10 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <div key={course._id} className="col-md-6 mb-4">
                     <div className="card shadow-sm border border-light-subtle">
                         <div className="card-body">
-                            <div className='mb-3 float-end'>
+                            <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'>
                                 {adminAccess(course.classId) && (
                                     <Dropdown
+                                        className='float-end mb-3 fs-5'
                                         menu={{
                                             items,
                                             selectable: false,
@@ -113,12 +114,13 @@ const Courses = ({ CourseAPIRefresh }) => {
                                         <MoreOutlined className='cursorPointer' />
                                     </Dropdown>
                                 )}
-                            </div>
-                            <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'>
-                                <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' /></Link>
-                            <Link to={`/tasks/${classId}/${course._id}`} className='nav-link'><p className="card-title cursorPointer fw-bold fs-5 mt-3 title-color">{course.courseName}</p></Link>
-                            <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
-                            <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
+
+
+                                <Avatar name={course.courseName} className='bg-secondary w-100 rounded-top-2 card-img-top' />
+                                <p className="card-title cursorPointer fw-bold fs-5 mt-3 title-color">{course.courseName}</p>
+                                <p className="card-subtitle mb-2 text-muted small">Course Code: {course.courseCode}</p>
+                                <p className='md-text fw-bold'>Faculty: {course.facultyName} ({course.facultyInitial})</p>
+                            </Link>
                         </div>
                     </div>
                 </div>

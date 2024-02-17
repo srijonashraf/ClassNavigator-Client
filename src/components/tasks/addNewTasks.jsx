@@ -136,7 +136,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                                 onChange={(value) => setTaskData((prevFields) => ({
                                     ...prevFields,
                                     taskDescription: value,
-                                  }))}
+                                }))}
                             />
                         </div>
 
@@ -185,6 +185,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                                 name="mode"
                                 value={taskData.mode}
                                 onChange={handleChange}
+                                defaultValue="Online"
                             >
                                 <option value="Online">Online</option>
                                 <option value="Offline">Offline</option>
