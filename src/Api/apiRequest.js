@@ -13,7 +13,7 @@ let BaseURL = getBaseURL();
 // Now you can use the BaseURL in your application
 console.log("Base URL:", BaseURL);
 
-LogoutWhenSessionExpired();
+// LogoutWhenSessionExpired();
 
 const AutoRefreshTokens = async () => {
   const refreshToken = Cookies.get("refreshToken") || getRefreshToken();
@@ -39,7 +39,7 @@ const AutoRefreshTokens = async () => {
 };
 
 //Token will refresh after every 15 minutes
-setInterval(AutoRefreshTokens, 15 * 60 * 1000);
+// setInterval(AutoRefreshTokens, 15 * 60 * 1000);
 
 export const Register = async (data) => {
   const response = await axios.post(`${BaseURL}/registration`, data);
@@ -52,16 +52,18 @@ export const Register = async (data) => {
 
 //!! This withCredentials: true is not working in production
 export const Login = async (data) => {
-  const response = await axios.post(`${BaseURL}/login`, data);
+  const response = await axios.post(`${BaseURL}/login`, data, {
+    withCredentials: true,
+  });
 
   if (response.status === 404) {
     return false;
   }
   if (response.data.status === "success") {
-    Cookies.set("accessToken", response.data.accessToken);
-    Cookies.set("refreshToken", response.data.refreshToken);
-    setAccessToken(response.data.accessToken);
-    setRefreshToken(response.data.refreshToken);
+    // Cookies.set("accessToken", response.data.accessToken);
+    // Cookies.set("refreshToken", response.data.refreshToken);
+    // setAccessToken(response.data.accessToken);
+    // setRefreshToken(response.data.refreshToken);
     return response;
   } else {
     return false;
