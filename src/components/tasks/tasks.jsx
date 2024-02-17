@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
-import { DeleteTask, TaskCompletion } from '../../Api/apiRequest';
+import { DeleteTask, FetchCoursesById, TaskCompletion } from '../../Api/apiRequest';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
@@ -19,6 +19,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [tasks, setTasks] = useState([]);
+    const [courseData, setCourseData] = useState(null);
     const [showAddNewTask, setShowAddNewTask] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showFullDescription, setShowFullDescription] = useState(false);
@@ -33,6 +34,19 @@ const Tasks = ({ TaskPageApiRefresh }) => {
     const taskIdFromURL = useLocation().search.split('=')[1];
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await FetchCoursesById(classId, courseId);
+                setCourseData(res.data.data);
+            } catch (error) {
+                console.error('Error fetching course data:', error);
+            }
+        };
+        fetchData();
+    }, [classId, courseId]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,7 +106,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
             icon: <DeleteOutlined />,
         },
     ];
-
 
     const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
     const completed = (TaskId) => completedTasks && completedTasks.includes(TaskId);
@@ -211,7 +224,6 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     // Todo Sort Pending wise
                     <div key={task._id} className="col-md-6 mb-4">
                         <div className="card shadow-sm border border-light-subtle">
-
                             <div id={task._id} className={`card-body ${new Date(task.date + ' ' + task.time) < new Date() ? 'bg-expired' : ''}`}>
 
                                 {adminAccess(task.classId) && (
@@ -311,7 +323,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     Courses
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>
-                    Tasks
+                    Tasks ({courseData?.courseName})
                 </Breadcrumb.Item>
             </Breadcrumb>
 
@@ -321,6 +333,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     <button className='btn btn-dark rounded-1' onClick={handleShowAddNewTask}> Add New Tasks</button>
                 }
 
+                {/* <h4 className='text-center my-2'>{courseData?.courseName}</h4> */}
 
                 <select name="taskStatus" onChange={(e) => handleFilterTaskByCompletion(e.target.value)} className='form-select mb-2 form-select-sm w-25 me-2 float-end' defaultValue="all">
                     <option value="done">Complete</option>
