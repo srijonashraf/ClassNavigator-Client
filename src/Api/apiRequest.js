@@ -1,8 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
-  clearSessions,
-  getRefreshToken,
   setAccessToken,
   setRefreshToken,
 } from "../helper/SessionHelper.js";
@@ -13,33 +11,7 @@ let BaseURL = getBaseURL();
 // Now you can use the BaseURL in your application
 console.log("Base URL:", BaseURL);
 
-// LogoutWhenSessionExpired();
-
-const AutoRefreshTokens = async () => {
-  const refreshToken = Cookies.get("refreshToken") || getRefreshToken();
-  if (refreshToken) {
-    try {
-      const response = await axios.post(`${BaseURL}/refreshToken`, {
-        refreshToken: refreshToken,
-      });
-
-      console.log("From AutoRefreshToken Response: ", response.data);
-      if (response.status === 200) {
-        const { accessToken, refreshToken } = response.data;
-        Cookies.set("accessToken", accessToken);
-        Cookies.set("refreshToken", refreshToken);
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-      }
-    } catch (error) {
-      // Handle error here
-      console.error("Error refreshing tokens:", error);
-    }
-  }
-};
-
-//Token will refresh after every 15 minutes
-// setInterval(AutoRefreshTokens, 15 * 60 * 1000);
+LogoutWhenSessionExpired();
 
 export const Register = async (data) => {
   const response = await axios.post(`${BaseURL}/registration`, data);
@@ -52,18 +24,16 @@ export const Register = async (data) => {
 
 //!! This withCredentials: true is not working in production
 export const Login = async (data) => {
-  const response = await axios.post(`${BaseURL}/login`, data, {
-    withCredentials: true,
-  });
+  const response = await axios.post(`${BaseURL}/login`, data);
 
   if (response.status === 404) {
     return false;
   }
   if (response.data.status === "success") {
-    // Cookies.set("accessToken", response.data.accessToken);
-    // Cookies.set("refreshToken", response.data.refreshToken);
-    // setAccessToken(response.data.accessToken);
-    // setRefreshToken(response.data.refreshToken);
+    Cookies.set("accessToken", response.data.accessToken);
+    Cookies.set("refreshToken", response.data.refreshToken);
+    setAccessToken(response.data.accessToken);
+    setRefreshToken(response.data.refreshToken);
     return response;
   } else {
     return false;

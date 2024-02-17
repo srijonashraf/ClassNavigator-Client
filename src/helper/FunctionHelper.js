@@ -1,5 +1,11 @@
 import axios from "axios";
-import { clearSessions, getAccessToken } from "./SessionHelper.js";
+import {
+  clearSessions,
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from "./SessionHelper.js";
 import Cookies from "js-cookie";
 export const getBaseURL = () => {
   if (process.env.NODE_ENV === "production") {
@@ -21,11 +27,45 @@ export const LogoutWhenSessionExpired = () => {
     function (response) {
       return response;
     },
-    function (error) {
+    async function (error) {
       if (error.response && error.response.status === 401) {
-        clearSessions();
+        try {
+          await AutoRefreshTokens();
+        } catch (refreshError) {
+          console.error("Error auto-refreshing tokens:", refreshError);
+          clearSessions();
+        }
       }
       return Promise.reject(error);
     }
   );
+};
+
+export const AutoRefreshTokens = async () => {
+  const refreshToken = Cookies.get("refreshToken") || getRefreshToken();
+  if (refreshToken) {
+    try {
+      let BaseURL = getBaseURL();
+      const response = await axios.post(`${BaseURL}/refreshToken`, {
+        refreshToken: refreshToken,
+      });
+
+      console.log("From AutoRefreshToken Response: ", response.data);
+      if (response.status === 200) {
+        const { accessToken, refreshToken } = response.data;
+        Cookies.set("accessToken", accessToken);
+        Cookies.set("refreshToken", refreshToken);
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+      } else {
+        throw new Error("Refresh tokens failed");
+      }
+    } catch (error) {
+      // Handle error here
+      console.error("Error refreshing tokens:", error);
+      throw error;
+    }
+  } else {
+    throw new Error("No refresh token found");
+  }
 };

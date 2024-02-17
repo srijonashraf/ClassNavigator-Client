@@ -33,7 +33,6 @@ const AppNavbar = () => {
         await ProfileDetailsRequest();
 
       } catch (error) {
-        console.log("Frontend: Error fetching data.");
         console.error(error);
       }
     };
