@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentStore from '../../stores/ContentStore';
 
-const ListOfAdmin = () => {
+const ListOfAdmin = ({ AdminApiRefresh }) => {
     const { FetchAdminList } = ContentStore();
 
     return (

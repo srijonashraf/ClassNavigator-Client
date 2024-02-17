@@ -5,7 +5,7 @@ import ContentStore from "../../stores/ContentStore";
 import { AddNewAdmin } from './../../Api/apiRequest';
 import { successToast, errorToast } from "../../helper/ToasterHelper"; // Import errorToast if not imported
 
-const SelectComponent = () => {
+const SelectComponent = ({ AdminApiRefresh }) => {
     const { classId } = useParams(); // Use useParams hook
     const options = [];
     const { FetchEnrolledStudentList } = ContentStore();
@@ -36,6 +36,7 @@ const SelectComponent = () => {
             const response = await AddNewAdmin(classId, selectedUser);
             if (response) {
                 successToast('Admin Added');
+                AdminApiRefresh();
             }
 
             else {

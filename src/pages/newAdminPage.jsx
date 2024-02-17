@@ -9,6 +9,7 @@ import ListOfAdmin from '../components/newAdmin/listOfAdmin';
 const NewAdminPage = () => {
     const classId = useParams().classId;
     const [progress, setProgress] = useState(0);
+    connst[change, setChange] = useState(0);
 
     const { FetchEnrolledStudentListRequest, FetchAdminListRequest } = ContentStore();
 
@@ -28,8 +29,8 @@ const NewAdminPage = () => {
             <LoadingBarComponent progress={progress} />
             <AppNavbar />
             <div className="container mt-3">
-                <SelectComponent />
-                <ListOfAdmin />
+                <SelectComponent AdminApiRefresh={() => setChange(new Date().getTime())} />
+                <ListOfAdmin AdminApiRefresh={() => setChange(new Date().getTime())} />
             </div>
 
         </div>
