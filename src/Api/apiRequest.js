@@ -1,15 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import {
-  setAccessToken,
-  setRefreshToken,
-} from "../helper/SessionHelper.js";
+import { setAccessToken, setRefreshToken } from "../helper/SessionHelper.js";
 import { axiosHeader, getBaseURL } from "../helper/FunctionHelper.js";
 import { LogoutWhenSessionExpired } from "./../helper/FunctionHelper";
 let BaseURL = getBaseURL();
 
-// Now you can use the BaseURL in your application
-console.log("Base URL:", BaseURL);
+if (process.env.NODE_ENV !== "production") {
+  console.log("BaseURL: ", BaseURL);
+}
 
 LogoutWhenSessionExpired();
 
