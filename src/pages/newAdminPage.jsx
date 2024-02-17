@@ -9,7 +9,7 @@ import ListOfAdmin from '../components/newAdmin/listOfAdmin';
 const NewAdminPage = () => {
     const classId = useParams().classId;
     const [progress, setProgress] = useState(0);
-    connst[change, setChange] = useState(0);
+    const[change, setChange] = useState(0);
 
     const { FetchEnrolledStudentListRequest, FetchAdminListRequest } = ContentStore();
 
@@ -23,7 +23,7 @@ const NewAdminPage = () => {
             }
         };
         fetchData();
-    }, [classId]);
+    }, [classId, change]);
     return (
         <div>
             <LoadingBarComponent progress={progress} />
