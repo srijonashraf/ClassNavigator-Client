@@ -277,3 +277,17 @@ export const AddNewAdmin = async (classId, data) => {
     return false;
   }
 };
+
+
+export const UnenrollAsAdmin = async (classId) => {
+  const response = await axios.get(
+    `${BaseURL}/unEnrollAsAdmin/${classId}`,
+    axiosHeader()
+  );
+
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};

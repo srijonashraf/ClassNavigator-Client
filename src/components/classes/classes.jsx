@@ -5,11 +5,11 @@ import AddNewClass from './addNewClass';
 import LoadingBarComponent from './../loading/loadingBar';
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
-import { EnrollClass, UnEnrollClass, DeleteClass } from '../../Api/apiRequest.js';
+import { EnrollClass, UnEnrollClass, DeleteClass, UnenrollAsAdmin } from '../../Api/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
-import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined, ControlOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined, ControlOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 
 const Classes = ({ DashboardAPIRefresh }) => {
@@ -81,6 +81,9 @@ const Classes = ({ DashboardAPIRefresh }) => {
             case '4':
                 navigate(`/classes/newAdmin/${classId}`);
                 break;
+            case '5':
+                handleClassAction(classId, UnenrollAsAdmin, 'Unenrolled as Admin', 'Error Unenrolling as Admin');
+                break;
             default:
                 break;
         }
@@ -106,6 +109,11 @@ const Classes = ({ DashboardAPIRefresh }) => {
             key: '4',
             label: 'New Admin',
             icon: <ControlOutlined />,
+        },
+        {
+            key: '5',
+            label: 'Unenroll As Admin',
+            icon: <UserDeleteOutlined />,
         }
     ];
 
@@ -150,7 +158,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                             <Dropdown
                                 className='float-end mb-3 fs-5'
                                 menu={{
-                                    items: adminAccess(classItem.classId) ? items : items.slice(2,3),
+                                    items: adminAccess(classItem.classId) ? items : items.slice(2, 3),
                                     selectable: false,
                                     onClick: (info) => {
                                         handleMenuSelection(info.key, classItem.classId);
