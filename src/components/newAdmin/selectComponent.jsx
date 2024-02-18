@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Select, Space } from "antd";
 import { useParams } from "react-router-dom"; // Import useParams
 import ContentStore from "../../stores/ContentStore";
+import ProfileStore from './../../stores/ProfileStore';
 import { AddNewAdmin } from './../../Api/apiRequest';
 import { successToast, errorToast } from "../../helper/ToasterHelper"; // Import errorToast if not imported
 
@@ -9,22 +10,28 @@ const SelectComponent = ({ AdminApiRefresh }) => {
     const { classId } = useParams(); // Use useParams hook
     const options = [];
     const { FetchEnrolledStudentList } = ContentStore();
+    const { ProfileDetails } = ProfileStore();
     const [selectedUser, setSelectedUser] = useState(null); // State to hold selected user
 
     if (Array.isArray(FetchEnrolledStudentList)) {
         FetchEnrolledStudentList.forEach((student) => {
             const [email, userId] = student.split(', ');
-            options.push({
-                value: userId.trim(),
-                label: email.trim()
-            });
+
+            //Own email will not be added as an admin
+            if (email.trim() !== ProfileDetails?.email) {
+                options.push({
+                    value: email.trim(),
+                });
+            }
         });
     }
 
-    const handleChange = (value, option) => {
-        // console.log(`Selected: ${option.label}, ${value}`);
-        setSelectedUser(option.label); // Set the selected user
+    const handleChange = (value) => {
+        console.log(`Selected: ${value}`);
+        setSelectedUser(value); // Set the selected user
     };
+
+    // console.log(ProfileDetails?.email);
 
     const handleFormSubmission = async (e) => {
         e.preventDefault();
@@ -53,14 +60,14 @@ const SelectComponent = ({ AdminApiRefresh }) => {
         <>
             <form className="" style={{ width: "100%" }} onSubmit={handleFormSubmission}>
                 <Select
-                    mode="single"
+                    mode="multiple"
                     size="middle"
                     placeholder="Select User"
                     onChange={handleChange}
                     style={{ width: "100%" }}
                     options={options}
                 />
-                <button className="btn btn-dark btn-sm my-2">Add Admin</button>
+                <button type="submit" className="btn btn-dark btn-sm my-2">Add Admin</button>
             </form>
         </>
     );
