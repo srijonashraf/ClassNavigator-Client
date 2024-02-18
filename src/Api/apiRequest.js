@@ -264,12 +264,15 @@ export const TaskCompletion = async (classId, courseId, taskId) => {
   }
 };
 
-export const AddNewAdmin = async (classId, newAdminEmail) => {
+export const AddNewAdmin = async (classId, data) => {
   const response = await axios.post(
     `${BaseURL}/addNewAdmin/${classId}`,
-    newAdminEmail,
+    { newAdminEmails: data },
     axiosHeader()
   );
+
+  // console.log(newAdminEmail);
+
   if (response.data.status === "success") {
     return response;
   } else {
