@@ -271,8 +271,6 @@ export const AddNewAdmin = async (classId, data) => {
     axiosHeader()
   );
 
-  // console.log(newAdminEmail);
-
   if (response.data.status === "success") {
     return response;
   } else {
