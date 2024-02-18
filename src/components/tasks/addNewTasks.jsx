@@ -188,7 +188,7 @@ const AddNewTasks = ({ setProgress, TaskApiRefresh, ShowAddNewTaskTrigger }) => 
                                 onChange={handleChange}
                                 defaultValue="Online"
                             >
-                                <option value="" disabled hidden>Select Mode</option>
+                                 {taskData.mode.length === 0 && <option value="" disabled hidden>Select Mode</option>}
                                 <option value="Online">Online</option>
                                 <option value="Offline">Offline</option>
                             </select>
