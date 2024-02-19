@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 const CoursePage = () => {
     const [change, setChange] = useState(0);
     const { ProfileDetailsRequest } = ProfileStore();
-    const { FetchAllCoursesByClassRequest } = ContentStore();
+    const { FetchAllCoursesByClassRequest,FetchEnrolledStudentListRequest } = ContentStore();
     
     const {classId} = useParams();
 
@@ -17,6 +17,7 @@ const CoursePage = () => {
             try {
                 await ProfileDetailsRequest();
                 await FetchAllCoursesByClassRequest(classId);
+                await FetchEnrolledStudentListRequest(classId);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
