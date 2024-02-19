@@ -15,14 +15,10 @@ const SelectComponent = ({ AdminApiRefresh }) => {
 
     if (Array.isArray(FetchEnrolledStudentList)) {
         FetchEnrolledStudentList.forEach((student) => {
-            const [email, userId] = student.split(', ');
+            options.push({
+                value: student.email,
+            });
 
-            //Own email will not be added as an admin
-            if (email.trim() !== ProfileDetails?.email) {
-                options.push({
-                    value: email.trim(),
-                });
-            }
         });
     }
 
