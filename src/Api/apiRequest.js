@@ -271,6 +271,8 @@ export const AddNewAdmin = async (classId, data) => {
     axiosHeader()
   );
 
+  // console.log("emails sent for admin request", data);
+  // console.log(response);
   if (response.data.status === "success") {
     return response;
   } else {
@@ -278,13 +280,25 @@ export const AddNewAdmin = async (classId, data) => {
   }
 };
 
-
 export const UnenrollAsAdmin = async (classId) => {
   const response = await axios.get(
     `${BaseURL}/unEnrollAsAdmin/${classId}`,
     axiosHeader()
   );
 
+  if (response.data.status === "success") {
+    return response;
+  } else {
+    return false;
+  }
+};
+
+export const RemoveParticipant = async (classId, body) => {
+  const response = await axios.post(
+    `${BaseURL}/removeParticipant/${classId}`,
+    { email: body },
+    axiosHeader()
+  );
   if (response.data.status === "success") {
     return response;
   } else {
