@@ -9,7 +9,7 @@ import { EnrollClass, UnEnrollClass, DeleteClass, UnenrollAsAdmin } from '../../
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import FaButton from './../buttons/fab';
 import Avatar from 'react-avatar';
-import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined, ControlOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, EditOutlined, DeleteOutlined, MoreOutlined, UserDeleteOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 
 const Classes = ({ DashboardAPIRefresh }) => {
@@ -108,7 +108,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
         {
             key: '4',
             label: 'New Admin',
-            icon: <ControlOutlined />,
+            icon: <UserAddOutlined />,
         },
         {
             key: '5',
