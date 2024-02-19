@@ -10,10 +10,12 @@ import Avatar from 'react-avatar';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
+import ListOfParticipant from '../participant/listOfParticipant.jsx';
 
 const Courses = ({ CourseAPIRefresh }) => {
     const [courses, setCourses] = useState(null);
     const [showAddNewCourse, setShowAddNewCourse] = useState(false);
+    const [showParticipantList, setShowParticipantList] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const { FetchAllCoursesByClass, FetchAllCoursesByClassRequest } = ContentStore();
@@ -61,6 +63,11 @@ const Courses = ({ CourseAPIRefresh }) => {
         setShowAddNewCourse(!showAddNewCourse);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    const handleShowParticipantList = () => {
+        setShowParticipantList(!showParticipantList);
+    }
+
 
     const handleDeleteCourse = async (classId, courseId) => {
         setProgress(50);
@@ -142,9 +149,20 @@ const Courses = ({ CourseAPIRefresh }) => {
             </Breadcrumb>
             <div className=''>
                 <LoadingBarComponent progress={progress} />
-                {adminAccess(classId) &&
-                    <button className='btn btn-dark rounded-1' onClick={handleShowAddNewCourse}> Add New Course</button>
-                }
+                {adminAccess(classId) ? (
+                    <div>
+                        <button className='btn btn-dark rounded-1' onClick={handleShowAddNewCourse}> Add New Course</button>
+                        <button className='btn btn-primary rounded-1 float-end' onClick={handleShowParticipantList}>Members</button>
+
+                        {showParticipantList ?
+                            <ListOfParticipant />
+                            :
+                            <></>
+                        }
+                    </div>
+                ) : (
+                    <></>
+                )}
                 <div className={`mb-4 ${showAddNewCourse ? 'animated fadeInRight' : 'animated fadeOut'}`}>
                     {showAddNewCourse && <AddNewCourses ShowAddNewCourseTrigger={handleShowAddNewCourse} setProgress={setProgress} CourseAPIRefresh={CourseAPIRefresh} />}
                 </div>
