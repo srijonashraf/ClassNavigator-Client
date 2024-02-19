@@ -4,6 +4,8 @@ import ContentStore from '../../stores/ContentStore';
 const ListOfAdmin = ({ AdminApiRefresh }) => {
     const { FetchAdminList } = ContentStore();
 
+    // console.log('listOfAdmin.jsx', FetchAdminList)
+
     return (
         <div>
             <table className='table'>
