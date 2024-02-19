@@ -2,6 +2,7 @@ import React from 'react';
 import { Login as LoginApi } from "../../Api/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/img/favicon.png';
 
 
 const Login = () => {
@@ -14,7 +15,6 @@ const Login = () => {
     const navigate = useNavigate();
 
     const loginRequest = async (e) => {
-        //!!ErrorToast is not showing
         e.preventDefault();
         if (formValue.userId.length === 0 || formValue.password.length === 0) {
             errorToast("Please enter all the fields");
@@ -35,6 +35,11 @@ const Login = () => {
                 <div className="card border-primary shadow-lg rounded-1 p-4">
                     <div className="card-body">
                         <form onSubmit={loginRequest} className="form d-flex flex-column gap-3">
+
+                            <div className='animated fadeInRight d-flex flex-column gap-2 align-items-center'>
+                                <img src={logo} className='img-fluid w-25 mx-auto d-block' alt="" />
+                                <h3 className='text-center'>ClassNavigator</h3>
+                            </div>
                             <input
                                 type="text"
                                 placeholder="Student ID"
