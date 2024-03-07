@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { successToast, errorToast } from '../../helper/ToasterHelper';
-import { AddNewCourses as AddNewCoursesApi, FetchCoursesById, EditCourseDetails } from '../../Api/apiRequest';
+import { AddNewCourses as AddNewCoursesApi, FetchCoursesById, EditCourseDetails } from '../../api/apiRequest';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 const AddNewCourses = ({ setProgress, CourseAPIRefresh, ShowAddNewCourseTrigger }) => {

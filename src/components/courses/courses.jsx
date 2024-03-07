@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
 import AddNewCourses from './addNewCourses';
-import { DeleteCourse } from '../../Api/apiRequest';
+import { DeleteCourse } from '../../api/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';
@@ -151,9 +151,12 @@ const Courses = ({ CourseAPIRefresh }) => {
                 <LoadingBarComponent progress={progress} />
                 {adminAccess(classId) ? (
                     <div>
+                        <div className='d-flex gap-3'>
                         <button className='btn btn-dark rounded-1' onClick={handleShowAddNewCourse}> Add New Course</button>
-                        <button className='btn btn-primary rounded-1 float-end' onClick={handleShowParticipantList}>Members</button>
-
+                        <button className='btn btn-dark rounded-1'> <Link to={`/routine/${classId}`} className='btn btn-dark rounded-1 nav-link'>Routine</Link></button>
+                        <button className='btn btn-primary rounded-1' onClick={handleShowParticipantList}>Members</button>
+                        </div>
+                       
                         {showParticipantList ?
                             <ListOfParticipant />
                             :

@@ -7,6 +7,7 @@ import {
   setRefreshToken,
 } from "./SessionHelper.js";
 import Cookies from "js-cookie";
+import { alertSwal } from "./ToasterHelper.js";
 export const getBaseURL = () => {
   if (process.env.NODE_ENV === "production") {
     return "https://classnavigator-srijonashraf.vercel.app/api/v1";
@@ -16,7 +17,6 @@ export const getBaseURL = () => {
 };
 
 export const axiosHeader = () => {
-  // console.log(getAccessToken(), Cookies.get('accessToken'));
   return {
     headers: { token: getAccessToken() || Cookies.get("accessToken") },
   };
@@ -29,10 +29,8 @@ export const LogoutWhenSessionExpired = () => {
     },
     async function (error) {
       if (error.response && error.response.status === 401) {
-        try {
-          await AutoRefreshTokens();
-        } catch (refreshError) {
-          console.error("Error auto-refreshing tokens:", refreshError);
+        const isConfirmed = await alertSwal();
+        if (isConfirmed) {
           clearSessions();
         }
       }
@@ -40,6 +38,8 @@ export const LogoutWhenSessionExpired = () => {
     }
   );
 };
+
+
 
 export const AutoRefreshTokens = async () => {
   const refreshToken = Cookies.get("refreshToken") || getRefreshToken();
@@ -53,10 +53,10 @@ export const AutoRefreshTokens = async () => {
       console.log("From AutoRefreshToken Response: ", response.data);
       if (response.status === 200) {
         const { accessToken, refreshToken } = response.data;
-        Cookies.set("accessToken", accessToken);
-        Cookies.set("refreshToken", refreshToken);
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
+        Cookies.set("accessToken", accessToken);
+        Cookies.set("refreshToken", refreshToken);
       } else {
         throw new Error("Refresh tokens failed");
       }
@@ -69,3 +69,5 @@ export const AutoRefreshTokens = async () => {
     throw new Error("No refresh token found");
   }
 };
+
+setInterval(AutoRefreshTokens, 1000 * 60 * 15);

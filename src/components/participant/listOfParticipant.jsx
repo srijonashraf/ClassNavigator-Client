@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import ContentStore from '../../stores/ContentStore';
 import { ExclamationCircleOutlined, FlagOutlined } from '@ant-design/icons';
 import PopConfirm from './../shared/PopConfirm';
-import { AddNewAdmin, RemoveParticipant } from '../../Api/apiRequest';
+import { AddNewAdmin, RemoveParticipant } from '../../api/apiRequest';
 import { useParams } from 'react-router-dom';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
 
@@ -41,7 +41,7 @@ const ListOfParticipant = () => {
                             <td>{student.name}</td>
                             <td>{student.email}</td>
                             <td>
-                                <div className='d-flex justify-content-around'>
+                                <div className='d-flex justify-content-evenly'>
                                     <PopConfirm
                                         id={'add-admin'}
                                         icon={<FlagOutlined />}

@@ -15,42 +15,54 @@ const ContentStore = create((set) => ({
   FetchAllTaskCommonStore: null, //Applied for allTasks.jsx [By Landing will fetch all the tasks but when any class is selected then it will fetch all the tasks of that class and store here]
 
   FetchAllTogetherRequest: async () => {
-    let res = await axios.get(`${BaseURL}/fetchAllTogether`, axiosHeader());
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllTogether: null,
-        FetchAllTogether: res.data.data,
-      });
+    try {
+      let res = await axios.get(`${BaseURL}/fetchAllTogether`, axiosHeader());
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllTogether: null,
+          FetchAllTogether: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchAllCoursesByClassRequest: async (classId) => {
-    let res = await axios.get(
-      `${BaseURL}/fetchAllCoursesByClass/${classId}`,
-      axiosHeader()
-    );
+    try {
+      let res = await axios.get(
+        `${BaseURL}/fetchAllCoursesByClass/${classId}`,
+        axiosHeader()
+      );
 
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllCoursesByClass: null,
-        FetchAllCoursesByClass: res.data.data,
-      });
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllCoursesByClass: null,
+          FetchAllCoursesByClass: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchAllTasksByCourseRequest: async (classId, courseId) => {
-    let res = await axios.get(
-      `${BaseURL}/fetchAllTasksByCourse/${classId}/${courseId}`,
-      axiosHeader()
-    );
+    try {
+      let res = await axios.get(
+        `${BaseURL}/fetchAllTasksByCourse/${classId}/${courseId}`,
+        axiosHeader()
+      );
 
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllTasksByCourse: null,
-        FetchAllTaskCommonStore: null,
-        FetchAllTaskCommonStore: res.data.data,
-        FetchAllTasksByCourse: res.data.data,
-      });
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllTasksByCourse: null,
+          FetchAllTaskCommonStore: null,
+          FetchAllTaskCommonStore: res.data.data,
+          FetchAllTasksByCourse: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
@@ -68,70 +80,90 @@ const ContentStore = create((set) => ({
   },
 
   FetchCompletedTaskByCourseRequest: async (classId, courseId) => {
-    let res = await axios.get(
-      `${BaseURL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
-      axiosHeader()
-    );
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllTasksByCourse: null,
-        FetchAllTasksByCourse: res.data.data,
-      });
+    try {
+      let res = await axios.get(
+        `${BaseURL}/fetchCompletedTasksByCourse/${classId}/${courseId}`,
+        axiosHeader()
+      );
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllTasksByCourse: null,
+          FetchAllTasksByCourse: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchUnCompletedTaskByCourseRequest: async (classId, courseId) => {
-    let res = await axios.get(
-      `${BaseURL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
-      axiosHeader()
-    );
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllTasksByCourse: null,
-        FetchAllTasksByCourse: res.data.data,
-      });
+    try {
+      let res = await axios.get(
+        `${BaseURL}/fetchUnCompletedTasksByCourse/${classId}/${courseId}`,
+        axiosHeader()
+      );
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllTasksByCourse: null,
+          FetchAllTasksByCourse: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchAllCoursesRequest: async () => {
-    let res = await axios.get(`${BaseURL}/fetchAllCourses`, axiosHeader());
-    if (res.data["status"] === "success") {
-      set({
-        FetchAllCourses: null,
-        FetchAllCourses: res.data.data,
-      });
+    try {
+      let res = await axios.get(`${BaseURL}/fetchAllCourses`, axiosHeader());
+      if (res.data["status"] === "success") {
+        set({
+          FetchAllCourses: null,
+          FetchAllCourses: res.data.data,
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchEnrolledStudentListRequest: async (classId) => {
-    const response = await axios.get(
-      `${BaseURL}/fetchEnrollStudentList/${classId}`,
-      axiosHeader()
-    );
-    if (response.data["status"] === "success") {
-      set({
-        FetchEnrolledStudentList: null,
-        FetchEnrolledStudentList: response.data.data,
-      });
-      // console.log(response.data.data);
-    } else {
-      return false;
+    try {
+      const response = await axios.get(
+        `${BaseURL}/fetchEnrollStudentList/${classId}`,
+        axiosHeader()
+      );
+      if (response.data["status"] === "success") {
+        set({
+          FetchEnrolledStudentList: null,
+          FetchEnrolledStudentList: response.data.data,
+        });
+        // console.log(response.data.data);
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 
   FetchAdminListRequest: async (classId) => {
-    const response = await axios.get(
-      `${BaseURL}/fetchAdminList/${classId}`,
-      axiosHeader()
-    );
-    if (response.data["status"] === "success") {
-      set({
-        FetchAdminList: null,
-        FetchAdminList: response.data.data,
-      });
-      // console.log(response.data.data);
-    } else {
-      return false;
+    try {
+      const response = await axios.get(
+        `${BaseURL}/fetchAdminList/${classId}`,
+        axiosHeader()
+      );
+      if (response.data["status"] === "success") {
+        set({
+          FetchAdminList: null,
+          FetchAdminList: response.data.data,
+        });
+        // console.log(response.data.data);
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 }));

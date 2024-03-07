@@ -1,5 +1,5 @@
 import React from 'react';
-import { Register } from '../../Api/apiRequest.js';
+import { Register } from '../../api/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { UserIdValidation } from '../../helper/FormHelper.js';
 

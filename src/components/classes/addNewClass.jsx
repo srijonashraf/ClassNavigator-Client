@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AddNewClass as AddNewClassApi, EditClassDetails, FetchClassesById } from '../../Api/apiRequest';
+import { AddNewClass as AddNewClassApi, EditClassDetails, FetchClassesById } from '../../api/apiRequest';
 import { errorToast, successToast } from '../../helper/ToasterHelper';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 const AddNewClass = ({ DashboardAPIRefresh, setProgress, showAddNewClassTrigger }) => {

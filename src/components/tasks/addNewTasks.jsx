@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { successToast, errorToast } from '../../helper/ToasterHelper';
-import { AddNewTask as AddNewTaskApi, FetchTaskById, EditTaskDetails } from '../../Api/apiRequest';
+import { AddNewTask as AddNewTaskApi, FetchTaskById, EditTaskDetails } from '../../api/apiRequest.js';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';

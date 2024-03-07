@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login as LoginApi } from "../../Api/apiRequest.js";
+import { Login as LoginApi } from "../../api/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/favicon.png';
@@ -36,7 +36,7 @@ const Login = () => {
                     <div className="card-body">
                         <form onSubmit={loginRequest} className="form d-flex flex-column gap-3">
 
-                            <div className='animated fadeInRight d-flex flex-column gap-2 align-items-center'>
+                            <div className='d-flex flex-column gap-2 align-items-center'>
                                 <img src={logo} className='img-fluid w-25 mx-auto d-block' alt="" />
                                 <h3 className='text-center'>ClassNavigator</h3>
                             </div>

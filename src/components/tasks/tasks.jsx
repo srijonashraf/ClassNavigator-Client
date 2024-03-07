@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LoadingBarComponent from './../loading/loadingBar';
-import { DeleteTask, FetchCoursesById, TaskCompletion } from '../../Api/apiRequest';
+import { DeleteTask, FetchCoursesById, TaskCompletion } from '../../api/apiRequest.js';
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
 import ContentStore from '../../stores/ContentStore.js';
 import ProfileStore from '../../stores/ProfileStore.js';

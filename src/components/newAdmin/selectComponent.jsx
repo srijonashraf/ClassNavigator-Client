@@ -3,7 +3,7 @@ import { Select, Space } from "antd";
 import { useParams } from "react-router-dom"; // Import useParams
 import ContentStore from "../../stores/ContentStore";
 import ProfileStore from './../../stores/ProfileStore';
-import { AddNewAdmin } from './../../Api/apiRequest';
+import { AddNewAdmin } from '../../api/apiRequest';
 import { successToast, errorToast } from "../../helper/ToasterHelper"; // Import errorToast if not imported
 
 const SelectComponent = ({ AdminApiRefresh }) => {
