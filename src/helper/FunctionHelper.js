@@ -50,7 +50,7 @@ export const AutoRefreshTokens = async () => {
         refreshToken: refreshToken,
       });
 
-      console.log("From AutoRefreshToken Response: ", response.data);
+      // console.log("From AutoRefreshToken Response: ", response.data);
       if (response.status === 200) {
         const { accessToken, refreshToken } = response.data;
         setAccessToken(accessToken);
