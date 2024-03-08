@@ -166,6 +166,30 @@ const ContentStore = create((set) => ({
       console.log(err);
     }
   },
+
+  FetchRoutineByClassId: null,
+  FetchRoutineByClassIdRequest: async (classId) => {
+    try {
+      const response = await axios.get(
+        `${BaseURL}/fetchRoutineByClassId/${classId}`,
+        axiosHeader()
+      );
+      if (response.data["status"] === "success") {
+        set({
+
+          FetchRoutineByClassId: response.data.data,
+        });
+        console.log(response.data.data);
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+
+
 }));
 
 export default ContentStore;
