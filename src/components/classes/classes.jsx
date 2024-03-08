@@ -147,7 +147,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
                 </div>
             </div>
 
-            <div className={`mb-4 ${showAddNewClass ? 'animated fadeInRight' : 'animated fadeOut'}`}>
+            <div className={`mb-4`}>
                 {showAddNewClass && <AddNewClass setProgress={setProgress} DashboardAPIRefresh={DashboardAPIRefresh} showAddNewClassTrigger={handleShowAddNewClass} />}
             </div>
 

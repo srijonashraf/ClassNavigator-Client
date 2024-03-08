@@ -341,7 +341,7 @@ const Tasks = ({ TaskPageApiRefresh }) => {
                     <option value="all">All</option>
                 </select>
 
-                <div className={`mb-4 ${showAddNewTask ? 'animated fadeInRight' : 'animated fadeOut'}`}>
+                <div className={`mb-4`}>
                     {showAddNewTask && <AddNewTasks ShowAddNewTaskTrigger={handleShowAddNewTask} setProgress={setProgress} TaskApiRefresh={() => setChange(new Date().getTime())} />}
                 </div>
             </div>

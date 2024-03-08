@@ -166,7 +166,7 @@ const Courses = ({ CourseAPIRefresh }) => {
                 ) : (
                     <></>
                 )}
-                <div className={`mb-4 ${showAddNewCourse ? 'animated fadeInRight' : 'animated fadeOut'}`}>
+                <div className={`mb-4`}>
                     {showAddNewCourse && <AddNewCourses ShowAddNewCourseTrigger={handleShowAddNewCourse} setProgress={setProgress} CourseAPIRefresh={CourseAPIRefresh} />}
                 </div>
             </div>
