@@ -6,8 +6,8 @@ const ViewRoutine = () => {
     <>
       <div>
         <h2>Class Routine</h2>
-        <table className="table table-striped">
-          <thead>
+        <table className="table table-bordered table-hover">
+          <thead className="table-dark">
             <tr>
               <th>Day</th>
               <th>Classes</th>

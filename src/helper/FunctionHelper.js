@@ -7,7 +7,7 @@ import {
   setRefreshToken,
 } from "./SessionHelper.js";
 import Cookies from "js-cookie";
-import { alertSwal } from "./ToasterHelper.js";
+import { SessionAlertSwal } from "./ToasterHelper.js";
 export const getBaseURL = () => {
   if (process.env.NODE_ENV === "production") {
     return "https://classnavigator-srijonashraf.vercel.app/api/v1";
@@ -29,7 +29,7 @@ export const LogoutWhenSessionExpired = () => {
     },
     async function (error) {
       if (error.response && error.response.status === 401) {
-        const isConfirmed = await alertSwal();
+        const isConfirmed = await SessionAlertSwal();
         if (isConfirmed) {
           clearSessions();
         }
@@ -38,8 +38,6 @@ export const LogoutWhenSessionExpired = () => {
     }
   );
 };
-
-
 
 export const AutoRefreshTokens = async () => {
   const refreshToken = Cookies.get("refreshToken") || getRefreshToken();

@@ -8,7 +8,7 @@ class ToasterClass {
   errorToast(msg) {
     toast.error(msg);
   }
-  async alertSwal() {
+  async SessionAlertSwal() {
     const result = await Swal.fire({
       title: "Session Expired!",
       text: "Please login again to continue..",
@@ -22,4 +22,5 @@ class ToasterClass {
   }
 }
 
-export const { errorToast, successToast, alertSwal } = new ToasterClass();
+export const { errorToast, successToast, SessionAlertSwal } =
+  new ToasterClass();
