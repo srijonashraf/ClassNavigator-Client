@@ -23,7 +23,8 @@ const RoutinePage = () => {
     );
   };
 
-  const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
+  const adminAccess = (classId) =>
+    AdminAccessClasses && AdminAccessClasses.includes(classId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,12 +38,16 @@ const RoutinePage = () => {
     <div>
       <AppNavbar />
       <div className="container mt-3">
-        <button
-          onClick={hanleButtonAction}
-          className="btn btn-dark rounded-1 float-end mb-2"
-        >
-          {buttonName}
-        </button>
+        {adminAccess(classId) ? (
+          <button
+            onClick={hanleButtonAction}
+            className="btn btn-dark rounded-1 float-end mb-2"
+          >
+            {buttonName}
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="container mt-3">
         {viewRoutineValue ? (
