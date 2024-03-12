@@ -170,31 +170,27 @@ const Courses = ({ CourseAPIRefresh }) => {
       </Breadcrumb>
       <div className="">
         <LoadingBarComponent progress={progress} />
-        {adminAccess(classId) ? (
-          <div>
-            <div className="d-flex gap-3">
+        <div>
+          <div className="d-flex gap-3">
+            {adminAccess(classId) && (
               <button
                 className="btn btn-dark rounded-1"
                 onClick={handleShowAddNewCourse}
               >
-                {" "}
                 Add New Course
               </button>
+            )}
 
+            {adminAccess(classId) && (
               <button
                 className="btn btn-primary rounded-1"
                 onClick={handleShowParticipantList}
               >
                 Members
               </button>
-            </div>
+            )}
 
-            {showParticipantList ? <ListOfParticipant /> : <></>}
-          </div>
-        ) : (
-          <>
             <button className="btn btn-dark rounded-1">
-              {" "}
               <Link
                 to={`/routine/${classId}`}
                 className="btn btn-dark rounded-1 nav-link"
@@ -202,8 +198,11 @@ const Courses = ({ CourseAPIRefresh }) => {
                 Routine
               </Link>
             </button>
-          </>
-        )}
+          </div>
+
+          {showParticipantList ? <ListOfParticipant /> : <></>}
+        </div>
+
         <div className={`mb-4`}>
           {showAddNewCourse && (
             <AddNewCourses

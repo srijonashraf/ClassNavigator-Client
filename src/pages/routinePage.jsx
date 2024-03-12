@@ -38,15 +38,13 @@ const RoutinePage = () => {
     <div>
       <AppNavbar />
       <div className="container mt-3">
-        {adminAccess(classId) ? (
+        {adminAccess(classId) && (
           <button
             onClick={hanleButtonAction}
             className="btn btn-dark rounded-1 float-end mb-2"
           >
             {buttonName}
           </button>
-        ) : (
-          <></>
         )}
       </div>
       <div className="container mt-3">
