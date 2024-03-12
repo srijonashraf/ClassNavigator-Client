@@ -1,38 +1,84 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ContentStore from "../../stores/ContentStore";
+import { Table } from "antd";
+import { DeleteRoutineByDay } from "../../api/apiRequest";
+import { useParams } from "react-router-dom";
+import { errorToast, successToast } from "../../helper/ToasterHelper";
+
 const ViewRoutine = () => {
-  const { FetchRoutineByClassId } = ContentStore();
+  const {
+    FetchRoutineByClassId,
+    FetchRoutineByClassIdRequest,
+    FetchClassById,
+  } = ContentStore();
+  const { classId } = useParams();
+
+  const handleDeleteDay = async (day) => {
+    try {
+      const response = await DeleteRoutineByDay(classId, day);
+      if (!response) {
+        errorToast("Something went wrong");
+      } else {
+        await FetchRoutineByClassIdRequest(classId);
+        successToast("Day deleted successfully");
+      }
+    } catch (err) {
+      errorToast("Something went wrong");
+    }
+  };
+
+  const daysOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+
+  const columns = [
+    { title: "Day", dataIndex: "day", key: "day" },
+    {
+      title: "Classes",
+      dataIndex: "classes",
+      key: "classes",
+      render: (classes, record) => (
+        <ul>
+          {classes.map((classItem, index) => (
+            <li key={index} className={`class-row-${index}`}>
+              <div className=" mb-2">
+                <p className="fw-bold mb-2 fs-6">{classItem.time}</p>
+                <p className="fw-bold">
+                  {classItem.courseName} {classItem.courseCode} (
+                  {FetchClassById?.section})
+                </p>
+                <p className="mb-0">{classItem.teacher}</p>
+                <p className="mb-0 fw-bold">{classItem.room}</p>
+              </div>
+            </li>
+          ))}
+          <button
+            className="btn btn-danger rounded-1 btn-sm mt-2"
+            onClick={() => handleDeleteDay(record.day)}
+          >
+            Delete Day
+          </button>
+        </ul>
+      ),
+    },
+  ];
+
   return (
     <>
-      <div>
-        <h2>Class Routine</h2>
-        <table className="table table-bordered table-hover">
-          <thead className="table-dark">
-            <tr>
-              <th>Day</th>
-              <th>Classes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {FetchRoutineByClassId?.routine?.map((day) => (
-              <tr key={day._id}>
-                <td>{day.day}</td>
-                <td>
-                  <ul>
-                    {day.classes.map((classItem) => (
-                      <li key={classItem._id}>
-                        <strong>{classItem.courseName}</strong> (
-                        {classItem.courseCode}) - Teacher: {classItem.teacher} -
-                        Room: {classItem.room} - Time: {classItem.time}
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Table
+        columns={columns}
+        dataSource={
+          FetchRoutineByClassId?.routine
+            ? FetchRoutineByClassId.routine.sort((a, b) => {
+                const dayAIndex = daysOrder.indexOf(a.day);
+                const dayBIndex = daysOrder.indexOf(b.day);
+                return dayAIndex - dayBIndex;
+              }).map((day, index) => ({
+                ...day,
+                key: index,
+              }))
+            : []
+        }
+        pagination={false}
+      />
     </>
   );
 };

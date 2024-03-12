@@ -397,3 +397,36 @@ export const RemoveParticipant = async (classId, body) => {
     console.error("Remove Participant Error: ", error);
   }
 };
+
+export const SaveRoutineByClassId = async (classId, body, day) => {
+  try {
+    const response = await axios.post(
+      `${BaseURL}/saveRoutineByClassId/${classId}/${day}`,
+      body,
+      axiosHeader()
+    );
+    if (response.data.status === "success") {
+      return response;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Remove Participant Error: ", error);
+  }
+};
+
+export const DeleteRoutineByDay = async (classId, day) => {
+  try {
+    const response = await axios.get(
+      `${BaseURL}/deleteRoutineByClassDay/${classId}/${day}`,
+      axiosHeader()
+    );
+    if (response.data.status === "success") {
+      return response;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Remove Participant Error: ", error);
+  }
+};
