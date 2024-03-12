@@ -4,6 +4,7 @@ import { Table } from "antd";
 import { DeleteRoutineByDay } from "../../api/apiRequest";
 import { useParams } from "react-router-dom";
 import { errorToast, successToast } from "../../helper/ToasterHelper";
+import ProfileStore from "../../stores/ProfileStore";
 
 const ViewRoutine = () => {
   const {
@@ -11,7 +12,12 @@ const ViewRoutine = () => {
     FetchRoutineByClassIdRequest,
     FetchClassById,
   } = ContentStore();
+  const { AdminAccessClasses } = ProfileStore();
+
   const { classId } = useParams();
+
+  const adminAccess = (classId) =>
+    AdminAccessClasses && AdminAccessClasses.includes(classId);
 
   const handleDeleteDay = async (day) => {
     try {
@@ -27,7 +33,14 @@ const ViewRoutine = () => {
     }
   };
 
-  const daysOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+  const daysOrder = [
+    "Saturday",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+  ];
 
   const columns = [
     { title: "Day", dataIndex: "day", key: "day" },
@@ -50,12 +63,14 @@ const ViewRoutine = () => {
               </div>
             </li>
           ))}
-          <button
-            className="btn btn-danger rounded-1 btn-sm mt-2"
-            onClick={() => handleDeleteDay(record.day)}
-          >
-            Delete Day
-          </button>
+          {adminAccess(classId) && (
+            <button
+              className="btn btn-danger rounded-1 btn-sm mt-2"
+              onClick={() => handleDeleteDay(record.day)}
+            >
+              Delete Day
+            </button>
+          )}
         </ul>
       ),
     },
@@ -67,14 +82,16 @@ const ViewRoutine = () => {
         columns={columns}
         dataSource={
           FetchRoutineByClassId?.routine
-            ? FetchRoutineByClassId.routine.sort((a, b) => {
-                const dayAIndex = daysOrder.indexOf(a.day);
-                const dayBIndex = daysOrder.indexOf(b.day);
-                return dayAIndex - dayBIndex;
-              }).map((day, index) => ({
-                ...day,
-                key: index,
-              }))
+            ? FetchRoutineByClassId.routine
+                .sort((a, b) => {
+                  const dayAIndex = daysOrder.indexOf(a.day);
+                  const dayBIndex = daysOrder.indexOf(b.day);
+                  return dayAIndex - dayBIndex;
+                })
+                .map((day, index) => ({
+                  ...day,
+                  key: index,
+                }))
             : []
         }
         pagination={false}

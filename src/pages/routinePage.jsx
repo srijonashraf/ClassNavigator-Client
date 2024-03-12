@@ -23,6 +23,8 @@ const RoutinePage = () => {
     );
   };
 
+  const adminAccess = (classId) => AdminAccessClasses && AdminAccessClasses.includes(classId);
+
   useEffect(() => {
     const fetchData = async () => {
       await FetchRoutineByClassIdRequest(classId);
@@ -51,7 +53,7 @@ const RoutinePage = () => {
         ) : (
           <></>
         )}
-        {showCreateRoutine ? <CreateRoutine /> : <></>}
+        {showCreateRoutine && adminAccess(classId) ? <CreateRoutine /> : <></>}
       </div>
     </div>
   );
