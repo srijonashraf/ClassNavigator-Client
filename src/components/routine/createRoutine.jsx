@@ -4,6 +4,7 @@ import { Form, Input, Button, Select, Row, Col, TimePicker } from "antd";
 import { useParams } from "react-router-dom";
 import { SaveRoutineByClassId } from "../../api/apiRequest";
 import { errorToast, successToast } from "../../helper/ToasterHelper";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -72,8 +73,6 @@ const CreateRoutine = () => {
     };
     setFormValues(updatedFormValues);
   };
-  
-  
 
   const handleFormSubmission = async (e) => {
     e.preventDefault();
@@ -177,13 +176,17 @@ const CreateRoutine = () => {
                   <Input
                     value={cls.facultyName || ""}
                     onChange={(e) =>
-                      handleClassChange(classIndex, "facultyName", e.target.value)
+                      handleClassChange(
+                        classIndex,
+                        "facultyName",
+                        e.target.value
+                      )
                     }
                   />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item label="Room">
+                <Form.Item label="Class Room">
                   <Input
                     value={cls.room || ""}
                     onChange={(e) =>
@@ -192,11 +195,10 @@ const CreateRoutine = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col span={6}>
+              <Col span={12}>
                 <Form.Item label="Time">
                   <TimePicker.RangePicker
                     use12Hours
-size = "large"
                     format="h:mm A"
                     onChange={(value) =>
                       handleClassChange(classIndex, "time", value)
