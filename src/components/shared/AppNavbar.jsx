@@ -122,7 +122,7 @@ const AppNavbar = () => {
             </li>
             {/* <li>
               <NavLink
-                to="/task"
+                to="/routine"
                 className="list-group-item border-0 rounded-1"
                 onClick={closeOffcanvas}
               >

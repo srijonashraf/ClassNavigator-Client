@@ -72,8 +72,30 @@ const CreateRoutine = () => {
     };
     setFormValues(updatedFormValues);
   };
+  
+  
 
-  const handleFormSubmission = async () => {
+  const handleFormSubmission = async (e) => {
+    e.preventDefault();
+    if (!selectedDay) {
+      errorToast("Please select a day.");
+      return;
+    }
+
+    if (
+      !formValues.some(
+        (cls) =>
+          cls.courseName ||
+          cls.courseCode ||
+          cls.teacher ||
+          cls.room ||
+          cls.time
+      )
+    ) {
+      errorToast("Please add at least one class.");
+      return;
+    }
+
     try {
       const response = await SaveRoutineByClassId(
         classId,
@@ -103,7 +125,6 @@ const CreateRoutine = () => {
       },
     ]);
   };
-  
 
   return (
     <div className="container mt-5">
@@ -173,10 +194,11 @@ const CreateRoutine = () => {
               </Col>
               <Col span={6}>
                 <Form.Item label="Time">
-                  <Input
-                    value={cls.time || ""}
-                    onChange={(e) =>
-                      handleClassChange(classIndex, "time", e.target.value)
+                  <TimePicker.RangePicker
+                    use12Hours
+                    format="h:mm A"
+                    onChange={(value) =>
+                      handleClassChange(classIndex, "time", value)
                     }
                   />
                 </Form.Item>
@@ -186,7 +208,7 @@ const CreateRoutine = () => {
         ))}
         <Form.Item>
           <Button onClick={addCourse} type="dashed" block>
-           + Add Course
+            + Add Course
           </Button>
         </Form.Item>
         <Form.Item>

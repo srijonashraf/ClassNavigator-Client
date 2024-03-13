@@ -53,7 +53,19 @@ const ViewRoutine = () => {
           {classes.map((classItem, index) => (
             <li key={index} className={`class-row-${index}`}>
               <div className="mb-2">
-                <p className="fw-bold mb-2 fs-6">{classItem.time}</p>
+                <p className="fw-bold mb-2 fs-6">
+                  {`${new Date(classItem.time[0]).toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })} - ${new Date(
+                    classItem.time[classItem.time.length - 1]
+                  ).toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}`}
+                </p>
                 <p className="">{classItem.courseName}</p>
                 <p className="fw-bold">
                   {classItem.courseCode} ({FetchRoutineByClassId?.section})
