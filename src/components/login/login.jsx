@@ -32,7 +32,7 @@ const Login = () => {
     return (
         <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
             <div className="col-lg-6 col-md-8 col-sm-10">
-                <div className="card border-primary shadow-lg rounded-1 p-4">
+                <div className="card border-0 shadow-lg rounded-1 p-4">
                     <div className="card-body">
                         <form onSubmit={loginRequest} className="form d-flex flex-column gap-3">
 
