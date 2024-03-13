@@ -151,12 +151,12 @@ const Classes = ({ DashboardAPIRefresh }) => {
 
   return (
     <div className="row">
-      <div className="d-flex flex-row align-items-center gap-3">
+      <div className="d-flex flex-row align-items-center gap-3 mb-3">
         <LoadingBarComponent progress={progress} />
         <div className="input-group">
           <input
             type="text"
-            className="form-control "
+            className="form-control"
             placeholder="Class Id"
             value={classEnrollmentSearchValue}
             onChange={(e) => setClassEnrollmentSearchValue(e.target.value)}

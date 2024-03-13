@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ContentStore from "../../stores/ContentStore";
 import { Table } from "antd";
 import { DeleteRoutineByDay } from "../../api/apiRequest";
@@ -52,11 +52,11 @@ const ViewRoutine = () => {
         <ul>
           {classes.map((classItem, index) => (
             <li key={index} className={`class-row-${index}`}>
-              <div className=" mb-2">
+              <div className="mb-2">
                 <p className="fw-bold mb-2 fs-6">{classItem.time}</p>
+                <p className="">{classItem.courseName}</p>
                 <p className="fw-bold">
-                  {classItem.courseName} {classItem.courseCode} (
-                  {FetchClassById?.section})
+                  {classItem.courseCode} ({FetchRoutineByClassId?.section})
                 </p>
                 <p className="mb-0">{classItem.teacher}</p>
                 <p className="mb-0 fw-bold">{classItem.room}</p>

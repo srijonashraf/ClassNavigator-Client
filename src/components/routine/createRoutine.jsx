@@ -4,7 +4,6 @@ import { Form, Input, Button, Select, Row, Col, TimePicker } from "antd";
 import { useParams } from "react-router-dom";
 import { SaveRoutineByClassId } from "../../api/apiRequest";
 import { errorToast, successToast } from "../../helper/ToasterHelper";
-import { DeleteRoutineByDay } from "./../../api/apiRequest";
 
 const { Option } = Select;
 
@@ -92,19 +91,19 @@ const CreateRoutine = () => {
     }
   };
 
-  const handleDeleteRoutine = async () => {
-    try {
-      const response = await DeleteRoutineByDay(classId, selectedDay);
-      if (!response) {
-        errorToast("Failed to Update Routine.");
-        return;
-      }
-      successToast("Routine Updated!");
-      await FetchRoutineByClassIdRequest(classId);
-    } catch (err) {
-      errorToast("Something went wrong.");
-    }
+  const addCourse = () => {
+    setFormValues([
+      ...formValues,
+      {
+        courseName: "",
+        courseCode: "",
+        teacher: "",
+        room: "",
+        time: "",
+      },
+    ]);
   };
+  
 
   return (
     <div className="container mt-5">
@@ -185,6 +184,11 @@ const CreateRoutine = () => {
             </Row>
           </div>
         ))}
+        <Form.Item>
+          <Button onClick={addCourse} type="dashed" block>
+           + Add Course
+          </Button>
+        </Form.Item>
         <Form.Item>
           <Button type="primary" onClick={handleFormSubmission} block>
             Save
