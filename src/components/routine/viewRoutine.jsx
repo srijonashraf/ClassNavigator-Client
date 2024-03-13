@@ -70,7 +70,7 @@ const ViewRoutine = () => {
                 <p className="fw-bold">
                   {classItem.courseCode} ({FetchRoutineByClassId?.section})
                 </p>
-                <p className="mb-0">{classItem.teacher}</p>
+                <p className="mb-0">{classItem.facultyName}</p>
                 <p className="mb-0 fw-bold">{classItem.room}</p>
               </div>
             </li>

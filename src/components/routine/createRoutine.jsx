@@ -38,7 +38,7 @@ const CreateRoutine = () => {
               {
                 courseName: "",
                 courseCode: "",
-                teacher: "",
+                facultyName: "",
                 room: "",
                 time: "",
               },
@@ -53,7 +53,7 @@ const CreateRoutine = () => {
           {
             courseName: "",
             courseCode: "",
-            teacher: "",
+            facultyName: "",
             room: "",
             time: "",
           },
@@ -87,7 +87,7 @@ const CreateRoutine = () => {
         (cls) =>
           cls.courseName ||
           cls.courseCode ||
-          cls.teacher ||
+          cls.facultyName ||
           cls.room ||
           cls.time
       )
@@ -119,7 +119,7 @@ const CreateRoutine = () => {
       {
         courseName: "",
         courseCode: "",
-        teacher: "",
+        facultyName: "",
         room: "",
         time: "",
       },
@@ -175,9 +175,9 @@ const CreateRoutine = () => {
               <Col span={6}>
                 <Form.Item label="Faculty Name">
                   <Input
-                    value={cls.teacher || ""}
+                    value={cls.facultyName || ""}
                     onChange={(e) =>
-                      handleClassChange(classIndex, "teacher", e.target.value)
+                      handleClassChange(classIndex, "facultyName", e.target.value)
                     }
                   />
                 </Form.Item>
