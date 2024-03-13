@@ -196,6 +196,7 @@ const CreateRoutine = () => {
                 <Form.Item label="Time">
                   <TimePicker.RangePicker
                     use12Hours
+size = "large"
                     format="h:mm A"
                     onChange={(value) =>
                       handleClassChange(classIndex, "time", value)
