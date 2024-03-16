@@ -64,7 +64,7 @@ const AppNavbar = () => {
             <>
               <div
                 key={notification._id}
-                className={`d-flex gap-3 py-2 notificationDropdown`}
+                className={`d-flex gap-3 px-2 py-2 notificationDropdown`}
                 style={
                   notification.seen === false
                     ? { backgroundColor: "#fffbe6" }
