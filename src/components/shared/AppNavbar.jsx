@@ -50,7 +50,7 @@ const AppNavbar = () => {
     {
       key: "mark-all-read",
       label: (
-        <p className="fw-bold float-end mb-2" onClick={handleMarkAllRead}>
+        <p className="fw-bold float-end px-2 mb-2" onClick={handleMarkAllRead}>
           <IoCheckmarkDone /> MARK ALL READ
         </p>
 
