@@ -430,3 +430,20 @@ export const DeleteRoutineByDay = async (classId, day) => {
     console.error("Remove Participant Error: ", error);
   }
 };
+
+export const MarkAsReadAllRequest = async () => {
+  try {
+    const response = await axios.get(
+      `${BaseURL}/markAsReadNotificationAll`,
+      axiosHeader()
+    );
+    console.log(response)
+    if (response.data.status === "success") {
+      return response;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Remove Participant Error: ", error);
+  }
+};

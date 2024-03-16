@@ -3,22 +3,22 @@ import Button from "react-bootstrap/Button";
 import { Container, Navbar, Offcanvas } from "react-bootstrap";
 import { clearSessions } from "../../helper/SessionHelper.js";
 import { NavLink } from "react-router-dom";
-import { BiUserCircle } from "react-icons/bi";
-import { RiMenuUnfoldFill } from "react-icons/ri";
-import { IoSettingsOutline } from "react-icons/io5";
 import { BsMenuButtonWideFill } from "react-icons/bs";
-import { RxAvatar } from "react-icons/rx";
-import Dropdown from "react-bootstrap/Dropdown";
-import { CiLogout } from "react-icons/ci";
-import Avatar from "react-avatar";
-import ProfileStore from './../../stores/ProfileStore';
-
+import ProfileStore from "./../../stores/ProfileStore";
+import { BellOutlined, FileTextFilled, UserOutlined } from "@ant-design/icons";
+import { Avatar, Badge, Dropdown, Menu } from "antd";
+import ContentStore from "./../../stores/ContentStore";
+import { IoCheckmarkDone } from "react-icons/io5";
+import { MarkAsReadAllRequest } from "../../api/apiRequest.js";
 const AppNavbar = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [img, setImg] = useState("");
-
   const { ProfileDetailsRequest, ProfileDetails } = ProfileStore();
+  const {
+    TotalNotificationCountRequest,
+    TotalNotificationCount,
+    FetchAllNotificaionRequest,
+    FetchAllNotificaion,
+  } = ContentStore();
   const toggleOffcanvas = () => {
     setShowOffcanvas(!showOffcanvas);
   };
@@ -31,7 +31,8 @@ const AppNavbar = () => {
     const fetchData = async () => {
       try {
         await ProfileDetailsRequest();
-
+        await TotalNotificationCountRequest();
+        await FetchAllNotificaionRequest();
       } catch (error) {
         console.error(error);
       }
@@ -39,6 +40,92 @@ const AppNavbar = () => {
 
     fetchData();
   }, []);
+
+  const handleMarkAllRead = async () => {
+    await MarkAsReadAllRequest();
+    await TotalNotificationCountRequest();
+  };
+
+  const notificationItems = [
+    {
+      key: "mark-all-read",
+      label: (
+        <p className="fw-bold float-end mb-2" onClick={handleMarkAllRead}>
+          <IoCheckmarkDone /> MARK ALL READ
+        </p>
+
+      ),
+    },
+    ...(FetchAllNotificaion
+      ? FetchAllNotificaion.sort(
+          (b, a) => new Date(a.time) - new Date(b.time)
+        ).map((notification) => ({
+          label: (
+            <>
+              <div
+                key={notification._id}
+                className={`d-flex gap-3 py-2 notificationDropdown`}
+                style={
+                  notification.seen === false
+                    ? { backgroundColor: "#fffbe6" }
+                    : {}
+                }
+              >
+                <div>
+                  <FileTextFilled className="fs-4 mt-5 text-warning" />
+                </div>
+                <div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: notification.body,
+                    }}
+                  ></div>
+                  <p className="mt-1 sm-text">
+                    {Math.floor(
+                      (new Date() - new Date(notification.time)) /
+                        1000 /
+                        60 /
+                        60 /
+                        24
+                    ) >= 1
+                      ? `${Math.floor(
+                          Math.floor(
+                            (new Date() - new Date(notification.time)) /
+                              1000 /
+                              60 /
+                              60 /
+                              24
+                          )
+                        )} days ago`
+                      : Math.floor(
+                          (new Date() - new Date(notification.time)) /
+                            1000 /
+                            60 /
+                            60
+                        ) >= 1
+                      ? `${Math.floor(
+                          Math.floor(
+                            (new Date() - new Date(notification.time)) /
+                              1000 /
+                              60 /
+                              60
+                          )
+                        )} hours ago`
+                      : `${Math.floor(
+                          Math.floor(
+                            (new Date() - new Date(notification.time)) /
+                              1000 /
+                              60
+                          )
+                        )} minutes ago`}
+                  </p>
+                </div>
+              </div>
+            </>
+          ),
+        }))
+      : []),
+  ];
 
   return (
     <div className={`app-container ${showOffcanvas ? "offcanvas-open" : ""}`}>
@@ -48,7 +135,7 @@ const AppNavbar = () => {
         className="bg-primary text-light"
         data-bs-theme="dark"
       >
-        <Container className="my-2 my-lg-0  d-flex justify-content-between align-items-center">
+        <Container className="my-2 my-lg-0">
           <div className="NavBrand d-flex align-items-center">
             <BsMenuButtonWideFill
               className="text-light mx-2 cursorPointer fs-5"
@@ -58,50 +145,32 @@ const AppNavbar = () => {
               Class Navigator
             </NavLink>
           </div>
-          <div>
-            <p className="m-0">Hello, {ProfileDetails?.name || "User"} ({ProfileDetails?.userId})</p>
-          </div>
-
-          {/* <Dropdown className="user-dropdown">
-            <Dropdown.Toggle
-              as={RxAvatar}
-              id="dropdown-basic"
-              className="navBarUserIcon border-0 fs-2"
-            >
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu className="user-dropdown-content">
-              <div className="mt-4 text-center">
-                <NavLink className="nav-link" to="/profile">
-                  <Avatar
-                    src={img}
-                    size="40"
-                    className="mb-2 cursorPointer"
-                    round={true}
+          <div className="d-flex align-items-center gap-3">
+            <Badge size="small" color="reds" count={TotalNotificationCount}>
+              <Dropdown
+                overlay={
+                  <Menu
+                    style={{
+                      width: "300px",
+                      maxHeight: "300px",
+                      overflowY: "auto",
+                    }}
+                    items={notificationItems}
                   />
-                </NavLink>
-
-                <h6 className="cursorPointer">
-                  <NavLink className="nav-link" to="/profile">
-                    {firstName?.firstName || "User"}
-                  </NavLink>
-                </h6>
-                <Dropdown.Divider />
-              </div>
-
-              <Dropdown.Item className="d-flex align-items-center gap-1">
-                <NavLink className="nav-link" to="/profile">
-                  <IoSettingsOutline /> Setting
-                </NavLink>
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="d-flex align-items-center gap-1"
-                onClick={clearSessions}
+                }
+                trigger={"click"}
+                placement="bottomRight"
+                arrow
               >
-                <CiLogout /> Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown> */}
+                <BellOutlined
+                  shape="square"
+                  size="small"
+                  className="fs-5 text-light cursorPointer"
+                />
+              </Dropdown>
+            </Badge>
+            <Avatar icon={<UserOutlined />} />
+          </div>
         </Container>
       </Navbar>
 
@@ -120,24 +189,7 @@ const AppNavbar = () => {
                 Dashboard
               </NavLink>
             </li>
-            {/* <li>
-              <NavLink
-                to="/routine"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Routine
-              </NavLink>
-            </li> */}
-            {/* <li>
-              <NavLink
-                to="/allTask"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Assessment
-              </NavLink>
-            </li> */}
+
             <li>
               <NavLink
                 to="/inCourse/allTasks"
@@ -147,25 +199,7 @@ const AppNavbar = () => {
                 In Course
               </NavLink>
             </li>
-            {/* <li>
-              <NavLink
-                to="/inProgress"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Link Library
-              </NavLink>
-            </li> */}
-            {/* 
-            <li>
-              <NavLink
-                to="/profile"
-                className="list-group-item border-0 rounded-1"
-                onClick={closeOffcanvas}
-              >
-                Settings
-              </NavLink>
-            </li> */}
+
             <Button
               onClick={clearSessions}
               className="d-flex rounded-1"

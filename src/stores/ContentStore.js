@@ -204,6 +204,47 @@ const ContentStore = create((set) => ({
       console.log(err);
     }
   },
+
+  TotalNotificationCount:null,
+  TotalNotificationCountRequest: async () => {
+    try {
+      const response = await axios.get(
+        `${BaseURL}/totalUnseenNotificationCount`,
+        axiosHeader()
+      );
+      if (response.data["status"] === "success") {
+        set({
+          TotalNotificationCount: response.data.data,
+        });
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  FetchAllNotificaion:null,
+  FetchAllNotificaionRequest: async () => {
+    try {
+      const response = await axios.get(
+        `${BaseURL}/fetchAllNotification`,
+        axiosHeader()
+      );
+
+      if (response.data["status"] === "success") {
+        set({
+          FetchAllNotificaion: response.data.data,
+        });
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+
 }));
 
 export default ContentStore;
