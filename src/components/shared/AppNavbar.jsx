@@ -44,6 +44,7 @@ const AppNavbar = () => {
   const handleMarkAllRead = async () => {
     await MarkAsReadAllRequest();
     await TotalNotificationCountRequest();
+    await FetchAllNotificaionRequest();
   };
 
   const notificationItems = [
