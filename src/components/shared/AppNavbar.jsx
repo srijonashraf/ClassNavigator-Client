@@ -160,7 +160,6 @@ const AppNavbar = () => {
                 }
                 trigger={"click"}
                 placement="bottomRight"
-                arrow
               >
                 <BellOutlined
                   shape="square"
