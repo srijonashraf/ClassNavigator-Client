@@ -44,13 +44,14 @@ const AppNavbar = () => {
   const handleMarkAllRead = async () => {
     await MarkAsReadAllRequest();
     await TotalNotificationCountRequest();
+    await FetchAllNotificaionRequest();
   };
 
   const notificationItems = [
     {
       key: "mark-all-read",
       label: (
-        <p className="fw-bold float-end mb-2" onClick={handleMarkAllRead}>
+        <p className="fw-bold float-end px-2 mb-2" onClick={handleMarkAllRead}>
           <IoCheckmarkDone /> MARK ALL READ
         </p>
 
@@ -64,7 +65,7 @@ const AppNavbar = () => {
             <>
               <div
                 key={notification._id}
-                className={`d-flex gap-3 py-2 notificationDropdown`}
+                className={`d-flex gap-3 px-2 py-2 notificationDropdown`}
                 style={
                   notification.seen === false
                     ? { backgroundColor: "#fffbe6" }
@@ -160,7 +161,6 @@ const AppNavbar = () => {
                 }
                 trigger={"click"}
                 placement="bottomRight"
-                arrow
               >
                 <BellOutlined
                   shape="square"
