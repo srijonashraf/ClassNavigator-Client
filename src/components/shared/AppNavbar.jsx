@@ -51,9 +51,15 @@ const AppNavbar = () => {
     {
       key: "mark-all-read",
       label: (
-        <p className="fw-bold float-end px-2 mb-2" onClick={handleMarkAllRead}>
-          <IoCheckmarkDone /> MARK ALL READ
-        </p>
+        <div className="d-flex flex-column hover-null">     
+        <div className="d-flex justify-content-between px-3 py-3">
+          <p className="fw-bold">Notification</p>
+          <p className="fw-bold" onClick={handleMarkAllRead}>
+            <IoCheckmarkDone /> MARK ALL READ
+          </p>
+        </div>
+        <hr className="mb-2 mt-0"/>
+        </div>
       ),
     },
     ...(FetchAllNotificaion
@@ -64,12 +70,9 @@ const AppNavbar = () => {
             <>
               <div
                 key={notification._id}
-                className={`d-flex gap-3 px-2 py-2 notificationDropdown`}
-                style={
-                  notification.seen === false
-                    ? { backgroundColor: "#fffbe6" }
-                    : {}
-                }
+                className={`d-flex gap-3 py-2 px-2 ${
+                  !notification.seen ? `bg-notification` : null
+                }`}
               >
                 <div>
                   <FileTextFilled className="fs-4 mt-5 text-warning" />
@@ -80,6 +83,7 @@ const AppNavbar = () => {
                       __html: notification.body,
                     }}
                   ></div>
+
                   <p className="mt-1 sm-text">
                     {Math.floor(
                       (new Date() - new Date(notification.time)) /
@@ -148,17 +152,17 @@ const AppNavbar = () => {
           <div className="d-flex align-items-center gap-3">
             <Badge size="small" color="reds" count={TotalNotificationCount}>
               <Dropdown
-                overlay={
-                  <Menu
-                    style={{
-                      width: "300px",
-                      maxHeight: "300px",
-                      overflowY: "auto",
-                    }}
-                    items={notificationItems}
-                  />
-                }
-                trigger={"click"}
+                menu={{
+                  className: "padding-null",
+                  style: {
+                    width: "300px",
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    padding: 0,
+                  },
+                  items: notificationItems,
+                }}
+                trigger="click"
                 placement="bottomRight"
               >
                 <BellOutlined

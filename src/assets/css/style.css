@@ -63,15 +63,14 @@ p {
   }
 }
 
-.ant-dropdown-menu-item {
-  padding: 0px !important;
+.bg-notification{
+  background-color: #fffbe6;
 }
 
-
-.notificationDropdown:hover {
-  background-color: #f5f5f5 !important;
+.padding-null li{
+  padding: 0 !important;
 }
 
-.noHover:hover{
-  background-color: #ffffff !important;
+.hover-null{
+  background-color: white;
 }

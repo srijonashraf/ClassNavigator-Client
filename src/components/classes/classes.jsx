@@ -118,6 +118,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
   };
 
   const items = [
+   
     {
       key: "1",
       label: "Edit",
@@ -211,12 +212,6 @@ const Classes = ({ DashboardAPIRefresh }) => {
                           ? items
                           : items.slice(2, 3),
                         selectable: false,
-                        style: {
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: ".5rem",
-                          padding: "1rem",
-                        },
                         onClick: (info) => {
                           handleMenuSelection(info.key, classItem.classId);
                         },
