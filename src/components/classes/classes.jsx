@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MdOutlineContentCopy, MdLibraryAdd } from "react-icons/md";
+import { MdOutlineContentCopy } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import AddNewClass from "./addNewClass";
 import LoadingBarComponent from "./../loading/loadingBar";
@@ -12,7 +12,6 @@ import {
   UnenrollAsAdmin,
 } from "../../api/apiRequest.js";
 import { errorToast, successToast } from "../../helper/ToasterHelper.js";
-import FaButton from "./../buttons/fab";
 import Avatar from "react-avatar";
 import {
   CloseCircleOutlined,
@@ -52,10 +51,7 @@ const Classes = ({ DashboardAPIRefresh }) => {
   const handleCopyClick = async (classId, index) => {
     try {
       await navigator.clipboard.writeText(classId);
-      setCopiedIndex(index);
-      setTimeout(() => {
-        setCopiedIndex(null);
-      }, 1000);
+      successToast('Class Id Copied!')
     } catch (err) {
       console.error("Unable to copy to clipboard", err);
     }
@@ -204,63 +200,58 @@ const Classes = ({ DashboardAPIRefresh }) => {
             <div key={classItem.classId} className="col-md-6 mb-4">
               <div className="card shadow-sm border border-light-subtle">
                 <div className="card-body">
-                  <Dropdown
-                    className="float-end mb-3 fs-5"
-                    menu={{
-                      items: adminAccess(classItem.classId)
-                        ? items
-                        : items.slice(2, 3),
-                      selectable: false,
-                      onClick: (info) => {
-                        handleMenuSelection(info.key, classItem.classId);
-                      },
-                    }}
-                  >
-                    <MoreOutlined className="cursorPointer" />
-                  </Dropdown>
+                  <div className="top-section">
+                    {adminAccess(classItem.classId) ? (
+                      <p className="card-subtitle badge bg-success">Owner</p>
+                    ) : null}
+                    <Dropdown
+                      className="float-end mb-3 fs-5"
+                      menu={{
+                        items: adminAccess(classItem.classId)
+                          ? items
+                          : items.slice(2, 3),
+                        selectable: false,
+                        style: {
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: ".5rem",
+                          padding: "1rem",
+                        },
+                        onClick: (info) => {
+                          handleMenuSelection(info.key, classItem.classId);
+                        },
+                      }}
+                    >
+                      <MoreOutlined className="cursorPointer" />
+                    </Dropdown>
+                  </div>
 
-                  <Link
-                    className="nav-link"
-                    to={`/courses/${classItem.classId}`}
-                  >
-                    <Avatar
-                      name={classItem.className}
-                      className="bg-primary w-100 rounded-top-2"
-                    />
-                  </Link>
+                  <Avatar
+                    name={classItem.className}
+                    onClick={() => navigate(`/courses/${classItem.classId}`)}
+                    className="bg-primary w-100 rounded-top-2 cursorPointer"
+                  />
 
-                  <div className="top-section mt-3 d-flex flex-row-reverse align-items-center justify-content-between">
+                  <div className="class-info-section my-3">
                     <p
-                      className="card-text d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-2"
+                      className="d-flex align-items-center gap-2 cursorPointer bg-primary bg-gradient text-light rounded-1 p-1 float-end"
                       onClick={(e) => handleCopyClick(classItem.classId, index)}
                     >
                       <MdOutlineContentCopy />
                       {classItem.classId}
-                      {copiedIndex === index && (
-                        <span
-                          className="float-end badge"
-                          style={{ fontSize: "12px" }}
-                        >
-                          Copied!
-                        </span>
-                      )}
                     </p>
-                    {adminAccess(classItem.classId) ? (
-                      <p className="card-subtitle badge bg-success">Owner</p>
-                    ) : null}
+                    <p className="card-title cursorPointer fw-bold fs-6 title-color">
+                      <Link
+                        className="nav-link"
+                        to={`/courses/${classItem.classId}`}
+                      >
+                        {classItem.className}
+                      </Link>
+                    </p>
+                    <p className="card-subtitle text-muted small">
+                      Section: {classItem.section}
+                    </p>
                   </div>
-                  <Link
-                    className="nav-link"
-                    to={`/courses/${classItem.classId}`}
-                  >
-                    <p className="card-title cursorPointer fw-bold fs-5 title-color">
-                      {classItem.className}
-                    </p>
-                  </Link>
-
-                  <p className="card-subtitle mb-2 text-muted small">
-                    Section: {classItem.section}
-                  </p>
                 </div>
               </div>
             </div>

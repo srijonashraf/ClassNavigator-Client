@@ -129,15 +129,11 @@ const Courses = ({ CourseAPIRefresh }) => {
                   </Dropdown>
                 )}
 
-                <Link
-                  to={`/tasks/${classId}/${course._id}`}
-                  className="nav-link"
-                >
-                  <Avatar
-                    name={course.courseName}
-                    className="bg-secondary w-100 rounded-top-2 card-img-top"
-                  />
-                </Link>
+                <Avatar
+                  onClick={() => navigate(`/tasks/${classId}/${course._id}`)}
+                  name={course.courseName}
+                  className="bg-secondary w-100 rounded-top-2 card-img-top cursorPointer"
+                />
 
                 <Link
                   to={`/tasks/${classId}/${course._id}`}
