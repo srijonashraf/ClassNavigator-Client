@@ -437,7 +437,7 @@ export const MarkAsReadAllRequest = async () => {
       `${BaseURL}/markAsReadNotificationAll`,
       axiosHeader()
     );
-    console.log(response)
+    console.log(response);
     if (response.data.status === "success") {
       return response;
     } else {
