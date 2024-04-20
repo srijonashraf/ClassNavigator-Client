@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { SaveRoutineByClassId } from "../../api/apiRequest";
 import { errorToast, successToast } from "../../helper/ToasterHelper";
 import moment from "moment";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -64,6 +65,8 @@ const CreateRoutine = () => {
 
     fetchRoutine();
   }, [classId, selectedDay]);
+
+  console.log(formValues);
 
   const handleClassChange = (classIndex, field, value) => {
     const updatedFormValues = [...formValues];
@@ -200,8 +203,13 @@ const CreateRoutine = () => {
                   <TimePicker.RangePicker
                     use12Hours
                     format="h:mm A"
+                    value={[dayjs(cls.time[0]), dayjs(cls.time[1])]}
                     onChange={(value) =>
-                      handleClassChange(classIndex, "time", value)
+                      handleClassChange(
+                        classIndex,
+                        "time",
+                        value.map((value) => value.toISOString())
+                      )
                     }
                   />
                 </Form.Item>
