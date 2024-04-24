@@ -60,7 +60,7 @@ const Registration = () => {
       style={{ minHeight: "100vh" }}
     >
       <div className="col-lg-6 col-md-8 col-sm-10">
-        <div className="card shadow-lg rounded-1 p-4">
+        <div className="card shadow-lg rounded-1 border-0 p-4">
           <div className="card-body">
             <form
               onSubmit={registrationRequest}
